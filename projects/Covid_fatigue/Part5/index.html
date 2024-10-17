@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/echarts.js"></script>
+    <script src="./js/bmap.js"></script>
+    <script
+        src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            display: none !important;
+        }
+
+        /* 页面布局样式 */
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            /* margin: 0; */
+            background-color: #333333;
+            /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 针对 Kepler 地图的容器 */
+        #app {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* 确保地图在较低的层级 */
+        }
+
+        /* 左侧文本框样式 */
+        .sidebar {
+            position: absolute;
+            width: 25%;
+            height: 80%;
+            top: 10%;
+            right: 5%;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+
+            /* 新增样式用于文本水平垂直居中对齐 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            font-family: 'Times New Roman', serif;
+            /* 使用 Times New Roman 字体 */
+            font-weight: bold;
+            font-size: 28px;
+            /* 文本加粗 */
+        }
+
+        /* 段落文本样式 */
+        .text-paragraph {
+            margin-bottom: 20px;
+            /* 段落间距 */
+        }
+
+        /* 标红文本样式 */
+        .highlight {
+            color: rgb(237, 42, 98);
+            /* 标红文本 */
+        }
+
+        /* 导航按钮样式 */
+        .navigation-buttons {
+            align-self: stretch;
+            text-align: center;
+            margin-top: 40px;
+            /* 按钮与文本间的间距 */
+        }
+
+        .navigation-buttons button {
+            margin: 0 10px;
+            background: transparent;
+            /* 设置背景为透明 */
+            border: 2px solid white;
+            /* 保留白色边框 */
+            font-family: 'Roboto Mono', monospace;
+            /* 设置字体为 Roboto Mono */
+            font-size: 14px;
+            /* 设置字体大小为 14px */
+            color: white;
+            /* 设置字体颜色为白色 */
+            padding: 5px 10px;
+            /* 设置内边距 */
+            cursor: pointer;
+            /* 设置鼠标悬停时的光标样式 */
+            transition: background-color 0.3s;
+            /* 平滑过渡效果 */
+        }
+
+        .navigation-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* 鼠标悬停时的背景色 */
+        }
+
+        .top-right-title {
+            position: absolute;
+            /* 绝对定位 */
+            top: 10px;
+            /* 距离顶部的距离 */
+            right: 600px;
+            /* 距离右侧的距离 */
+            font-size: 28px;
+            /* 字体大小 */
+            color: #fff;
+            /* 字体颜色 */
+            font-weight: bold;
+            /* 字体加粗 */
+            text-align: right;
+            /* 文本右对齐 */
+            z-index: 1000;
+            /* 提高 z-index 值 */
+            max-width: 300px;
+            /* 最大宽度限制 */
+            white-space: nowrap;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: stretch;
+            /* 确保容器高度一致 */
+        }
+
+        #stacked_chart {
+            flex-grow: 2;
+            /* 占据更多空间 */
+        }
+
+        #pie_chart {
+            position: absolute;
+            /* 绝对定位 */
+            top: 65%;
+            /* 垂直居中 */
+            left: 0;
+            /* 置于左侧 */
+            transform: translateY(-50%);
+            width: 30%;
+            height: auto;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+
+<body style="height: 100%;">
+
+    <div class="sidebar">
+        <!-- 文本容器 -->
+        <div id="text-content">
+            <!-- 动态文本将在这里显示 -->
+        </div>
+
+        <!-- 导航按钮 -->
+        <div class="navigation-buttons">
+            <button id="prev-button">Previous</button>
+            <button id="next-button">Next</button>
+        </div>
+    </div>
+
+    <div id="ts_mobility" style="width: 100%; height: 100%; border: 0px solid;"></div>
+    <script type="text/javascript">
+        // 初始化图表时设置style
+        var chart1 = echarts.init(document.getElementById('ts_mobility'));
+        // 指定图表的配置项和数据
+        $.getJSON('lockdown.json', function (data) {
+            $.getJSON('styleJson_dark.json', function (styleJson) {
+                var options = []
+                var hour = []
+                var scaleFactor = 0.1;  // 或者任何适合您数据的值
+                for (var i = 0; i < data.length; i++) {
+                    hour.push(data[i][0]['date'])
+                    let [year, month, day] = data[i][0]['date'].split('-')
+                    // console.log(data[i][0]['trip_data']);
+                    console.log(data[i][1])
+                    options.push({
+                        // title: {
+                        //     text: '图2：' + year + '年' + month + '月' + day + '日' + '，淄博人口流入情况',
+                        //     left: 'left',
+                        //     top: 'top',
+                        //     textStyle: {
+                        //         fontSize: '24px',
+                        //         fontWeight: 'bolder',
+                        //         color: '#6d6b6c',
+                        //         fontFamily: 'sans-serif'
+                        //     }
+                        // },
+                        series: [{
+                            type: 'lines',
+                            coordinateSystem: 'bmap',
+                            data: data[i][0]['trip_data'],
+                            lineStyle: {
+                                normal: {
+                                    //color: '#a6c84c',
+                                    width: 1.5,
+                                    curveness: 0.1
+                                }
+                            },
+                            effect: {
+                                show: true,
+                                period: 10,
+                                constantSpeed: 100,
+                                trailLength: 0.7,
+                                symbolSize: 7
+                            },
+                        }, {
+                            type: 'effectScatter',
+                            coordinateSystem: 'bmap',
+                            label: {
+                                emphasis: {
+                                    show: true,
+                                    position: 'right',
+                                    formatter: function (params) { return params['name'] }
+                                }
+                            },
+                            data: data[i][1],
+                            symbolSize: function (params) { return params[2] / 1000000 }
+                        }]
+                    })
+                }
+
+                var option = {
+                    timeline: {
+                        data: hour,
+                        orient: 'vertical',
+                        left: '8%',
+                        top: '5%',
+                        height: '80%',
+                        width: '2%',
+                        axisType: 'category',
+                        autoPlay: true,
+                        playInterval: 600,
+                        //rewind: true,
+                        currentIndex: 0,
+                        inverse: true,
+                        symbolSize: 5,
+                        label: {
+                            position: 'right',
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                var date = new Date(value);
+                                var texts = [(date.getMonth() + 1), date.getDate()];
+                                if (index === 0) {
+                                    texts.unshift(date.getFullYear());
+                                }
+                                return texts.join('/');
+                            }
+                        }
+                    },
+                    bmap: {
+                        center: [110.036449, 33.103488],
+                        zoom: 5,
+                        roam: true,
+                        mapStyle: {
+                            styleJson: styleJson
+                        }
+                    },
+                    visualMap: {
+                        show: false,
+                        left: 'left',
+                        bottom: '1%',
+                        max: 40,
+                        inRange: {
+                            color: ['green', '#eac736', '#d94e5d'],
+                            colorAlpha: [0, 1]
+                        },
+                    },
+                    title: {
+                        text: "",
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 30
+                        }
+                    },
+                    legend: {},
+                    series: [{}],
+                    options: options
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                chart1.setOption(option, true);
+            })
+        })
+    </script>
+
+    <script>
+        const textParagraphs = [
+            'Following Wuhan\'s implementation of lockdown policies, public support was initially positive, <span class="highlight">leading over 50 Chinese cities to adopt similar policies</span>.',
+            'However, after Shanghai\'s lockdown, public discontent and pandemic fatigue became pronounced, marking a shift in response. No further cities adopted lockdown policies, and soon after Shanghai\'s lockdown, <span class="highlight">China rapidly transitioned from a strict zero-COVID-19 policy to a comprehensive reopening.</span>',
+            'Wuhan and Shanghai represent <span class="highlight">pivotal points</span> in China\'s pandemic response, reflecting a common evolution in public sentiment towards containment policies, <span class="highlight">shifting from initial support to negative reactions</span>. This change highlights the importance of monitoring <span class="highlight">the impact of public health policies on public sentiment and mental health</span>. Timely policy adjustments by decision-makers, in response to these shifts, are crucial.'
+        ];
+        let currentParagraphIndex = 0;
+
+        function updateTextContent() {
+            const textContent = document.getElementById('text-content');
+            textContent.innerHTML = textParagraphs[currentParagraphIndex]; // 使用 innerHTML 来解析 HTML 标签
+        }
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            if (currentParagraphIndex > 0) {
+                currentParagraphIndex--;
+                updateTextContent();
+            }
+        });
+
+        document.getElementById('next-button').addEventListener('click', () => {
+            if (currentParagraphIndex < textParagraphs.length - 1) {
+                currentParagraphIndex++;
+                updateTextContent();
+            } else {
+                // 当已经是最后一段文本时，再次点击跳转到指定页面
+                window.location.href = '../index.html';
+            }
+        });
+        // 初始化显示第一个段落
+        updateTextContent();
+    </script>
+
+
+</body>
+
+</html>

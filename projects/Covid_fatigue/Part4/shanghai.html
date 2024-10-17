@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <script src="./js/echarts.js"></script>
+
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            display: none !important;
+        }
+
+        /* 页面布局样式 */
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            /* margin: 0; */
+            background-color: #333333;
+            /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 针对 Kepler 地图的容器 */
+        #app {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* 确保地图在较低的层级 */
+        }
+
+        /* 左侧文本框样式 */
+        .sidebar {
+            position: absolute;
+            width: 80%;
+            height: 25%;
+            top: 70%;
+            left: 10%;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+
+            /* 新增样式用于文本水平垂直居中对齐 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            font-family: 'Times New Roman', serif;
+            /* 使用 Times New Roman 字体 */
+            font-weight: bold;
+            font-size: 28px;
+            /* 文本加粗 */
+        }
+
+        /* 段落文本样式 */
+        .text-paragraph {
+            margin-bottom: 20px;
+            /* 段落间距 */
+        }
+
+        /* 标红文本样式 */
+        .highlight {
+            color: rgb(237, 42, 98);
+            /* 标红文本 */
+        }
+
+        /* 导航按钮样式 */
+        .navigation-buttons {
+            align-self: stretch;
+            text-align: center;
+            margin-top: 40px;
+            /* 按钮与文本间的间距 */
+        }
+
+        .navigation-buttons button {
+            margin: 0 10px;
+            background: transparent;
+            /* 设置背景为透明 */
+            border: 2px solid white;
+            /* 保留白色边框 */
+            font-family: 'Roboto Mono', monospace;
+            /* 设置字体为 Roboto Mono */
+            font-size: 14px;
+            /* 设置字体大小为 14px */
+            color: white;
+            /* 设置字体颜色为白色 */
+            padding: 5px 10px;
+            /* 设置内边距 */
+            cursor: pointer;
+            /* 设置鼠标悬停时的光标样式 */
+            transition: background-color 0.3s;
+            /* 平滑过渡效果 */
+        }
+
+        .navigation-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* 鼠标悬停时的背景色 */
+        }
+
+        .top-right-title {
+            position: absolute;
+            /* 绝对定位 */
+            top: 10px;
+            /* 距离顶部的距离 */
+            right: 600px;
+            /* 距离右侧的距离 */
+            font-size: 28px;
+            /* 字体大小 */
+            color: #fff;
+            /* 字体颜色 */
+            font-weight: bold;
+            /* 字体加粗 */
+            text-align: right;
+            /* 文本右对齐 */
+            z-index: 1000;
+            /* 提高 z-index 值 */
+            max-width: 300px;
+            /* 最大宽度限制 */
+            white-space: nowrap;
+        }
+
+        #stacked_chart {
+            flex-grow: 2;
+            /* 占据更多空间 */
+        }
+
+        #pie_chart {
+            position: absolute;
+            /* 绝对定位 */
+            top: 45%;
+            /* 垂直居中 */
+            left: 0;
+            /* 置于左侧 */
+            transform: translateY(-50%);
+            width: 30%;
+            height: auto;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body style="height: 100%;">
+    <div class="top-right-title">
+        From Virus to Side Effects: The Change in Public Focus
+    </div>
+    <div style="height:60%; top: 60px; position: relative;">
+        <div id="stacked_chart" style="height: 100%;"></div> <!-- 堆积图容器 -->
+        <div id="pie_chart" style="position: absolute;  left: 0; width: 30%; height: 100%;"></div> <!-- 饼图容器 -->
+    </div>
+
+    <div class="sidebar">
+        <!-- 文本容器 -->
+        <div id="text-content">
+            <!-- 动态文本将在这里显示 -->
+        </div>
+
+        <!-- 导航按钮 -->
+        <div class="navigation-buttons">
+            <button id="prev-button">Previous</button>
+            <button id="next-button">Next</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 初始化图表时设置style
+        var stacked_chart = echarts.init(document.getElementById('stacked_chart'));
+        var pie_chart = echarts.init(document.getElementById('pie_chart'))
+
+
+        // 指定图表的配置项和数据
+        option = {
+            backgroundColor: 'rgba(48, 48, 48, 1)',
+            animationDuration: 10000,
+            color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00', '#00DDFF', '#800080', '#FF4500', '#00FFFF', '#ADFF2F', '#FFB6C1', '#696969',],
+            title: {
+                text: 'Public topic changes for Shanghai COVID-19 (weekly)',
+                top: '30%',
+                right: '20%',
+                textStyle: {
+                    fontSize: '28px',
+                    fontFamily: 'Times New Roman',
+                    color: 'white'
+
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                left: 'center',
+                data: ['School, Campus, Reopening, Dormitory, Lockdown',
+                    'Quarantine, Positive, Residential Community, Epidemic Prevention, Temporary Hospital',
+                    'Antigen, Notification, Queueing, Downstairs, Blockade, Silence',
+                    'Reopening, Hope, Ending, Life, Freedom',
+                    'Asymptomatic, Virus, Infected Person, Cases, Recovery',
+                    'Supplies, Group Buying, Gratitude, Vegetables, Volunteers',
+                    'Emotions, Home Stay, Isolation, Impact, Anxiety'],
+                textStyle: {
+                    color: '#FFFFFF', // 设置图例文字颜色为白色
+                    fontFamily: 'Times New Roman', // 设置图例文字使用Times New Roman字体
+                }
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    // textStyle: {
+                    //     color: 'white'
+                    // },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['2022-02-27',
+                        '2022-03-06',
+                        '2022-03-13',
+                        '2022-03-20',
+                        '2022-03-27',
+                        '2022-04-03',
+                        '2022-04-10',
+                        '2022-04-17',
+                        '2022-04-24',
+                        '2022-05-01',
+                        '2022-05-08',
+                        '2022-05-15',
+                        '2022-05-22']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: 'School, Campus, Reopening, Dormitory, Lockdown',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 255, 165)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(1, 191, 236)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [26, 101, 185, 82, 111, 209, 195, 135, 154, 121, 126, 178, 61]
+                },
+                {
+                    name: 'Quarantine, Positive, Residential Community, Epidemic Prevention, Temporary Hospital',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(0, 221, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(77, 119, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [9, 30, 22, 46, 95, 159, 164, 84, 56, 33, 91, 178, 72]
+                },
+                {
+                    name: 'Antigen, Notification, Queueing, Downstairs, Blockade, Silence',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(55, 162, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(116, 21, 219)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [16, 42, 67, 73, 93, 116, 89, 56, 56, 39, 119, 294, 139]
+                },
+                {
+                    name: 'Reopening, Hope, Ending, Life, Freedom',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 0, 135)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(135, 0, 157)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [20, 89, 150, 150, 188, 212, 158, 116, 102, 121, 244, 587, 227]
+                },
+                {
+                    name: 'Asymptomatic, Virus, Infected Person, Cases, Recovery',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 191, 0)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(224, 62, 76)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [20, 89, 150, 150, 188, 212, 158, 116, 102, 121, 244, 587, 227]
+                },
+                {
+                    name: 'Supplies, Group Buying, Gratitude, Vegetables, Volunteers',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(0, 221, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(77, 119, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [1, 13, 57, 52, 127, 276, 217, 118, 66, 40, 113, 304, 102]
+                },
+                {
+                    name: 'Emotions, Home Stay, Isolation, Impact, Anxiety',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 0, 128)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 0, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [14, 50, 79, 86, 122, 175, 163, 90, 79, 64, 211, 407, 148]
+                },
+
+            ]
+        };
+
+        option && stacked_chart.setOption(option);
+
+        option_pie = {
+            title: {
+                text: 'The dominant topics discussed on Weibo about COVID-19 in Shanghai',
+                // subtext: 'Fake Data',
+                left: 'center',
+                top: '15%', 
+                textStyle: {
+                    color: 'white',
+                    fontFamily: 'Times New Roman',
+                    fontSize: '14px'
+                }
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                show: false,
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Topic ',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [{
+                        "value": 0.393, 'name': 'Containment and closure policies'
+                    },
+                    { 'value': 0.406, 'name': 'Lockdown news & Mental Health' },
+                    {
+                        'value': 0.149,
+                        'name': 'Living goods'
+                    },
+                    {
+                        'value': 0.053,
+                        'name': 'counts of cases and deaths'
+                    }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        option_pie && pie_chart.setOption(option_pie);
+    </script>
+
+
+
+    <script>
+        const textParagraphs = [
+            'During Shanghai\'s pandemic, public focus shifted notably from Wuhan\'s experience. Post-lockdown, concerns about basic supplies surged, especially for "living goods." As restrictions eased, attention turned to resuming normal life, with increased <span class="highlight">anxiety and emotional stress</span>.',
+            'The prominent "Lockdown news & Mental health" theme highlights deep worries about the lockdown\'s length and its mental health impact. This led to increased <span class="highlight">social discontent</span> in Shanghai, linked to heightened <span class="highlight">pandemic fatigue</span>.',
+            'The public\'s focus shifted from initial concerns about the virus\'s harm to the negative externalities arising from containment policies and the emergence of "<span class="highlight">pandemic fatigue</span>" This fostered distrust towards the government, conspiracy beliefs, and support for protest activities, <span class="highlight">driving potential policy shifts in response to the changing public sentiment</span>.'
+        ];
+        let currentParagraphIndex = 0;
+
+        function updateTextContent() {
+            const textContent = document.getElementById('text-content');
+            textContent.innerHTML = textParagraphs[currentParagraphIndex]; // 使用 innerHTML 来解析 HTML 标签
+        }
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            if (currentParagraphIndex > 0) {
+                currentParagraphIndex--;
+                updateTextContent();
+            }
+        });
+
+        document.getElementById('next-button').addEventListener('click', () => {
+            if (currentParagraphIndex < textParagraphs.length - 1) {
+                currentParagraphIndex++;
+                updateTextContent();
+            } else {
+                // 当已经是最后一段文本时，再次点击跳转到指定页面
+                window.location.href = '../Part5/index.html';
+            }
+        });
+        // 初始化显示第一个段落
+        updateTextContent();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chart on Video Background</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <style>
+        /* 视频背景样式 */
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            /* 宽度设为100% */
+            height: 100%;
+            /* 高度设为100% */
+            z-index: -100;
+            overflow: hidden;
+            opacity: 1;
+            /* 调整视频透明度 */
+            object-fit: cover;
+            /* 保持视频的原始比例，同时覆盖整个容器 */
+        }
+
+
+        /* 图表容器样式 */
+        #main {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 700px;
+            height: 400px;
+            z-index: 100;
+        }
+
+        /* 标题样式 */
+        .centered-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 水平和垂直居中 */
+            z-index: 10;
+            font-size: 44px;
+            /* 或尝试减小字体大小 */
+            color: white;
+            /* 字体颜色 */
+            text-align: center;
+            /* 文本居中对齐 */
+            font-weight: bold;
+            /* 加粗字体 */
+            font-family: 'Times New Roman', Times, serif;
+            /* 设置字体为 Times New Roman */
+            max-width: 100%;
+            /* 设定最大宽度 */
+            white-space: nowrap;
+            /* 防止文本换行 */
+
+            /* border: 2px solid white; */
+            /* 添加白色边框，边框宽度为2px */
+        }
+
+
+
+        /* 底部注释样式 */
+        .bottom-notice {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-size: 28px;
+            color: white;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+
+        .bottom-right-icon {
+            position: fixed;
+            bottom: 50px;
+            right: 50%;
+            transform: translateX(50%);
+            /* 将元素向左移动自身宽度的一半 */
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .bottom-right-icon img {
+            max-width: 50px;
+            height: auto;
+            margin-left: 10px;
+            /* 更新为左边距，因为图标在文字之后 */
+        }
+
+        .icon-text {
+            font-size: 28px;
+            font-weight: bold;
+            /* 加粗字体 */
+            font-family: 'Times New Roman', Times, serif;
+            /* New Roman 字体 */
+            color: #fff;
+            text-decoration: none;
+            /* 移除链接的下划线 */
+            /* 如有需要，可以添加更多样式 */
+        }
+
+
+        /* 图标样式 */
+        .info-icon {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 100;
+            width: 30px;
+            height: 30px;
+            /* 可以添加更多样式，如背景、大小等 */
+        }
+
+        /* 文本框样式 */
+        .infosidebar {
+            position: absolute;
+            width: 60%;
+            height: 80%;
+            top: 5%;
+            left: 20%;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            overflow: auto;
+            background-color: rgba(3, 3, 3, 1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+            display: none;
+            /* 默认不显示 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        /* 文本框内容的两列布局 */
+        .content-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .column {
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .column h3 {
+            margin-top: 0;
+        }
+
+        /* 标红文本样式 */
+        .highlight {
+            color: rgb(237, 42, 98);
+            /* 标红文本 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 图标 -->
+    <img src="./assets/i.png" class="info-icon" id="infoIcon" alt="Info Icon">
+
+    <!-- 文本框 -->
+    <div class="infosidebar" id="infoBox">
+        <div class="content-container">
+            <!-- Description Column -->
+            <div class="column">
+                <h3 style="color:rgb(237, 42, 98); font-size: 32px;">Description</h3>
+                <p>The lockdowns in Wuhan and Shanghai represent significant turning points in China's COVID-19 policy.
+                    Initially, the containment policies received strong public support. However, as the pandemic
+                    unfolded over two years, public sentiment shifted from initial positivity to increasingly negative
+                    reactions towards the containment policy. This transition was marked by the rise of 'pandemic
+                    fatigue' and worries about the negative side effects of these public health policies. This evolution
+                    in public sentiment played a crucial role in the adaptation and transformation of health policies.
+                    These shifts underscore the imperative to monitor the impacts of public health policies on both
+                    public sentiment and mental health. This visualization, centering on these two cities, illustrates
+                    the co-evolution of China's containment policy and public sentiment, revealing the underlying public
+                    attitudes that drove China's rapid transition from stringent lockdowns and a zero-COVID-19 strategy
+                    to a comprehensive reopening.</p>
+            </div>
+
+            <!-- Team Column -->
+            <div class="column">
+                <h3 style="color:rgb(237, 42, 98); font-size: 32px;">Team</h3>
+                <p>Institute of Space and Earth Information Science, The Chinese University of Hong Kong<br>
+                    <a href="https://zhihangliu.cn/" style="color:rgb(237, 42, 98);">Zhihang Liu</a><br>
+                    <!-- <a href="https://sites.google.com/view/jiannancai" style="color:rgb(237, 42, 98);">Jiannan Cai</a><br>
+                    <a href="http://meipokwan.org/" style="color:rgb(237, 42, 98);">Prof. Mei-Po Kwan</a>
+                    (Supervisor) -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <video autoplay loop muted class="video-background">
+        <source src="./assets/first_page.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- 标题元素 -->
+    <div class="centered-title">
+        Tale of Two Cities: Exploring Pandemic Fatigue under China's COVID-19 Policies
+    </div>
+
+    <!-- 底部注释元素 -->
+    <div class="bottom-right-icon">
+        <a href="./Part2/index.html" class="icon-text">From Positive to Negative</a>
+        <img src="right_arrow.png" alt="Right Arrow" />
+    </div>
+
+    <script>
+        // JavaScript 控制显示和隐藏
+        document.getElementById('infoIcon').onclick = function () {
+            var infoBox = document.getElementById('infoBox');
+            if (infoBox.style.display === 'none') {
+                infoBox.style.display = 'flex';
+            } else {
+                infoBox.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+
+</html>

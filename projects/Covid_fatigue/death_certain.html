@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dynamic Line Chart</title>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@latest"></script>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('container'));
+
+        // 示例数据
+        var myData = [
+            { date: '2020-01-01', deaths: 10, confirmed: 100 },
+            { date: '2020-01-02', deaths: 15, confirmed: 150 },
+            { date: '2020-01-03', deaths: 18, confirmed: 170 },
+            { date: '2020-01-04', deaths: 19, confirmed: 130 },
+            { date: '2020-01-05', deaths: 25, confirmed: 120 },
+            // ... 更多数据 ...
+        ];
+
+        var dates = myData.map(function (item) {
+            return item.date;
+        });
+        var deaths = myData.map(function (item) {
+            return item.deaths;
+        });
+        var confirmed = myData.map(function (item) {
+            return item.confirmed;
+        });
+
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['Deaths', 'Confirmed']
+            },
+            xAxis: {
+                type: 'category',
+                data: dates
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: 'Deaths',
+                type: 'line',
+                data: [],
+                animationDuration: 3000,
+                showSymbol: true,
+                hoverAnimation: true,
+                lineStyle: {
+                    width: 2
+                }
+            }, {
+                name: 'Confirmed',
+                type: 'line',
+                data: [],
+                animationDuration: 3000,
+                showSymbol: true,
+                hoverAnimation: true,
+                lineStyle: {
+                    width: 2
+                }
+            }]
+        };
+        myChart.setOption(option);
+
+        // 动态加载数据点和线条
+        var currentIndex = -1;
+
+        setInterval(function () {
+            currentIndex += 1;
+
+            // 更新数据
+            myChart.setOption({
+                series: [{
+                    name: 'Deaths',
+                    data: deaths.slice(0, currentIndex + 1)
+                }, {
+                    name: 'Confirmed',
+                    data: confirmed.slice(0, currentIndex + 1)
+                }]
+            });
+        }, 1000); // 每秒更新一次
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chart with Sidebar</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <style>
+        /* 页面布局样式 */
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            background-color: #333333;
+            /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 左侧边框样式 */
+        .sidebar {
+            position: absolute;
+            top: 10%;
+            /* 上边距离页面顶部 10% */
+            bottom: 10%;
+            /* 下边距离页面底部 10% */
+            left: 10%;
+            /* 左边距离页面左侧 10% */
+            right: 50%;
+            /* 右边距离页面右侧 50% */
+            background-color: #333333;
+            /* 边框背景设置为灰色 */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            /* 透明的白色边线 */
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            /* 添加阴影效果 */
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            /* 文本颜色设置为白色 */
+            overflow: auto;
+            /* 如果内容过多，允许滚动 */
+        }
+
+        /* 右侧图表容器样式 */
+        .chart-container {
+            flex-grow: 1;
+            /* 占据剩余空间 */
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <!-- 这里放置您的文本和其他内容 -->
+        <p>这里是一些文本...</p>
+    </div>
+
+    <div class="chart-container">
+        <div id="main" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <script>
+        // ... ECharts 图表初始化和配置代码
+    </script>
+
+</body>
+
+</html>

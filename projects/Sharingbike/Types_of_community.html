@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<title>Community Detection</title>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/echarts.js"></script>
+    <script type="text/javascript" src="./assets/js/maptalks.min.js"></script>
+    <script type="text/javascript" src="./assets/js/mapbox-gl.js"></script>
+    <script type="text/javascript" src="./assets/js/mapboxgl-token.js"></script>
+    <script type="text/javascript" src="./assets/js/echarts-gl.min.js"></script>
+
+
+    <style>
+        .left-bottom-corner {
+            position: fixed;
+            left: 5%;
+            bottom: 10%;
+            z-index: 1000;
+            color: #696868;
+            /* 设置文本颜色为深灰色 */
+            text-decoration: none;
+            /* 移除下划线 */
+        }
+
+        .left-bottom-corner img {
+            position: relative;
+            width: 168px;
+            height: 89px;
+            transform: scaleX(-1);
+        }
+
+        .left-bottom-corner span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: #696868;
+            /* 设置文本颜色为深灰色 */
+            font-weight: bold;
+            /* 设置文本为粗体 */
+            white-space: nowrap;
+            /* 防止文本换行 */
+            z-index: 1500
+        }
+
+        .top-left-title {
+          position: fixed;
+          top: 0;
+          left: 0;
+          margin: 10px;
+          font-size: 18px;
+          color: #696868;
+          z-index: 1000;
+          /* ensure the title is above other elements */
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <h1 class="top-left-title" style='color: #fff;font-size:32px'>Community Detection.</h1>
+    <a href="./Evening_bike_sharing.html" class="left-bottom-corner">
+        <span>Evening Peak</span>
+        <img src="./assets/images/three.png" alt="no image exits">
+    </a>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+        // 初始化图表时设置style
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        mapboxgl.accessToken = mapboxglToken
+        // myChart.showLoading();
+        $.getJSON('./assets/data/map_data_echarts/sub_line.json', function (subdata) {
+            $.getJSON('./assets/data/map_data_echarts/bus_line.json', function (busdata) {
+                $.getJSON('./assets/data/shenzhen_border_line.json', function (boundaryData) {
+                    echarts.registerMap('Shenzhen', boundaryData)
+                    $.getJSON('./assets/data/Ebuscomm.json', function (Ebuscomm) {
+                        $.getJSON('./assets/data/Edbuscomm.json', function (Edbuscomm) {
+                            $.getJSON('./assets/data/Edsubcomm.json', function (Edsubcomm) {
+                                $.getJSON('./assets/data/Esubcomm.json', function (Esubcomm) {
+                                    $.getJSON('./assets/data/Msubcomm.json', function (Msubcomm) {
+                                        $.getJSON('./assets/data/Mdsubcomm.json', function (Mdsubcomm) {
+                                            $.getJSON('./assets/data/Mbuscomm.json', function (Mbuscomm) {
+                                                $.getJSON('./assets/data/Mdbuscomm.json', function (Mdbuscomm) {
+                                                    var data_Mbuscomm = []
+                                                    for (var i = 0; i < Mbuscomm['features'].length; i++) {
+                                                        try {
+                                                            data_Mbuscomm.push({
+                                                                coords: Mbuscomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Mbuscomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Mbuscomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Mdbuscomm = []
+                                                    for (var i = 0; i < Mdbuscomm['features'].length; i++) {
+                                                        try {
+                                                            data_Mdbuscomm.push({
+                                                                coords: Mdbuscomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Mdbuscomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Mdbuscomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Msubcomm = []
+                                                    for (var i = 0; i < Msubcomm['features'].length; i++) {
+                                                        try {
+                                                            data_Msubcomm.push({
+                                                                coords: Msubcomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Msubcomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Msubcomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Mdsubcomm = []
+                                                    for (var i = 0; i < Mdsubcomm['features'].length; i++) {
+                                                        try {
+                                                            data_Mdsubcomm.push({
+                                                                coords: Mdsubcomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Mdsubcomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Mdsubcomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Ebuscomm = []
+                                                    for (var i = 0; i < Ebuscomm['features'].length; i++) {
+                                                        try {
+                                                            data_Ebuscomm.push({
+                                                                coords: Ebuscomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Ebuscomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Ebuscomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Edbuscomm = []
+                                                    for (var i = 0; i < Edbuscomm['features'].length; i++) {
+                                                        try {
+                                                            data_Edbuscomm.push({
+                                                                coords: Edbuscomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Edbuscomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Edbuscomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Edsubcomm = []
+                                                    for (var i = 0; i < Edsubcomm['features'].length; i++) {
+                                                        try {
+                                                            data_Edsubcomm.push({
+                                                                coords: Edsubcomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Edsubcomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Edsubcomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_Esubcomm = []
+                                                    for (var i = 0; i < Esubcomm['features'].length; i++) {
+                                                        try {
+                                                            data_Esubcomm.push({
+                                                                coords: Esubcomm['features'][i]['geometry']['coordinates'],
+                                                                height: 32,
+                                                                name: Esubcomm['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: Esubcomm['features'][i]['properties']['color'],
+                                                                    // opacity: 0.5
+                                                                },
+                                                            })
+                                                        } catch { }
+                                                    };
+
+                                                    var data_borderline = [];
+                                                    for (var i = 0; i < boundaryData['features'].length; i++) {
+                                                        try {
+                                                            data_borderline.push({
+                                                                regionHeight: 1,
+                                                                name: boundaryData['features'][i]['properties']['name'],
+                                                                itemStyle: {
+                                                                    color: [0, 0, 0, 0], // 透明
+                                                                    borderColor: '#0000FF', // 灰白色
+                                                                    borderWidth: 100,
+                                                                    opacity: 0.03
+                                                                }
+                                                            });
+                                                        } catch { }
+                                                    }
+
+                                                    // var polygon3DData = [];
+
+                                                    // boundaryData.features.forEach(function (feature) {
+                                                    //     if (feature.geometry.type === 'MultiPolygon') {
+                                                    //         feature.geometry.coordinates.forEach(function (polygon) {
+                                                    //             polygon3DData.push({
+                                                    //                 coords: polygon[0] // 注意：因为 MultiPolygon 可能有多层嵌套，所以这里我们只取第一层
+                                                    //             });
+                                                    //         });
+                                                    //     } else if (feature.geometry.type === 'Polygon') {
+                                                    //         polygon3DData.push({
+                                                    //             coords: feature.geometry.coordinates[0] // 注意：对于单个 Polygon，也只取第一层
+                                                    //         });
+                                                    //     }
+                                                    // });
+                                                    // console.log(polygon3DData[0])
+                                                    // console.log(data_Mbuscomm[0]);
+                                                    // console.log(data_Mdbuscomm[0]);
+                                                    var option = {
+                                                        maptalks3D: {
+                                                            center: [114.1, 22.67],
+                                                            zoom: 11,
+                                                            pitch: 50,
+                                                            bearing: 30,
+                                                            urlTemplate: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                                                            // altitudeScale: 1,
+                                                            postEffect: {
+                                                                enable: true,
+                                                                FXAA: {
+                                                                    enable: true
+                                                                }
+                                                            },
+                                                            light: {
+                                                                main: {
+                                                                    intensity: 1,
+                                                                    shadow: true,
+                                                                    shadowQuality: 'high'
+                                                                },
+                                                                ambient: {
+                                                                    intensity: 0.
+                                                                },
+                                                            }
+                                                        },
+                                                        // title: {
+                                                        //     text: "Social Community Detection.",
+                                                        //     left: 'center',
+                                                        //     textStyle: {
+                                                        //         color: '#fff',
+                                                        //         fontSize: 24
+                                                        //     }
+                                                        // },
+                                                        legend: {
+                                                            orient: 'vertical',  // 设置为垂直方向排列，即纵向排列
+                                                            bottom: 5,
+                                                            right: 5,
+                                                            data: ['Morning Metro Ride community during First Mile',
+                                                                'Moring Metro Ride community during Last Mile',
+                                                                'Moring Bus Ride community during First Mile',
+                                                                'Moring Bus Ride community during Last Mile',
+                                                                'Evening Metro Ride community during First Mile',
+                                                                'Evening Metro Ride community during Last Mile',
+                                                                'Evening Bus Ride community during First Mile',
+                                                                'Evening Bus Ride community during Last Mile'],
+                                                            textStyle: {
+                                                                color: '#1f77b4'
+                                                            },
+                                                            selectedMode: 'single',  // 设置为单选模式
+                                                            // 如果需要定义不同的图例颜色，可以使用 itemStyle，如下：
+                                                            itemStyle: {
+                                                                color: '#1f77b4'
+                                                            }
+                                                        },
+
+                                                        tooltip: {
+                                                            trigger: 'item', // 触发类型
+                                                            formatter: function (params) {  // 格式化提示框的内容
+                                                                return params.name;  // 返回当前 polygon 的 name 属性
+                                                            }
+                                                        },
+
+                                                        series: [
+                                                            {
+                                                                type: 'map3D',
+                                                                map: 'Shenzhen', // 注意：确保 ECharts 已经加载了这个地图数据
+                                                                // shading: 'realistic',
+                                                                data: data_borderline,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                itemStyle: {
+                                                                    color: [0, 0, 0, 0], // 透明
+                                                                    borderColor: '#0000FF', // 灰白色
+                                                                    borderWidth: 100,
+                                                                    opacity: 0.03
+                                                                }
+                                                                // itemStyle: {
+                                                                //     color: 'rgba(0,0,0,0)', // 透明
+                                                                //     borderColor: '#D3D3D3', // 灰白色
+                                                                //     borderWidth: 0.2
+                                                                // },
+                                                                // emphasis: {
+                                                                //     itemStyle: {
+                                                                //         color: 'rgba(0,0,0,0)'
+                                                                //     }
+                                                                // }
+                                                            },
+                                                            {
+                                                                type: 'lines3D',
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: busdata,
+                                                                name: 'Bus Line',
+                                                                polyline: true,
+                                                                blendMode: 'lighter',
+                                                                effect: {
+                                                                    show: true,
+                                                                    constantSpeed: 5,
+                                                                    trailWidth: 2,
+                                                                    trailLength: 0.8,
+                                                                    trailOpacity: 0.3,
+                                                                    spotIntensity: 10
+                                                                },
+                                                                lineStyle: {
+                                                                    width: 1,
+                                                                    color: 'rgb(200, 40, 0)',
+                                                                    opacity: 0.2
+                                                                }
+                                                            },
+                                                            {
+                                                                type: 'lines3D',
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: subdata,
+                                                                name: 'Subway Line',
+                                                                polyline: true,
+                                                                blendMode: 'lighter',
+                                                                show: true,
+                                                                effect: {
+                                                                    show: true,
+                                                                    constantSpeed: 1,
+                                                                    trailWidth: 1,
+                                                                    trailLength: 0.8,
+                                                                    trailOpacity: 0.3,
+                                                                    spotIntensity: 10
+                                                                },
+                                                                lineStyle: {
+                                                                    width: 0.5,
+                                                                    color: 'rgb(0, 191, 255)',
+                                                                    opacity: 0.2
+                                                                }
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Mbuscomm,
+                                                                name: 'Moring Bus Ride community during First Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Mdbuscomm,
+                                                                name: 'Moring Bus Ride community during Last Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Msubcomm,
+                                                                name: 'Morning Metro Ride community during First Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Mdsubcomm,
+                                                                name: 'Moring Metro Ride community during Last Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Ebuscomm,
+                                                                name: 'Evening Bus Ride community during First Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Edbuscomm,
+                                                                name: 'Evening Bus Ride community during Last Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Esubcomm,
+                                                                name: 'Evening Metro Ride community during First Mile',
+                                                                show: false,
+                                                            },
+                                                            {
+                                                                type: 'polygons3D',
+                                                                multiPolygon: true,
+                                                                coordinateSystem: 'maptalks3D',
+                                                                data: data_Edsubcomm,
+                                                                name: 'Evening Metro Ride community during Last Mile',
+                                                                show: false,
+                                                            },
+                                                            // {
+                                                            //     type: 'map3D',
+                                                            //     map: 'Shenzhen', // 注意：确保 ECharts 已经加载了这个地图数据
+                                                            //     shading: 'realistic',
+                                                            //     data: data_borderline,
+                                                            //     coordinateSystem: 'maptalks3D',
+                                                            //     itemStyle: {
+                                                            //         color: 'rgba(0,0,0,0)', // 透明
+                                                            //         borderColor: '#888888', // 灰白色
+                                                            //         borderWidth: 0.2
+                                                            //     }
+                                                            // },
+                                                            // zlevel: 100,
+                                                            // {
+                                                            //     type: 'polygons3D',
+                                                            //     coordinateSystem: 'maptalks3D',
+                                                            //     multiPolygon: true,
+                                                            //     shading: 'realistic',
+                                                            //     data: data_borderline,
+                                                            //     // itemStyle: {
+                                                            //     //     color: 'rgba(0,0,0,0)', // 透明的内部填充
+                                                            //     //     borderColor: 'red',  // 灰白色边框
+                                                            //     //     opacity: 0.5
+                                                            //     // },
+                                                            //     emphasis: {
+                                                            //         label: {
+                                                            //             show: true
+                                                            //         },
+                                                            //         itemStyle: {
+                                                            //             color: 'rgba(0,0,0,0)' // emphasis时也设置为透明
+                                                            //         }
+                                                            //     }
+                                                            // }
+                                                        ],
+                                                    };
+                                                    // 使用刚指定的配置项和数据显示图表。
+                                                    myChart.setOption(option, true);
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

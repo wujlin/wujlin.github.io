@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Kepler.gl embedded map</title>
+
+  <!--Uber Font-->
+  <link rel="stylesheet" href="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/uber-fonts/4.0.0/superfine.css">
+
+  <!--MapBox css-->
+  <link href="https:https://unpkg.com/maplibre-gl@^3/dist/maplibre-gl.css" rel="stylesheet">
+
+  <!-— facebook open graph tags -->
+    <meta property="og:url" content="http://kepler.gl/" />
+    <meta property="og:title" content="Large-scale WebGL-powered Geospatial Data Visualization Tool" />
+    <meta property="og:description"
+      content="Kepler.gl is a powerful web-based geospatial data analysis tool. Built on a high performance rendering engine and designed for large-scale data sets." />
+    <meta property="og:site_name" content="kepler.gl" />
+    <meta property="og:image" content="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/kepler.gl-meta-tag.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="800" />
+
+    <!-— twitter card tags -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:site" content="@openjsf">
+      <meta name="twitter:creator" content="@openjsf">
+      <meta name="twitter:title" content="Large-scale WebGL-powered Geospatial Data Visualization Tool">
+      <meta name="twitter:description"
+        content="Kepler.gl is a powerful web-based geospatial data analysis tool. Built on a high performance rendering engine and designed for large-scale data sets.">
+      <meta name="twitter:image" content="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/kepler.gl-meta-tag.png" />
+
+      <!-- Load React/Redux -->
+      <script src="https://unpkg.com/react@16.8.4/umd/react.production.min.js" crossorigin></script>
+      <script src="https://unpkg.com/react-dom@16.8.4/umd/react-dom.production.min.js" crossorigin></script>
+      <script src="https://unpkg.com/redux@3.7.2/dist/redux.js" crossorigin></script>
+      <script src="https://unpkg.com/react-redux@7.1.3/dist/react-redux.min.js" crossorigin></script>
+      <script src="https://unpkg.com/styled-components@4.1.3/dist/styled-components.min.js" crossorigin></script>
+      <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+      <!-- Load Kepler.gl -->
+      <script src="https://unpkg.com/kepler.gl@3.0.0/umd/keplergl.min.js" crossorigin></script>
+      <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+      <style type="text/css">
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        .logo-container {
+          display: none !important;
+        }
+
+        /* 页面布局样式 */
+        body,
+        html {
+          height: 100%;
+          width: 100%;
+          margin: 0;
+          background-color: #333333;
+          /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 针对 Kepler 地图的容器 */
+        #app {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          /* 确保地图在较低的层级 */
+        }
+
+        /* 左侧文本框样式 */
+        .sidebar {
+          position: absolute;
+          /* 使用绝对定位 */
+          width: 25%;
+          height: 80%;
+          top: 10%;
+          /* 调整为所需位置 */
+          left: 5%;
+          /* 调整为所需位置 */
+          padding: 20px;
+          box-sizing: border-box;
+          color: white;
+          overflow: auto;
+          background-color: rgba(255, 255, 255, 0.2);
+          /* 设置透明背景 */
+          border: 2px solid rgba(255, 255, 255, 0.5);
+          box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+          z-index: 10;
+          /* 确保文本框在地图之上 */
+        }
+
+        .charts-container {
+          position: absolute;
+          top: 10%;
+          right: 5%;
+          width: 45%;
+          height: 80%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+          /* 确保图表在地图之上 */
+        }
+
+        /* 单个图表样式 */
+        .chart {
+          width: 800px;
+          height: 500px;
+          margin-bottom: 20px;
+          /* 为每个图表添加下边距 */
+        }
+
+        .custom-legend {
+          position: fixed;
+          /* 固定位置 */
+          bottom: 20px;
+          /* 距底部的距离 */
+          right: 20px;
+          /* 距右侧的距离 */
+          background-color: rgba(255, 255, 255, 0.8);
+          /* 半透明背景 */
+          padding: 10px;
+          /* 内边距 */
+          border-radius: 5px;
+          /* 边框圆角 */
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          /* 阴影效果 */
+          z-index: 10;
+          /* 设置 z-index 以确保图例在其他元素之上 */
+        }
+
+        .legend-item {
+          display: flex;
+          /* 弹性盒布局 */
+          align-items: center;
+          /* 垂直居中 */
+          margin-bottom: 5px;
+          /* 项间距 */
+        }
+
+        .legend-color {
+          width: 20px;
+          /* 色块宽度 */
+          height: 20px;
+          /* 色块高度 */
+          border-radius: 50%;
+          /* 色块圆角 */
+          margin-right: 10px;
+          /* 色块与文本间距 */
+        }
+
+        .legend-text {
+          font-size: 14px;
+          /* 文本大小 */
+          color: #333;
+          /* 文本颜色 */
+        }
+      </style>
+
+      <!--MapBox token-->
+      <script>
+        /**
+         * Provide your MapBox Token
+         **/
+        const MAPBOX_TOKEN = 'pk.eyJ1Ijoid3VqbGluIiwiYSI6ImNsbW84Z2tuNTE1MmIycW56ZDc2OGpjd2sifQ.i2rKNZrrdjWVsW9SJjeL5w';
+        const WARNING_MESSAGE = 'Please Provide a Mapbox Token in order to use Kepler.gl. Edit this file and fill out MAPBOX_TOKEN with your access key';
+      </script>
+
+      <!-- GA: Delete this as you wish, However to pat ourselves on the back, we only track anonymous pageview to understand how many people are using kepler.gl. -->
+      <script>
+        (function (i, s, o, g, r, a, m) {
+          i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-64694404-19', {
+          'storage': 'none',
+          'clientId': localStorage.getItem('ga:clientId')
+        });
+        ga(function (tracker) {
+          localStorage.setItem('ga:clientId', tracker.get('clientId'));
+        });
+        ga('set', 'checkProtocolTask', null); // Disable file protocol checking.
+        ga('set', 'checkStorageTask', null); // Disable cookie storage checking.
+        ga('set', 'historyImportTask', null); // Disable history checking (requires reading from cookies).
+        ga('set', 'page', 'keplergl-html');
+        ga('send', 'pageview');
+      </script>
+</head>
+
+<body>
+  <!-- We will put our React component inside this div. -->
+  <div id="app">
+    <!-- Kepler.gl map will be placed here-->
+  </div>
+
+  <div class="custom-legend">
+    <div class="legend-item">
+      <span class="legend-color" style="background-color: #5A1846;"></span>
+      <span class="legend-text">Low Negative Sentiment</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background-color: #F1920E;"></span>
+      <span class="legend-text">High Negative Sentiment</span>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <!-- 这里放置您的文本和其他内容 -->
+    <p>这里是一些文本...</p>
+  </div>
+  <!-- 图表容器 -->
+  <div class="charts-container">
+    <div id="chart_wh" class="chart"></div>
+    <div id="chart_sentiment" class="chart"></div>
+  </div>
+  <script>
+    // 假设数据
+    var dataVar_wh = [{ 'date': '2020-01-23', 'deaths': 31.0, 'confirmed': 495.0 },
+    { 'date': '2020-01-24', 'deaths': 15.0, 'confirmed': 77.0 },
+    { 'date': '2020-01-25', 'deaths': 7.0, 'confirmed': 46.0 },
+    { 'date': '2020-01-26', 'deaths': 18.0, 'confirmed': 80.0 },
+    { 'date': '2020-01-27', 'deaths': 22.0, 'confirmed': 892.0 },
+    { 'date': '2020-01-28', 'deaths': 19.0, 'confirmed': 315.0 },
+    { 'date': '2020-01-29', 'deaths': 25.0, 'confirmed': 356.0 },
+    { 'date': '2020-01-30', 'deaths': 30.0, 'confirmed': 378.0 },
+    { 'date': '2020-01-31', 'deaths': 33.0, 'confirmed': 576.0 },
+    { 'date': '2020-02-01', 'deaths': 32.0, 'confirmed': 894.0 },
+    { 'date': '2020-02-02', 'deaths': 41.0, 'confirmed': 1033.0 },
+    { 'date': '2020-02-03', 'deaths': 48.0, 'confirmed': 1242.0 },
+    { 'date': '2020-02-04', 'deaths': 49.0, 'confirmed': 1967.0 },
+    { 'date': '2020-02-05', 'deaths': 52.0, 'confirmed': 1766.0 },
+    { 'date': '2020-02-06', 'deaths': 64.0, 'confirmed': 1501.0 },
+    { 'date': '2020-02-07', 'deaths': 67.0, 'confirmed': 1985.0 },
+    { 'date': '2020-02-08', 'deaths': 63.0, 'confirmed': 1379.0 },
+    { 'date': '2020-02-09', 'deaths': 73.0, 'confirmed': 1920.0 },
+    { 'date': '2020-02-10', 'deaths': 67.0, 'confirmed': 1552.0 },
+    { 'date': '2020-02-11', 'deaths': 72.0, 'confirmed': 1104.0 },
+    { 'date': '2020-02-12', 'deaths': 216.0, 'confirmed': 13436.0 },
+    { 'date': '2020-02-13', 'deaths': -20.0, 'confirmed': 2997.0 },
+    { 'date': '2020-02-14', 'deaths': 107.0, 'confirmed': 1923.0 },
+    { 'date': '2020-02-15', 'deaths': 110.0, 'confirmed': 1548.0 },
+    { 'date': '2020-02-16', 'deaths': 76.0, 'confirmed': 1690.0 },
+    { 'date': '2020-02-17', 'deaths': 72.0, 'confirmed': 1600.0 },
+    { 'date': '2020-02-18', 'deaths': 116.0, 'confirmed': 1660.0 },
+    { 'date': '2020-02-19', 'deaths': 88.0, 'confirmed': 615.0 },
+    { 'date': '2020-02-20', 'deaths': 99.0, 'confirmed': 319.0 },
+    { 'date': '2020-02-21', 'deaths': 90.0, 'confirmed': 314.0 },
+    { 'date': '2020-02-22', 'deaths': 82.0, 'confirmed': 599.0 },
+    { 'date': '2020-02-23', 'deaths': 131.0, 'confirmed': 348.0 },
+    { 'date': '2020-02-24', 'deaths': 56.0, 'confirmed': 464.0 },
+    { 'date': '2020-02-25', 'deaths': 42.0, 'confirmed': 370.0 },
+    { 'date': '2020-02-26', 'deaths': 19.0, 'confirmed': 383.0 },
+    { 'date': '2020-02-27', 'deaths': 28.0, 'confirmed': 313.0 },
+    { 'date': '2020-02-28', 'deaths': 37.0, 'confirmed': 420.0 },
+    { 'date': '2020-02-29', 'deaths': 26.0, 'confirmed': 565.0 },
+    { 'date': '2020-03-01', 'deaths': 32.0, 'confirmed': 193.0 },
+    { 'date': '2020-03-02', 'deaths': 24.0, 'confirmed': 111.0 },
+    { 'date': '2020-03-03', 'deaths': 31.0, 'confirmed': 114.0 },
+    { 'date': '2020-03-04', 'deaths': 23.0, 'confirmed': 131.0 },
+    { 'date': '2020-03-05', 'deaths': 23.0, 'confirmed': 126.0 },
+    { 'date': '2020-03-06', 'deaths': 21.0, 'confirmed': 74.0 },
+    { 'date': '2020-03-07', 'deaths': 21.0, 'confirmed': 41.0 },
+    { 'date': '2020-03-08', 'deaths': 18.0, 'confirmed': 36.0 },
+    { 'date': '2020-03-09', 'deaths': 16.0, 'confirmed': 17.0 },
+    { 'date': '2020-03-10', 'deaths': 19.0, 'confirmed': 13.0 },
+    { 'date': '2020-03-11', 'deaths': 7.0, 'confirmed': 8.0 },
+    { 'date': '2020-03-12', 'deaths': 6.0, 'confirmed': 5.0 },
+    { 'date': '2020-03-13', 'deaths': 10.0, 'confirmed': 4.0 },
+    { 'date': '2020-03-14', 'deaths': 10.0, 'confirmed': 4.0 },
+    { 'date': '2020-03-15', 'deaths': 13.0, 'confirmed': 4.0 },
+    { 'date': '2020-03-16', 'deaths': 11.0, 'confirmed': 1.0 },
+    { 'date': '2020-03-17', 'deaths': 10.0, 'confirmed': 1.0 },
+    { 'date': '2020-03-18', 'deaths': 6.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-19', 'deaths': 2.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-20', 'deaths': 6.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-21', 'deaths': 4.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-22', 'deaths': 9.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-23', 'deaths': 7.0, 'confirmed': 1.0 },
+    { 'date': '2020-03-24', 'deaths': 2.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-25', 'deaths': 5.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-26', 'deaths': 4.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-27', 'deaths': 3.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-28', 'deaths': 5.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-29', 'deaths': 4.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-30', 'deaths': 1.0, 'confirmed': 0.0 },
+    { 'date': '2020-03-31', 'deaths': 5.0, 'confirmed': 1.0 },
+    { 'date': '2020-04-01', 'deaths': 6.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-02', 'deaths': 4.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-03', 'deaths': 4.0, 'confirmed': 1.0 },
+    { 'date': '2020-04-04', 'deaths': 3.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-05', 'deaths': 1.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-06', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-07', 'deaths': 1.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-08', 'deaths': 2.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-09', 'deaths': 1.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-10', 'deaths': 2.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-11', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-12', 'deaths': 2.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-13', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-14', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-15', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-16', 'deaths': 1290.0, 'confirmed': 325.0 },
+    { 'date': '2020-04-17', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-18', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-19', 'deaths': 0, 'confirmed': 0 },
+    { 'date': '2020-04-20', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-21', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-22', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-23', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-24', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-25', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-26', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-27', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-28', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-29', 'deaths': 0.0, 'confirmed': 0.0 },
+    { 'date': '2020-04-30', 'deaths': 0.0, 'confirmed': 0.0 }];
+
+
+    // 初始化图表
+    var myChart_wh = echarts.init(document.getElementById('chart_wh'));
+    var myChart_sentiment = echarts.init(document.getElementById('chart_sentiment'));
+
+    function run_wh(data) {
+      var option = {
+        animationDuration: 10000,
+        backgroundColor: 'rgba(51, 51, 51, 0.5)',
+        title: {
+          text: 'COVID-19 Deaths and Confirmed Cases Over Time in Wuhan',
+          textStyle: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['new_deaths', 'new_confirmed'],
+          top: 'bottom',
+          textStyle: {
+            color: 'rgba(255, 255, 255, 0.8)',
+            fontSize: 16,
+            fontWeight: 'bold',
+          }
+        },
+        xAxis: {
+          type: 'category',
+          data: data.map(item => item.date),
+          name: 'Date'
+        },
+        yAxis: [
+          {
+            type: 'value',
+            name: 'new_deaths',
+            min: 0,
+            position: 'left',
+            axisLine: {
+              lineStyle: { color: '#5470C6' }
+            },
+            axisLabel: {
+              formatter: '{value}',
+              color: '#5470C6',
+              fontSize: 14,
+              fontWeight: 'bold'
+            },
+            nameTextStyle: {
+              color: '#5470C6',
+              fontSize: 16,
+              fontWeight: 'bold'
+            }
+          },
+          {
+            type: 'value',
+            name: 'new_confirmed',
+            min: 0,
+            position: 'right',
+            axisLine: {
+              lineStyle: { color: '#91CC75' }
+            },
+            axisLabel: {
+              formatter: '{value}',
+              color: '#91CC75',
+              fontSize: 14,
+              fontWeight: 'bold'
+            },
+            nameTextStyle: {
+              color: '#91CC75',
+              fontSize: 16,
+              fontWeight: 'bold'
+            }
+          }
+        ],
+        series: [
+          {
+            name: 'new_deaths',
+            type: 'line',
+            yAxisIndex: 0,
+            data: data.map(item => item.deaths),
+            emphasis: {
+              focus: 'series'
+            },
+            lineStyle: {
+              color: '#5470C6',
+              opacity: 0.8
+            }
+          },
+
+
+          {
+            name: 'new_confirmed',
+            type: 'line',
+            yAxisIndex: 1,
+            data: data.map(item => item.confirmed),
+            emphasis: {
+              focus: 'series'
+            },
+            lineStyle: {
+              color: '#91CC75',
+              opacity: 0.8
+            }
+          }
+        ]
+      };
+      myChart_wh.setOption(option);
+    }
+
+    // 使用假设数据运行函数
+    run_wh(dataVar_wh);
+
+    option_sentiment = {
+      title: {
+        text: 'Temporal Analysis of Sentiment Variations in Wuhan',
+        textStyle: {
+          color: 'white'
+        }
+      },
+      animationDuration: 10000,
+      backgroundColor: 'rgba(51, 51, 51, 0.5)',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        }
+      },
+      toolbox: {
+        feature: {
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      legend: {
+        data: ['Negative Post Number', 'Positive Post Number', 'Pos to Neg Ratio'],
+        textStyle: {
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontSize: 14,
+          fontWeight: 'bold',
+        },
+        top: 'bottom'
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: ['2019-12-03',
+            '2019-12-04',
+            '2019-12-16',
+            '2019-12-30',
+            '2019-12-31',
+            '2020-01-01',
+            '2020-01-02',
+            '2020-01-03',
+            '2020-01-04',
+            '2020-01-05',
+            '2020-01-06',
+            '2020-01-07',
+            '2020-01-08',
+            '2020-01-09',
+            '2020-01-12',
+            '2020-01-14',
+            '2020-01-15',
+            '2020-01-16',
+            '2020-01-17',
+            '2020-01-18',
+            '2020-01-19',
+            '2020-01-20',
+            '2020-01-21',
+            '2020-01-22',
+            '2020-01-23',
+            '2020-01-24',
+            '2020-01-25',
+            '2020-01-26',
+            '2020-01-27',
+            '2020-01-28',
+            '2020-01-29',
+            '2020-01-30',
+            '2020-01-31',
+            '2020-02-01',
+            '2020-02-02',
+            '2020-02-03',
+            '2020-02-04',
+            '2020-02-05',
+            '2020-02-06',
+            '2020-02-07',
+            '2020-02-08',
+            '2020-02-09',
+            '2020-02-10',
+            '2020-02-11',
+            '2020-02-12',
+            '2020-02-13',
+            '2020-02-14',
+            '2020-02-15',
+            '2020-02-16',
+            '2020-02-17',
+            '2020-02-18',
+            '2020-02-19',
+            '2020-02-20',
+            '2020-02-21',
+            '2020-02-22',
+            '2020-02-23',
+            '2020-02-24',
+            '2020-02-25',
+            '2020-02-26',
+            '2020-02-27',
+            '2020-02-28',
+            '2020-02-29',
+            '2020-03-01',
+            '2020-03-02',
+            '2020-03-03',
+            '2020-03-04',
+            '2020-03-05',
+            '2020-03-06',
+            '2020-03-07',
+            '2020-03-08',
+            '2020-03-09',
+            '2020-03-10',
+            '2020-03-11',
+            '2020-03-12',
+            '2020-03-13',
+            '2020-03-14',
+            '2020-03-15',
+            '2020-03-16',
+            '2020-03-17',
+            '2020-03-18',
+            '2020-03-19',
+            '2020-03-20',
+            '2020-03-21',
+            '2020-03-22',
+            '2020-03-23',
+            '2020-03-24',
+            '2020-03-25',
+            '2020-03-26',
+            '2020-03-27',
+            '2020-03-28',
+            '2020-03-29',
+            '2020-03-30',
+            '2020-03-31',
+            '2020-04-01',
+            '2020-04-02',
+            '2020-04-03',
+            '2020-04-04',
+            '2020-04-05',
+            '2020-04-06',
+            '2020-04-07',
+            '2020-04-08',
+            '2020-04-09',
+            '2020-04-10',
+            '2020-04-11',
+            '2020-04-12',
+            '2020-04-13',
+            '2020-04-14',
+            '2020-04-15',
+            '2020-04-16',
+            '2020-04-17',
+            '2020-04-18',
+            '2020-04-19',
+            '2020-04-20',
+            '2020-04-21',
+            '2020-04-22',
+            '2020-04-23',
+            '2020-04-24',
+            '2020-04-25',
+            '2020-04-26',
+            '2020-04-27',
+            '2020-04-28',
+            '2020-04-29',
+            '2020-04-30'],
+          axisPointer: {
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: 'Positive Post Number',
+          min: 0,
+          max: 5000,
+          interval: 500,
+          axisLabel: {
+            formatter: '{value}',
+            color: '#5470C6',
+            fontSize: 14,
+            fontWeight: 'bold',
+            opacity: 1
+          },
+          axisLine: {
+            lineStyle: { color: '#5470C6' },
+            opacity: 1
+          },
+          nameTextStyle: {
+            color: '#5470C6',
+            fontSize: 14,
+            fontWeight: 'bold'
+          }
+        },
+        {
+          type: 'value',
+          name: 'Pos to Neg Ratio',
+          min: 0,
+          max: 5,
+          interval: 1,
+          axisLabel: {
+            formatter: '{value}',
+            color: '#F8C457',
+            fontSize: 14,
+            fontWeight: 'bold'
+          },
+          axisLine: {
+            lineStyle: { color: '#F8C457' },
+            opacity: 1
+          },
+          nameTextStyle: {
+            color: '#F8C457',
+            fontSize: 14,
+            fontWeight: 'bold'
+          }
+        }
+      ],
+      series: [
+        {
+          name: 'Negative Post Number',
+          type: 'bar',
+          stack: 'total', // 添加堆积属性
+          barWidth: '40%', // 调整柱子宽度
+          tooltip: {
+            valueFormatter: function (value) {
+              return value;
+            }
+          },
+          data: [1,
+            0,
+            0,
+            2,
+            28,
+            5,
+            3,
+            1,
+            3,
+            2,
+            2,
+            2,
+            1,
+            4,
+            1,
+            1,
+            1,
+            2,
+            4,
+            14,
+            29,
+            142,
+            210,
+            154,
+            626,
+            447,
+            495,
+            283,
+            242,
+            161,
+            128,
+            166,
+            193,
+            166,
+            154,
+            158,
+            160,
+            147,
+            236,
+            151,
+            118,
+            135,
+            140,
+            152,
+            168,
+            154,
+            152,
+            189,
+            136,
+            147,
+            121,
+            106,
+            153,
+            105,
+            162,
+            162,
+            126,
+            118,
+            116,
+            140,
+            132,
+            163,
+            100,
+            112,
+            107,
+            119,
+            124,
+            117,
+            128,
+            111,
+            111,
+            112,
+            122,
+            151,
+            138,
+            107,
+            135,
+            125,
+            117,
+            102,
+            144,
+            105,
+            102,
+            115,
+            88,
+            126,
+            113,
+            77,
+            110,
+            64,
+            103,
+            99,
+            83,
+            90,
+            86,
+            95,
+            128,
+            86,
+            85,
+            118,
+            275,
+            93,
+            93,
+            82,
+            87,
+            71,
+            60,
+            52,
+            61,
+            51,
+            48,
+            59,
+            63,
+            42,
+            48,
+            47,
+            61,
+            61,
+            50,
+            59,
+            57,
+            57,
+            66]
+        },
+        {
+          name: 'Positive Post Number',
+          type: 'bar',
+          stack: 'total', // 添加堆积属性
+          barWidth: '40%', // 调整柱子宽度
+          tooltip: {
+            valueFormatter: function (value) {
+              return value;
+            }
+          },
+          data: [0,
+            1,
+            1,
+            0,
+            45,
+            5,
+            3,
+            3,
+            0,
+            2,
+            2,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            8,
+            36,
+            127,
+            164,
+            730,
+            591,
+            670,
+            399,
+            315,
+            242,
+            256,
+            212,
+            224,
+            253,
+            301,
+            254,
+            235,
+            283,
+            297,
+            277,
+            477,
+            286,
+            247,
+            239,
+            246,
+            292,
+            372,
+            365,
+            319,
+            245,
+            294,
+            246,
+            265,
+            255,
+            280,
+            261,
+            280,
+            246,
+            248,
+            278,
+            245,
+            401,
+            277,
+            210,
+            203,
+            215,
+            243,
+            233,
+            262,
+            330,
+            212,
+            242,
+            264,
+            252,
+            236,
+            274,
+            268,
+            211,
+            343,
+            285,
+            283,
+            267,
+            246,
+            226,
+            226,
+            222,
+            201,
+            188,
+            164,
+            188,
+            153,
+            151,
+            151,
+            150,
+            148,
+            145,
+            592,
+            186,
+            180,
+            329,
+            1019,
+            215,
+            140,
+            119,
+            163,
+            122,
+            113,
+            125,
+            122,
+            117,
+            80,
+            108,
+            101,
+            82,
+            101,
+            86,
+            91,
+            95,
+            121,
+            99,
+            81,
+            101,
+            127]
+        },
+        {
+          name: 'Pos to Neg Ratio',
+          type: 'line',
+          yAxisIndex: 1,
+          tooltip: {
+            valueFormatter: function (value) {
+              return value;
+            }
+          },
+          data: [0.0,
+            1.56,
+            2.0,
+            0.0,
+            1.92,
+            2.29,
+            2.75,
+            2.5,
+            1.0,
+            1.0,
+            1.5,
+            1.33,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            2.0,
+            2.0,
+            0.43,
+            0.33,
+            0.47,
+            0.55,
+            0.91,
+            1.34,
+            1.48,
+            1.8,
+            1.74,
+            1.75,
+            1.56,
+            1.87,
+            2.28,
+            1.66,
+            1.47,
+            1.78,
+            2.28,
+            1.85,
+            1.78,
+            2.19,
+            1.73,
+            2.03,
+            4.15,
+            2.49,
+            1.91,
+            1.93,
+            1.78,
+            1.94,
+            2.47,
+            2.12,
+            2.65,
+            2.14,
+            2.55,
+            2.56,
+            2.13,
+            2.79,
+            2.06,
+            2.0,
+            2.26,
+            2.24,
+            2.03,
+            2.02,
+            2.45,
+            2.39,
+            2.6,
+            2.32,
+            2.17,
+            2.26,
+            2.32,
+            2.29,
+            2.14,
+            3.38,
+            2.25,
+            2.3,
+            2.43,
+            1.99,
+            2.12,
+            2.53,
+            2.54,
+            1.9,
+            3.01,
+            2.72,
+            2.01,
+            3.1,
+            2.63,
+            2.17,
+            2.71,
+            2.49,
+            2.0,
+            3.15,
+            1.8,
+            2.92,
+            1.74,
+            2.07,
+            2.02,
+            1.5,
+            1.65,
+            1.57,
+            4.23,
+            1.97,
+            2.06,
+            3.17,
+            3.71,
+            2.04,
+            1.75,
+            1.72,
+            2.18,
+            1.84,
+            2.01,
+            2.33,
+            2.1,
+            2.13,
+            1.84,
+            1.79,
+            1.7,
+            1.96,
+            1.98,
+            1.82,
+            1.66,
+            1.61,
+            2.04,
+            1.79,
+            1.68,
+            1.53,
+            2.02]
+        }
+      ]
+    };
+    myChart_sentiment.setOption(option_sentiment);
+  </script>
+  <!-- Load our React component. -->
+  <script>
+    /* Validate Mapbox Token */
+    if ((MAPBOX_TOKEN || '') === '' || MAPBOX_TOKEN === 'PROVIDE_MAPBOX_TOKEN') {
+      alert(WARNING_MESSAGE);
+    }
+
+    /** STORE **/
+    const reducers = (function createReducers(redux, keplerGl) {
+      return redux.combineReducers({
+        // mount keplerGl reducer
+        keplerGl: keplerGl.keplerGlReducer.initialState({
+          uiState: {
+            readOnly: false,
+            currentModal: null
+          }
+        })
+      });
+    }(Redux, KeplerGl));
+
+    const middleWares = (function createMiddlewares(keplerGl) {
+      return keplerGl.enhanceReduxMiddleware([
+        // Add other middlewares here
+      ]);
+    }(KeplerGl));
+
+    const enhancers = (function craeteEnhancers(redux, middles) {
+      return redux.applyMiddleware(...middles);
+    }(Redux, middleWares));
+
+    const store = (function createStore(redux, enhancers) {
+      const initialState = {};
+
+      return redux.createStore(
+        reducers,
+        initialState,
+        redux.compose(enhancers)
+      );
+    }(Redux, enhancers));
+    /** END STORE **/
+
+    /** COMPONENTS **/
+    var KeplerElement = (function makeKeplerElement(react, keplerGl, mapboxToken) {
+      var LogoSvg = function LogoSvg() {
+        return react.createElement(
+          "div",
+          { className: "logo-container", style: { position: 'fixed', zIndex: 10000, padding: '4px' } },
+          react.createElement(
+            "svg",
+            {
+              className: "kepler_gl__logo",
+              width: "107px",
+              height: "21px",
+              viewBox: "0 0 124 24"
+            },
+            react.createElement(
+              "g",
+              { transform: "translate(13.500000, 13.500000) rotate(45.000000) translate(-13.500000, -13.500000) translate(4.000000, 4.000000)" },
+              react.createElement("rect", { x: "0", y: "6", transform: "matrix(2.535181e-06 1 -1 2.535181e-06 18.1107 6.0369)", fill: "#535C6C", width: "12.1", height: "12.1" }),
+              react.createElement("rect", { x: "6", y: "0", transform: "matrix(2.535182e-06 1 -1 2.535182e-06 18.1107 -6.0369)", fill: "#1FBAD6", width: "12.1", height: "12.1" })
+            ),
+            react.createElement(
+              "g",
+              {},
+              react.createElement("path", { fill: "#1FBAD6", d: "M39,8.7h2.2l-2.8,4.2l2.9,5.1H39l-2.4-4.2h-1.3V18h-2V5l2-0.1v7.3h1.3L39,8.7z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M42.4,13.3c0-1.5,0.4-2.7,1.1-3.5s1.8-1.2,3.1-1.2c1.3,0,2.2,0.4,2.8,1.1c0.6,0.7,0.9,1.8,0.9,3.3 c0,0.4,0,0.8,0,1.1h-5.8c0,1.6,0.8,2.4,2.4,2.4c1,0,2-0.2,2.9-0.6l0.2,1.7c-0.4,0.2-0.9,0.4-1.4,0.5s-1.1,0.2-1.7,0.2 c-1.5,0-2.6-0.4-3.3-1.2C42.8,16.1,42.4,14.9,42.4,13.3z M46.6,10.1c-0.7,0-1.2,0.2-1.5,0.5c-0.4,0.4-0.6,0.9-0.6,1.7h4 c0-0.8-0.2-1.4-0.5-1.7S47.2,10.1,46.6,10.1z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M57.1,18.2c-1,0-1.8-0.3-2.3-0.9l0,0l0,1.3v2.5h-2V8.7h1.5l0.3,0.9h0c0.3-0.3,0.7-0.6,1.2-0.7 c0.4-0.2,0.9-0.3,1.4-0.3c1.2,0,2.1,0.4,2.7,1.1c0.6,0.7,0.9,2,0.9,3.7c0,1.6-0.3,2.8-1,3.7C59.2,17.8,58.3,18.2,57.1,18.2z M56.7,10.3c-0.4,0-0.8,0.1-1.1,0.2c-0.3,0.2-0.6,0.4-0.8,0.7v4.3c0.2,0.3,0.4,0.5,0.7,0.7c0.3,0.2,0.7,0.3,1.1,0.3 c0.7,0,1.2-0.2,1.6-0.7c0.4-0.5,0.5-1.3,0.5-2.5c0-0.8-0.1-1.4-0.2-1.8s-0.4-0.7-0.7-0.9C57.6,10.4,57.2,10.3,56.7,10.3z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M63.2,16V5l2-0.1v10.8c0,0.3,0.1,0.5,0.2,0.6c0.1,0.1,0.3,0.2,0.6,0.2c0.3,0,0.6,0,0.9-0.1V18 c-0.4,0.1-1,0.2-1.6,0.2c-0.8,0-1.3-0.2-1.7-0.5S63.2,16.8,63.2,16z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M68.2,13.3c0-1.5,0.4-2.7,1.1-3.5c0.7-0.8,1.8-1.2,3.1-1.2c1.3,0,2.2,0.4,2.8,1.1c0.6,0.7,0.9,1.8,0.9,3.3 c0,0.4,0,0.8,0,1.1h-5.8c0,1.6,0.8,2.4,2.4,2.4c1,0,2-0.2,2.9-0.6l0.2,1.7c-0.4,0.2-0.9,0.4-1.4,0.5s-1.1,0.2-1.7,0.2 c-1.5,0-2.6-0.4-3.3-1.2C68.6,16.1,68.2,14.9,68.2,13.3z M72.4,10.1c-0.7,0-1.2,0.2-1.5,0.5c-0.4,0.4-0.6,0.9-0.6,1.7h4 c0-0.8-0.2-1.4-0.5-1.7S73,10.1,72.4,10.1z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M80.2,8.7l0.1,1.7h0c0.3-0.6,0.7-1.1,1.1-1.4c0.4-0.3,1-0.5,1.6-0.5c0.4,0,0.7,0,1,0.1l-0.1,2 c-0.3-0.1-0.7-0.2-1-0.2c-0.7,0-1.3,0.3-1.7,0.8c-0.4,0.5-0.7,1.2-0.7,2.1V18h-2V8.7H80.2z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M83.8,17c0-0.8,0.4-1.2,1.2-1.2c0.8,0,1.2,0.4,1.2,1.2c0,0.8-0.4,1.1-1.2,1.1C84.2,18.2,83.8,17.8,83.8,17z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M88.5,18.7c0-0.8,0.4-1.4,1.2-1.8c-0.6-0.3-0.9-0.8-0.9-1.5c0-0.7,0.4-1.2,1.1-1.6c-0.3-0.3-0.6-0.6-0.7-0.9 c-0.2-0.4-0.2-0.8-0.2-1.3c0-1,0.3-1.8,0.9-2.3c0.6-0.5,1.6-0.8,2.8-0.8c0.5,0,1,0,1.4,0.1c0.4,0.1,0.8,0.2,1.1,0.4l2.4-0.2v1.5 h-1.5c0.2,0.4,0.2,0.8,0.2,1.3c0,1-0.3,1.7-0.9,2.2s-1.5,0.8-2.7,0.8c-0.7,0-1.2-0.1-1.6-0.2c-0.1,0.1-0.2,0.2-0.3,0.3 c-0.1,0.1-0.1,0.2-0.1,0.4c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.3,0.2,0.6,0.2l2.7,0.2c1,0.1,1.7,0.3,2.2,0.6c0.5,0.3,0.8,0.9,0.8,1.7 c0,0.6-0.2,1.1-0.5,1.5c-0.4,0.4-0.9,0.8-1.5,1c-0.7,0.2-1.5,0.4-2.4,0.4c-1.3,0-2.3-0.2-3-0.6C88.8,20.1,88.5,19.5,88.5,18.7z M95.1,18.4c0-0.3-0.1-0.5-0.3-0.7s-0.6-0.2-1.1-0.3l-2.7-0.3c-0.2,0.1-0.4,0.3-0.5,0.5c-0.1,0.2-0.2,0.4-0.2,0.6 c0,0.4,0.2,0.8,0.5,1c0.4,0.2,1,0.3,1.8,0.3C94.2,19.5,95.1,19.2,95.1,18.4z M94.3,11.5c0-0.6-0.1-1-0.4-1.2 c-0.3-0.2-0.7-0.3-1.3-0.3c-0.7,0-1.1,0.1-1.4,0.3c-0.3,0.2-0.4,0.6-0.4,1.2s0.1,1,0.4,1.2c0.3,0.2,0.7,0.3,1.4,0.3 c0.6,0,1.1-0.1,1.3-0.4S94.3,12,94.3,11.5z" }),
+              react.createElement("path", { fill: "#1FBAD6", d: "M99.4,16V5l2-0.1v10.8c0,0.3,0.1,0.5,0.2,0.6c0.1,0.1,0.3,0.2,0.6,0.2c0.3,0,0.6,0,0.9-0.1V18 c-0.4,0.1-1,0.2-1.6,0.2c-0.8,0-1.3-0.2-1.7-0.5S99.4,16.8,99.4,16z" })
+            )
+          )
+        );
+      };
+
+      return function App() {
+        var rootElm = react.useRef(null);
+        var _useState = react.useState({
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+        var windowDimension = _useState[0];
+        var setDimension = _useState[1];
+        react.useEffect(function sideEffect() {
+          function handleResize() {
+            setDimension({ width: window.innerWidth, height: window.innerHeight });
+          };
+          window.addEventListener('resize', handleResize);
+          return function () { window.removeEventListener('resize', handleResize); };
+        }, []);
+        return react.createElement(
+          'div',
+          { style: { position: 'absolute', left: 0, width: '100vw', height: '100vh' } },
+
+          react.createElement(keplerGl.KeplerGl, {
+            mapboxApiAccessToken: mapboxToken,
+            id: "map",
+            width: windowDimension.width,
+            height: windowDimension.height
+          })
+        )
+      }
+    }(React, KeplerGl, MAPBOX_TOKEN));
+
+    const app = (function createReactReduxProvider(react, reactRedux, KeplerElement) {
+      return react.createElement(
+        reactRedux.Provider,
+        { store },
+        react.createElement(KeplerElement, null)
+      )
+    }(React, ReactRedux, KeplerElement));
+    /** END COMPONENTS **/
+
+    /** Render **/
+    (function render(react, reactDOM, app) {
+      reactDOM.render(app, document.getElementById('app'));
+    }(React, ReactDOM, app));
+  </script>
+  <!-- The next script will show how to interact directly with Kepler map store -->
+  <script>
+    /**
+     * Customize map.
+     * In the following section you can use the store object to dispatch Kepler.gl actions
+     * to add new data and customize behavior
+     */
+    // 使用jquery获取数据, wh_data是一个数组
+    $.getJSON('./wh_data.json', function (wh_data) {
+      (function customize(keplerGl, store) {
+        const datasets = wh_data
+        const config = { "version": "v1", "config": { "visState": { "filters": [{ "dataId": ["dbj3pb"], "id": "13ldqtm4f", "name": ["date"], "type": "timeRange", "value": [1583774961655.8223, 1584591941655.8223], "plotType": "histogram", "animationWindow": "free", "yAxis": null, "view": "side", "speed": 0.447, "enabled": true }], "layers": [{ "id": "dx4sqf", "type": "heatmap", "config": { "dataId": "dbj3pb", "label": "new layer", "color": [30, 150, 190], "highlightColor": [252, 242, 26, 255], "columns": { "lat": "lat", "lng": "lng" }, "isVisible": true, "visConfig": { "opacity": 0.93, "colorRange": { "name": "Global Warming", "type": "sequential", "category": "Uber", "colors": ["#5A1846", "#900C3F", "#C70039", "#E3611C", "#F1920E", "#FFC300"] }, "radius": 35.1 }, "hidden": false, "textLabel": [{ "field": null, "color": [255, 255, 255], "size": 18, "offset": [0, 0], "anchor": "start", "alignment": "center", "outlineWidth": 0, "outlineColor": [255, 0, 0, 255], "background": false, "backgroundColor": [0, 0, 200, 255] }] }, "visualChannels": { "weightField": { "name": "sentiment", "type": "real" }, "weightScale": "linear" } }, { "id": "dd7eni", "type": "hexagon", "config": { "dataId": "dbj3pb", "label": "point", "color": [137, 218, 193], "highlightColor": [252, 242, 26, 255], "columns": { "lat": "lat", "lng": "lng" }, "isVisible": true, "visConfig": { "opacity": 0.8, "worldUnitSize": 0.6, "resolution": 8, "colorRange": { "name": "Global Warming", "type": "sequential", "category": "Uber", "colors": ["#5A1846", "#900C3F", "#C70039", "#E3611C", "#F1920E", "#FFC300"] }, "coverage": 0.6, "sizeRange": ["20", 500], "percentile": [0, 100], "elevationPercentile": [0, 100], "elevationScale": 69.5, "enableElevationZoomFactor": true, "colorAggregation": "average", "sizeAggregation": "sum", "enable3d": true }, "hidden": false, "textLabel": [{ "field": null, "color": [255, 255, 255], "size": 18, "offset": [0, 0], "anchor": "start", "alignment": "center", "outlineWidth": 0, "outlineColor": [255, 0, 0, 255], "background": false, "backgroundColor": [0, 0, 200, 255] }] }, "visualChannels": { "colorField": { "name": "sentiment", "type": "real" }, "colorScale": "quantile", "sizeField": { "name": "sentiment", "type": "real" }, "sizeScale": "linear" } }], "effects": [], "interactionConfig": { "tooltip": { "fieldsToShow": { "dbj3pb": [{ "name": "sentiment", "format": null }, { "name": "date", "format": null }] }, "compareMode": false, "compareType": "absolute", "enabled": false }, "brush": { "size": 0.5, "enabled": false }, "geocoder": { "enabled": false }, "coordinate": { "enabled": false } }, "layerBlending": "additive", "overlayBlending": "normal", "splitMaps": [], "animationConfig": { "currentTime": null, "speed": 1 }, "editor": { "features": [], "visible": true } }, "mapState": { "bearing": 24, "dragRotate": true, "latitude": 30.535385945234037, "longitude": 114.34467187819342, "pitch": 50, "zoom": 9.096117833833905, "isSplit": false, "isViewportSynced": true, "isZoomLocked": false, "splitMapViewports": [] }, "mapStyle": { "styleType": "dark-matter", "topLayerGroups": {}, "visibleLayerGroups": { "label": true, "road": true, "border": false, "building": true, "water": true, "land": true, "3d building": false }, "threeDBuildingColor": [15.035172933000911, 15.035172933000911, 15.035172933000911], "backgroundColor": [0, 0, 0], "mapStyles": {} } } };
+        const loadedData = keplerGl.KeplerGlSchema.load(
+          datasets,
+          config
+        );
+
+        store.dispatch(keplerGl.addDataToMap({
+          datasets: loadedData.datasets,
+          config: loadedData.config,
+          options: {
+            centerMap: false
+          }
+        }));
+      }(KeplerGl, store))
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var buttons = document.querySelectorAll('.side-bar__close.sc-kLIISr.hSdkdv');
+      if (buttons.length > 0) {
+        buttons[0].click(); // 模拟点击第一个找到的元素
+      }
+    });
+  </script>
+</body>
+
+</html>

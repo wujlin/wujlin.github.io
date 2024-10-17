@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Line Chart</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <style>
+        /* 页面布局样式 */
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            background-color: #333333;
+            /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 左侧文本框样式 */
+        .sidebar {
+            width: 40%;
+            /* 调整为占据左侧部分宽度 */
+            height: 80%;
+            /* 高度调整 */
+            margin-left:5%;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            /* margin: auto 0; */
+            /* 垂直居中 */
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 0.2);
+            /* 设置透明背景 */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            /* 透明的白色边线 */
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            /* 添加阴影效果 */
+        }
+
+        /* 右侧图表容器样式 */
+        .charts-container {
+            flex-grow: 1;
+            /* 占据剩余空间 */
+            display: flex;
+            /* 使用 Flexbox */
+            flex-direction: column;
+            /* 设置竖直排列 */
+            align-items: center;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            height: 100%;
+        }
+
+        /* 单个图表样式 */
+        .chart {
+            width: 700px;
+            height: 400px;
+            margin-bottom: 20px;
+            /* 为每个图表添加下边距 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <!-- 这里放置您的文本和其他内容 -->
+        <p>这里是一些文本...</p>
+    </div>
+    <!-- 图表容器 -->
+    <div class="charts-container">
+        <div id="chart_wh" class="chart"></div>
+        <div id="chart_sh" class="chart"></div>
+    </div>
+    <script>
+        // 假设数据
+        var dataVar_wh = [{ 'date': '2020-01-23', 'deaths': 31.0, 'confirmed': 495.0 },
+        { 'date': '2020-01-24', 'deaths': 15.0, 'confirmed': 77.0 },
+        { 'date': '2020-01-25', 'deaths': 7.0, 'confirmed': 46.0 },
+        { 'date': '2020-01-26', 'deaths': 18.0, 'confirmed': 80.0 },
+        { 'date': '2020-01-27', 'deaths': 22.0, 'confirmed': 892.0 },
+        { 'date': '2020-01-28', 'deaths': 19.0, 'confirmed': 315.0 },
+        { 'date': '2020-01-29', 'deaths': 25.0, 'confirmed': 356.0 },
+        { 'date': '2020-01-30', 'deaths': 30.0, 'confirmed': 378.0 },
+        { 'date': '2020-01-31', 'deaths': 33.0, 'confirmed': 576.0 },
+        { 'date': '2020-02-01', 'deaths': 32.0, 'confirmed': 894.0 },
+        { 'date': '2020-02-02', 'deaths': 41.0, 'confirmed': 1033.0 },
+        { 'date': '2020-02-03', 'deaths': 48.0, 'confirmed': 1242.0 },
+        { 'date': '2020-02-04', 'deaths': 49.0, 'confirmed': 1967.0 },
+        { 'date': '2020-02-05', 'deaths': 52.0, 'confirmed': 1766.0 },
+        { 'date': '2020-02-06', 'deaths': 64.0, 'confirmed': 1501.0 },
+        { 'date': '2020-02-07', 'deaths': 67.0, 'confirmed': 1985.0 },
+        { 'date': '2020-02-08', 'deaths': 63.0, 'confirmed': 1379.0 },
+        { 'date': '2020-02-09', 'deaths': 73.0, 'confirmed': 1920.0 },
+        { 'date': '2020-02-10', 'deaths': 67.0, 'confirmed': 1552.0 },
+        { 'date': '2020-02-11', 'deaths': 72.0, 'confirmed': 1104.0 },
+        { 'date': '2020-02-12', 'deaths': 216.0, 'confirmed': 13436.0 },
+        { 'date': '2020-02-13', 'deaths': -20.0, 'confirmed': 2997.0 },
+        { 'date': '2020-02-14', 'deaths': 107.0, 'confirmed': 1923.0 },
+        { 'date': '2020-02-15', 'deaths': 110.0, 'confirmed': 1548.0 },
+        { 'date': '2020-02-16', 'deaths': 76.0, 'confirmed': 1690.0 },
+        { 'date': '2020-02-17', 'deaths': 72.0, 'confirmed': 1600.0 },
+        { 'date': '2020-02-18', 'deaths': 116.0, 'confirmed': 1660.0 },
+        { 'date': '2020-02-19', 'deaths': 88.0, 'confirmed': 615.0 },
+        { 'date': '2020-02-20', 'deaths': 99.0, 'confirmed': 319.0 },
+        { 'date': '2020-02-21', 'deaths': 90.0, 'confirmed': 314.0 },
+        { 'date': '2020-02-22', 'deaths': 82.0, 'confirmed': 599.0 },
+        { 'date': '2020-02-23', 'deaths': 131.0, 'confirmed': 348.0 },
+        { 'date': '2020-02-24', 'deaths': 56.0, 'confirmed': 464.0 },
+        { 'date': '2020-02-25', 'deaths': 42.0, 'confirmed': 370.0 },
+        { 'date': '2020-02-26', 'deaths': 19.0, 'confirmed': 383.0 },
+        { 'date': '2020-02-27', 'deaths': 28.0, 'confirmed': 313.0 },
+        { 'date': '2020-02-28', 'deaths': 37.0, 'confirmed': 420.0 },
+        { 'date': '2020-02-29', 'deaths': 26.0, 'confirmed': 565.0 },
+        { 'date': '2020-03-01', 'deaths': 32.0, 'confirmed': 193.0 },
+        { 'date': '2020-03-02', 'deaths': 24.0, 'confirmed': 111.0 },
+        { 'date': '2020-03-03', 'deaths': 31.0, 'confirmed': 114.0 },
+        { 'date': '2020-03-04', 'deaths': 23.0, 'confirmed': 131.0 },
+        { 'date': '2020-03-05', 'deaths': 23.0, 'confirmed': 126.0 },
+        { 'date': '2020-03-06', 'deaths': 21.0, 'confirmed': 74.0 },
+        { 'date': '2020-03-07', 'deaths': 21.0, 'confirmed': 41.0 },
+        { 'date': '2020-03-08', 'deaths': 18.0, 'confirmed': 36.0 },
+        { 'date': '2020-03-09', 'deaths': 16.0, 'confirmed': 17.0 },
+        { 'date': '2020-03-10', 'deaths': 19.0, 'confirmed': 13.0 },
+        { 'date': '2020-03-11', 'deaths': 7.0, 'confirmed': 8.0 },
+        { 'date': '2020-03-12', 'deaths': 6.0, 'confirmed': 5.0 },
+        { 'date': '2020-03-13', 'deaths': 10.0, 'confirmed': 4.0 },
+        { 'date': '2020-03-14', 'deaths': 10.0, 'confirmed': 4.0 },
+        { 'date': '2020-03-15', 'deaths': 13.0, 'confirmed': 4.0 },
+        { 'date': '2020-03-16', 'deaths': 11.0, 'confirmed': 1.0 },
+        { 'date': '2020-03-17', 'deaths': 10.0, 'confirmed': 1.0 },
+        { 'date': '2020-03-18', 'deaths': 6.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-19', 'deaths': 2.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-20', 'deaths': 6.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-21', 'deaths': 4.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-22', 'deaths': 9.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-23', 'deaths': 7.0, 'confirmed': 1.0 },
+        { 'date': '2020-03-24', 'deaths': 2.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-25', 'deaths': 5.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-26', 'deaths': 4.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-27', 'deaths': 3.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-28', 'deaths': 5.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-29', 'deaths': 4.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-30', 'deaths': 1.0, 'confirmed': 0.0 },
+        { 'date': '2020-03-31', 'deaths': 5.0, 'confirmed': 1.0 },
+        { 'date': '2020-04-01', 'deaths': 6.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-02', 'deaths': 4.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-03', 'deaths': 4.0, 'confirmed': 1.0 },
+        { 'date': '2020-04-04', 'deaths': 3.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-05', 'deaths': 1.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-06', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-07', 'deaths': 1.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-08', 'deaths': 2.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-09', 'deaths': 1.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-10', 'deaths': 2.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-11', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-12', 'deaths': 2.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-13', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-14', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-15', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-16', 'deaths': 1290.0, 'confirmed': 325.0 },
+        { 'date': '2020-04-17', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-18', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-19', 'deaths': 0, 'confirmed': 0 },
+        { 'date': '2020-04-20', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-21', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-22', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-23', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-24', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-25', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-26', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-27', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-28', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-29', 'deaths': 0.0, 'confirmed': 0.0 },
+        { 'date': '2020-04-30', 'deaths': 0.0, 'confirmed': 0.0 }];
+
+        var dataVar_sh = [{ 'date': '2022-02-28', 'deaths': 0, 'confirmed': 40 },
+        { 'date': '2022-03-01', 'deaths': 0, 'confirmed': 38 },
+        { 'date': '2022-03-02', 'deaths': 0, 'confirmed': 42 },
+        { 'date': '2022-03-03', 'deaths': 0, 'confirmed': 45 },
+        { 'date': '2022-03-04', 'deaths': 0, 'confirmed': 27 },
+        { 'date': '2022-03-05', 'deaths': 0, 'confirmed': 25 },
+        { 'date': '2022-03-06', 'deaths': 0, 'confirmed': 35 },
+        { 'date': '2022-03-07', 'deaths': 0, 'confirmed': 40 },
+        { 'date': '2022-03-08', 'deaths': 0, 'confirmed': 29 },
+        { 'date': '2022-03-09', 'deaths': 0, 'confirmed': 46 },
+        { 'date': '2022-03-10', 'deaths': 0, 'confirmed': 43 },
+        { 'date': '2022-03-11', 'deaths': 0, 'confirmed': 27 },
+        { 'date': '2022-03-12', 'deaths': 0, 'confirmed': 14 },
+        { 'date': '2022-03-13', 'deaths': 0, 'confirmed': 57 },
+        { 'date': '2022-03-14', 'deaths': 0, 'confirmed': 21 },
+        { 'date': '2022-03-15', 'deaths': 0, 'confirmed': 15 },
+        { 'date': '2022-03-16', 'deaths': 0, 'confirmed': 23 },
+        { 'date': '2022-03-17', 'deaths': 0, 'confirmed': 67 },
+        { 'date': '2022-03-18', 'deaths': 0, 'confirmed': 20 },
+        { 'date': '2022-03-19', 'deaths': 0, 'confirmed': 22 },
+        { 'date': '2022-03-20', 'deaths': 0, 'confirmed': 41 },
+        { 'date': '2022-03-21', 'deaths': 0, 'confirmed': 39 },
+        { 'date': '2022-03-22', 'deaths': 0, 'confirmed': 14 },
+        { 'date': '2022-03-23', 'deaths': 0, 'confirmed': 14 },
+        { 'date': '2022-03-24', 'deaths': 0, 'confirmed': 41 },
+        { 'date': '2022-03-25', 'deaths': 0, 'confirmed': 47 },
+        { 'date': '2022-03-26', 'deaths': 0, 'confirmed': 51 },
+        { 'date': '2022-03-27', 'deaths': 0, 'confirmed': 60 },
+        { 'date': '2022-03-28', 'deaths': 0, 'confirmed': 107 },
+        { 'date': '2022-03-29', 'deaths': 0, 'confirmed': 329 },
+        { 'date': '2022-03-30', 'deaths': 0, 'confirmed': 358 },
+        { 'date': '2022-03-31', 'deaths': 0, 'confirmed': 365 },
+        { 'date': '2022-04-01', 'deaths': 0, 'confirmed': 262 },
+        { 'date': '2022-04-02', 'deaths': 0, 'confirmed': 444 },
+        { 'date': '2022-04-03', 'deaths': 0, 'confirmed': 433 },
+        { 'date': '2022-04-04', 'deaths': 0, 'confirmed': 271 },
+        { 'date': '2022-04-05', 'deaths': 0, 'confirmed': 315 },
+        { 'date': '2022-04-06', 'deaths': 0, 'confirmed': 329 },
+        { 'date': '2022-04-07', 'deaths': 0, 'confirmed': 828 },
+        { 'date': '2022-04-08', 'deaths': 0, 'confirmed': 1017 },
+        { 'date': '2022-04-09', 'deaths': 0, 'confirmed': 1015 },
+        { 'date': '2022-04-10', 'deaths': 0, 'confirmed': 917 },
+        { 'date': '2022-04-11', 'deaths': 0, 'confirmed': 998 },
+        { 'date': '2022-04-12', 'deaths': 0, 'confirmed': 1190 },
+        { 'date': '2022-04-13', 'deaths': 0, 'confirmed': 2573 },
+        { 'date': '2022-04-14', 'deaths': 0, 'confirmed': 3200 },
+        { 'date': '2022-04-15', 'deaths': 0, 'confirmed': 3594 },
+        { 'date': '2022-04-16', 'deaths': 0, 'confirmed': 3240 },
+        { 'date': '2022-04-17', 'deaths': 3, 'confirmed': 2420 },
+        { 'date': '2022-04-18', 'deaths': 7, 'confirmed': 3084 },
+        { 'date': '2022-04-19', 'deaths': 7, 'confirmed': 2495 },
+        { 'date': '2022-04-20', 'deaths': 8, 'confirmed': 2635 },
+        { 'date': '2022-04-21', 'deaths': 11, 'confirmed': 1931 },
+        { 'date': '2022-04-22', 'deaths': 12, 'confirmed': 2736 },
+        { 'date': '2022-04-23', 'deaths': 39, 'confirmed': 1401 },
+        { 'date': '2022-04-24', 'deaths': 51, 'confirmed': 2472 },
+        { 'date': '2022-04-25', 'deaths': 52, 'confirmed': 1661 },
+        { 'date': '2022-04-26', 'deaths': 48, 'confirmed': 1606 },
+        { 'date': '2022-04-27', 'deaths': 47, 'confirmed': 1292 },
+        { 'date': '2022-04-28', 'deaths': 52, 'confirmed': 5489 },
+        { 'date': '2022-04-29', 'deaths': 47, 'confirmed': 1250 },
+        { 'date': '2022-04-30', 'deaths': 38, 'confirmed': 789 },
+        { 'date': '2022-05-01', 'deaths': 32, 'confirmed': 729 },
+        { 'date': '2022-05-02', 'deaths': 20, 'confirmed': 274 },
+        { 'date': '2022-05-03', 'deaths': 16, 'confirmed': 263 },
+        { 'date': '2022-05-04', 'deaths': 13, 'confirmed': 263 },
+        { 'date': '2022-05-05', 'deaths': 12, 'confirmed': 245 },
+        { 'date': '2022-05-06', 'deaths': 13, 'confirmed': 253 },
+        { 'date': '2022-05-07', 'deaths': 8, 'confirmed': 217 },
+        { 'date': '2022-05-08', 'deaths': 11, 'confirmed': 324 },
+        { 'date': '2022-05-09', 'deaths': 6, 'confirmed': 234 },
+        { 'date': '2022-05-10', 'deaths': 7, 'confirmed': 229 },
+        { 'date': '2022-05-11', 'deaths': 5, 'confirmed': 144 },
+        { 'date': '2022-05-12', 'deaths': 2, 'confirmed': 227 },
+        { 'date': '2022-05-13', 'deaths': 1, 'confirmed': 195 },
+        { 'date': '2022-05-14', 'deaths': 3, 'confirmed': 168 },
+        { 'date': '2022-05-15', 'deaths': 4, 'confirmed': 70 },
+        { 'date': '2022-05-16', 'deaths': 1, 'confirmed': 77 },
+        { 'date': '2022-05-17', 'deaths': 3, 'confirmed': 97 },
+        { 'date': '2022-05-18', 'deaths': 1, 'confirmed': 83 },
+        { 'date': '2022-05-19', 'deaths': 0, 'confirmed': 90 },
+        { 'date': '2022-05-20', 'deaths': 1, 'confirmed': 84 },
+        { 'date': '2022-05-21', 'deaths': 3, 'confirmed': 53 },
+        { 'date': '2022-05-22', 'deaths': 1, 'confirmed': 56 },
+        { 'date': '2022-05-23', 'deaths': 1, 'confirmed': 58 },
+        { 'date': '2022-05-24', 'deaths': 0, 'confirmed': 44 },
+        { 'date': '2022-05-25', 'deaths': 1, 'confirmed': 49 }];
+
+        // 初始化图表
+        var myChart_wh = echarts.init(document.getElementById('chart_wh'));
+        var myChart_sh = echarts.init(document.getElementById('chart_sh'));
+
+        function run_wh(data) {
+            var option = {
+                animationDuration: 10000,
+                // backgroundColor: '#333333',
+                title: {
+                    text: 'COVID-19 Deaths and Confirmed Cases Over Time in Wuhan',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['new_deaths', 'new_confirmed'],
+                    top: 'bottom'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.map(item => item.date),
+                    name: 'Date'
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'new_deaths',
+                        min: 0,
+                        position: 'left',
+                        axisLine: {
+                            lineStyle: { color: 'red' }
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'new_confirmed',
+                        min: 0,
+                        position: 'right',
+                        axisLine: {
+                            lineStyle: { color: 'blue' }
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: 'new_deaths',
+                        type: 'line',
+                        yAxisIndex: 0,
+                        data: data.map(item => item.deaths),
+                        emphasis: {
+                            focus: 'series'
+                        },
+                    },
+                    {
+                        name: 'new_confirmed',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: data.map(item => item.confirmed),
+                        emphasis: {
+                            focus: 'series'
+                        },
+                    }
+                ]
+            };
+            myChart_wh.setOption(option);
+        }
+
+        // 使用假设数据运行函数
+        run_wh(dataVar_wh);
+
+        function run_sh(data) {
+            var option = {
+                animationDuration: 10000,
+                // backgroundColor: '#333333',
+                title: {
+                    text: 'COVID-19 Deaths and Confirmed Cases Over Time in Shanghai',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['new_deaths', 'new_confirmed'],
+                    top: 'bottom'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.map(item => item.date),
+                    name: 'Date'
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'new_deaths',
+                        min: 0,
+                        position: 'left',
+                        axisLine: {
+                            lineStyle: { color: 'red' }
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'new_confirmed',
+                        min: 0,
+                        position: 'right',
+                        axisLine: {
+                            lineStyle: { color: 'blue' }
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: 'new_deaths',
+                        type: 'line',
+                        yAxisIndex: 0,
+                        data: data.map(item => item.deaths),
+                        emphasis: {
+                            focus: 'series'
+                        },
+                    },
+                    {
+                        name: 'new_confirmed',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: data.map(item => item.confirmed),
+                        emphasis: {
+                            focus: 'series'
+                        },
+                    }
+                ]
+            };
+            myChart_sh.setOption(option);
+        }
+        run_sh(dataVar_sh);
+    </script>
+</body>
+
+</html>

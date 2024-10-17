@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            display: none !important;
+        }
+
+        /* 页面布局样式 */
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            /* margin: 0; */
+            background-color: #333333;
+            /* 设置整个页面的背景为灰色 */
+        }
+
+        /* 针对 Kepler 地图的容器 */
+        #app {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* 确保地图在较低的层级 */
+        }
+
+        /* 左侧文本框样式 */
+        .sidebar {
+            position: absolute;
+            width: 80%;
+            height: 25%;
+            top: 70%;
+            left: 10%;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+
+            /* 新增样式用于文本水平垂直居中对齐 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            font-family: 'Times New Roman', serif;
+            /* 使用 Times New Roman 字体 */
+            font-weight: bold;
+            font-size: 28px;
+            /* 文本加粗 */
+        }
+
+        /* 段落文本样式 */
+        .text-paragraph {
+            margin-bottom: 20px;
+            /* 段落间距 */
+        }
+
+        /* 标红文本样式 */
+        .highlight {
+            color: rgb(237, 42, 98);
+            /* 标红文本 */
+        }
+
+        /* 导航按钮样式 */
+        .navigation-buttons {
+            align-self: stretch;
+            text-align: center;
+            margin-top: 40px;
+            /* 按钮与文本间的间距 */
+        }
+
+        .navigation-buttons button {
+            margin: 0 10px;
+            background: transparent;
+            /* 设置背景为透明 */
+            border: 2px solid white;
+            /* 保留白色边框 */
+            font-family: 'Roboto Mono', monospace;
+            /* 设置字体为 Roboto Mono */
+            font-size: 14px;
+            /* 设置字体大小为 14px */
+            color: white;
+            /* 设置字体颜色为白色 */
+            padding: 5px 10px;
+            /* 设置内边距 */
+            cursor: pointer;
+            /* 设置鼠标悬停时的光标样式 */
+            transition: background-color 0.3s;
+            /* 平滑过渡效果 */
+        }
+
+        .navigation-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* 鼠标悬停时的背景色 */
+        }
+
+        .top-right-title {
+            position: absolute;
+            /* 绝对定位 */
+            top: 10px;
+            /* 距离顶部的距离 */
+            right: 600px;
+            /* 距离右侧的距离 */
+            font-size: 28px;
+            /* 字体大小 */
+            color: #fff;
+            /* 字体颜色 */
+            font-weight: bold;
+            /* 字体加粗 */
+            text-align: right;
+            /* 文本右对齐 */
+            z-index: 1000;
+            /* 提高 z-index 值 */
+            max-width: 300px;
+            /* 最大宽度限制 */
+            white-space: nowrap;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: stretch;
+            /* 确保容器高度一致 */
+        }
+
+        #stacked_chart {
+            flex-grow: 2;
+            /* 占据更多空间 */
+        }
+
+        #pie_chart {
+            position: absolute;
+            /* 绝对定位 */
+            top: 65%;
+            /* 垂直居中 */
+            left: 0;
+            /* 置于左侧 */
+            transform: translateY(-50%);
+            width: 30%;
+            height: auto;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body style="height: 100%;">
+    <div class="top-right-title">
+        From Virus to Side Effects: The Change in Public Focus
+    </div>
+    <div style="height:60%; top: 60px; position: relative;">
+        <div id="stacked_chart" style="height: 100%;"></div> <!-- 堆积图容器 -->
+        <div id="pie_chart" style="position: absolute;  left: 0; width: 30%; height: 100%;"></div> <!-- 饼图容器 -->
+    </div>
+    <div class="sidebar">
+        <!-- 文本容器 -->
+        <div id="text-content">
+            <!-- 动态文本将在这里显示 -->
+        </div>
+
+        <!-- 导航按钮 -->
+        <div class="navigation-buttons">
+            <button id="prev-button">Previous</button>
+            <button id="next-button">Next</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 初始化图表时设置style
+        var stacked_chart = echarts.init(document.getElementById('stacked_chart'));
+        var pie_chart = echarts.init(document.getElementById('pie_chart'))
+
+
+        // 指定图表的配置项和数据
+        option = {
+            backgroundColor: 'rgba(48, 48, 48, 1)',
+            animationDuration: 10000,
+            color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00', '#00DDFF', '#800080', '#FF4500', '#00FFFF', '#ADFF2F', '#FFB6C1', '#696969',],
+            title: {
+                text: 'Public topic changes for Wuhan COVID-19 (weekly)',
+                top: '30%',
+                right: '20%',
+                textStyle: {
+                    fontSize: '28px',
+                    fontFamily: 'Times New Roman',
+                    color: 'white'
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                top: 'top',
+                left: 'center',
+                data: ['Hospital, Isolation, Infection, Doctor, Fever',
+                    'Lockdown, Teacher, Return home, Colleague, Off work',
+                    'Virus, United States, Risk, economy, Health',
+                    'Encouragement, Heroes, Anti-epidemic, Gratitude, Tribute',
+                    'Hope, Masks, Lockdown, Safety, Family',
+                    'Lockdown, Home, Life, Work, New Year',
+                    'Cases, New additions, Deaths, Cumulative number',
+                    'Lockdown, Home, End, Happy, Hope, Like',
+                    'Spring, Anticipation, Cherry blossoms, Recovery',
+                    'Hospital, Patients, Supplies, Support, Donation',
+                    'Masks, Proof, Epidemic prevention, Lockdown, Health code',
+                    'Community, Volunteers, Group purchases, Delivery, Vegetables'],
+                textStyle: {
+                    color: '#FFFFFF', // 设置图例文字颜色为白色
+                    fontFamily: 'Times New Roman', // 设置图例文字使用Times New Roman字体
+                }
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['2019-12-01',
+                        '2019-12-15',
+                        '2019-12-29',
+                        '2020-01-05',
+                        '2020-01-12',
+                        '2020-01-19',
+                        '2020-01-26',
+                        '2020-02-02',
+                        '2020-02-09',
+                        '2020-02-16',
+                        '2020-02-23',
+                        '2020-03-01',
+                        '2020-03-08',
+                        '2020-03-15',
+                        '2020-03-22',
+                        '2020-03-29',
+                        '2020-04-05',
+                        '2020-04-12',
+                        '2020-04-19',
+                        '2020-04-26']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: 'Hospital, Isolation, Infection, Doctor, Fever',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 255, 165)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(1, 191, 236)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [1,
+                        0,
+                        5,
+                        3,
+                        4,
+                        251,
+                        215,
+                        374,
+                        220,
+                        133,
+                        97,
+                        83,
+                        56,
+                        55,
+                        44,
+                        51,
+                        49,
+                        31,
+                        34,
+                        22]
+                },
+                {
+                    name: 'Lockdown, Teacher, Return home, Colleague, Off work',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(0, 221, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(77, 119, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [1,
+                        0,
+                        24,
+                        2,
+                        1,
+                        119,
+                        211,
+                        141,
+                        279,
+                        269,
+                        271,
+                        265,
+                        256,
+                        242,
+                        206,
+                        161,
+                        207,
+                        134,
+                        95,
+                        80]
+                },
+                {
+                    name: 'Virus, United States, Risk, economy, Health',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(55, 162, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(116, 21, 219)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        1,
+                        4,
+                        0,
+                        1,
+                        129,
+                        116,
+                        96,
+                        99,
+                        99,
+                        104,
+                        107,
+                        159,
+                        172,
+                        144,
+                        153,
+                        151,
+                        116,
+                        124,
+                        95]
+                },
+                {
+                    name: 'Encouragement, Heroes, Anti-epidemic, Gratitude, Tribute',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 0, 135)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(135, 0, 157)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        3,
+                        1,
+                        1,
+                        576,
+                        387,
+                        498,
+                        413,
+                        314,
+                        368,
+                        268,
+                        332,
+                        406,
+                        240,
+                        718,
+                        354,
+                        120,
+                        68,
+                        85]
+                },
+                {
+                    name: 'Hope, Masks, Lockdown, Safety, Family',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 191, 0)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(224, 62, 76)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        14,
+                        3,
+                        8,
+                        1203,
+                        375,
+                        578,
+                        357,
+                        252,
+                        221,
+                        154,
+                        152,
+                        136,
+                        127,
+                        113,
+                        158,
+                        70,
+                        54,
+                        35]
+                },
+                {
+                    name: 'Lockdown, Home, Life, Work, New Year',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(0, 221, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(77, 119, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        19,
+                        1,
+                        2,
+                        882,
+                        559,
+                        318,
+                        296,
+                        236,
+                        247,
+                        215,
+                        208,
+                        182,
+                        175,
+                        143,
+                        228,
+                        85,
+                        82,
+                        78]
+                },
+                {
+                    name: 'Cases, New additions, Deaths, Cumulative number',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 0, 128)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 0, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0, 0, 10, 1, 2, 107, 82, 86, 79, 68, 89, 75, 77, 121, 70, 58, 49, 64, 63, 50]
+                },
+                {
+                    name: 'Lockdown, Home, End, Happy, Hope, Like',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 69, 0)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 215, 0)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        7,
+                        1,
+                        1,
+                        278,
+                        470,
+                        380,
+                        483,
+                        426,
+                        537,
+                        437,
+                        447,
+                        366,
+                        264,
+                        228,
+                        344,
+                        204,
+                        153,
+                        88]
+                },
+                {
+                    name: 'Spring, Anticipation, Cherry blossoms, Recovery',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(0, 255, 255)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(0, 0, 255)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        8,
+                        0,
+                        0,
+                        144,
+                        295,
+                        274,
+                        322,
+                        332,
+                        365,
+                        333,
+                        429,
+                        518,
+                        422,
+                        263,
+                        1057,
+                        235,
+                        180,
+                        127]
+                },
+                {
+                    name: 'Hospital, Patients, Supplies, Support, Donation',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(173, 255, 47)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(0, 128, 0)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        3,
+                        1,
+                        1,
+                        343,
+                        258,
+                        223,
+                        213,
+                        205,
+                        155,
+                        141,
+                        137,
+                        145,
+                        87,
+                        56,
+                        69,
+                        41,
+                        40,
+                        49]
+                },
+                {
+                    name: 'Masks, Proof, Epidemic prevention, Lockdown, Health code',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 182, 193)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(135, 206, 235)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        1,
+                        3,
+                        5,
+                        279,
+                        128,
+                        123,
+                        140,
+                        116,
+                        102,
+                        84,
+                        183,
+                        218,
+                        191,
+                        139,
+                        244,
+                        109,
+                        100,
+                        82]
+                },
+                {
+                    name: 'Community, Volunteers, Group purchases, Delivery, Vegetables',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(105, 105, 105)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(192, 192, 192)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        118,
+                        144,
+                        157,
+                        236,
+                        384,
+                        360,
+                        288,
+                        226,
+                        172,
+                        138,
+                        91,
+                        110,
+                        63,
+                        52,
+                        27]
+                }
+            ]
+        };
+
+        option && stacked_chart.setOption(option);
+
+
+        option_pie = {
+            title: {
+                text: 'The dominant topics discussed on Weibo about COVID-19 in Wuhan',
+                // subtext: 'Fake Data',
+                left: 'center',
+                textStyle: {
+                    color: 'white',
+                    fontFamily: 'Times New Roman',
+                    fontSize: '14px'
+                }
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                show: false,
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Topic ',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [{
+                        "value": 0.258, 'name': 'Lockdown news and counts of cases and deaths'
+                    },
+                    { 'value': 0.184, 'name': 'Showing support for healthcare and frontline workers' },
+                    {
+                        'value': 0.357,
+                        'name': 'Stay home with family and Expectations for a bright future'
+                    },
+                    {
+                        'value': 0.145,
+                        'name': 'Containment and closure policies'
+                    },
+                    {
+                        'value': 0.06,
+                        'name': 'Living goods'
+                    }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        option_pie && pie_chart.setOption(option_pie);
+    </script>
+
+    <script>
+        const textParagraphs = [
+            'Utilizing machine learning for thematic analysis of Weibo Tweets, we identified 12 key public concerns in Wuhan.  The focus initially lay on <span class="highlight">infection prevention and family protection</span>.',
+            'As containment policy proved effective, public <span class="highlight">confidence</span> in government policies grew, shifting attention towards life normalization and acknowledging the efficacy of <span class="highlight">lockdown policy</span>.',
+            'The leading theme, "Staying home with family and expecting a bright future" highlights <span class="highlight">widespread support</span> for social distancing policies.'
+        ];
+        let currentParagraphIndex = 0;
+
+        function updateTextContent() {
+            const textContent = document.getElementById('text-content');
+            textContent.innerHTML = textParagraphs[currentParagraphIndex]; // 使用 innerHTML 来解析 HTML 标签
+        }
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            if (currentParagraphIndex > 0) {
+                currentParagraphIndex--;
+                updateTextContent();
+            }
+        });
+
+        document.getElementById('next-button').addEventListener('click', () => {
+            if (currentParagraphIndex < textParagraphs.length - 1) {
+                currentParagraphIndex++;
+                updateTextContent();
+            } else {
+                // 当已经是最后一段文本时，再次点击跳转到指定页面
+                window.location.href = '../Part4/shanghai.html';
+            }
+        });
+        // 初始化显示第一个段落
+        updateTextContent();
+    </script>
+
+</body>
+
+</html>

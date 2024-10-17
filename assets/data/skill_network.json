@@ -1,0 +1,119 @@
+{
+    "categories": [
+        {
+            "name": "Computer",
+            "base": "Computer"
+        },
+        {
+            "name": "Research Methods",
+            "base": "Research Methods"
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Computer",
+            "value": 15
+        },
+        {
+            "name": "Research Methods",
+            "value": 15
+        },
+        {
+            "name": "Data Analysis",
+            "value": 10
+        },
+        {
+            "name": "Graphics",
+            "value": 10
+        },
+        {
+            "name": "Modeling and Simulation",
+            "value": 10
+        },
+        {
+            "name": "Python",
+            "value": 10
+        },
+        {
+            "name": "TensorFlow",
+            "value": 5
+        },
+        {
+            "name": "Pytorch",
+            "value": 5
+        },
+        {
+            "name": "R",
+            "value": 10
+        },
+        {
+            "name": "JavaScript",
+            "value": 10
+        },
+        {
+            "name": "HTML",
+            "value": 10
+        },
+        {
+            "name": "Julia",
+            "value": 10
+        },
+        {
+            "name": "ArcGIS",
+            "value": 10
+        },
+        {
+            "name": "NetLogo",
+            "value": 10
+        },
+        {
+            "name": "GEE",
+            "value": 10
+        },
+        {
+            "name": "Machine Learning",
+            "value": 10
+        },
+        {
+            "name": "Deep Learning",
+            "value": 10
+        },
+        {
+            "name": "Complex Networks",
+            "value": 10
+        },
+        {
+            "name": "Spatial Algorithms",
+            "value": 10
+        },
+        {
+            "name": "Web Spider & Geospatial Web Data Visualization",
+            "value": 10
+        },
+        {
+            "name": "Advanced Statistics",
+            "value": 10
+        }
+    ],
+    "links":[
+        {"source": "Data Analysis", "target": "Computer"},
+        {"source": "Graphics", "target": "Computer"},
+        {"source": "Modeling and Simulation", "target": "Computer"},
+        {"source": "Python", "target": "Computer"},
+        {"source": "TensorFlow", "target": "Python"},
+        {"source": "Pytorch", "target": "Python"},
+        {"source": "R", "target": "Computer"},
+        {"source": "JavaScript", "target": "Computer"},
+        {"source": "HTML", "target": "Computer"},
+        {"source": "Julia", "target": "Computer"},
+        {"source": "ArcGIS", "target": "Computer"},
+        {"source": "NetLogo", "target": "Computer"},
+        {"source": "GEE", "target": "Computer"},
+        {"source": "Machine Learning", "target": "Research Methods"},
+        {"source": "Deep Learning", "target": "Research Methods"},
+        {"source": "Complex Networks", "target": "Research Methods"},
+        {"source": "Spatial Algorithms", "target": "Research Methods"},
+        {"source": "Web Spider & Geospatial Web Data Visualization", "target": "Research Methods"},
+        {"source": "Advanced Statistics", "target": "Research Methods"}
+    ]
+}

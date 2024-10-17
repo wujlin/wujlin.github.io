@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://academic-demo.netlify.app/post/jupyter/ -->
+<html lang="en-us">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="generator" content="Wowchemy 5.7.0 for Hugo">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="preload" as="style" href="./Display Jupyter Notebooks with Academic _ Academic_files/css2">
+    <link rel="stylesheet" href="./Display Jupyter Notebooks with Academic _ Academic_files/css2" media="all"
+        onload="this.media=&quot;all&quot;">
+    <link rel="stylesheet"
+        href="./Display Jupyter Notebooks with Academic _ Academic_files/vendor-bundle.min.047268c6dd09ad74ba54a0ba71837064.css"
+        media="all" onload="this.media=&quot;all&quot;">
+    <link rel="stylesheet" href="./Display Jupyter Notebooks with Academic _ Academic_files/academicons.min.css"
+        integrity="sha512-KlJCpRsLf+KKu2VQa5vmRuClRFjxc5lXO03ixZt82HZUk41+1I0bD8KBSA0fY290ayMfWYI9udIqeOWSu1/uZg=="
+        crossorigin="anonymous" media="all" onload="this.media=&quot;all&quot;">
+    <link rel="stylesheet"
+        href="./Display Jupyter Notebooks with Academic _ Academic_files/wowchemy.042e26407c9e383d96a1f26d6787c686.css">
+    <link rel="stylesheet" href="./Display Jupyter Notebooks with Academic _ Academic_files/github-light.min.css"
+        title="hl-light" media="all" onload="this.media=&quot;all&quot;" disabled="">
+    <link rel="stylesheet" href="./Display Jupyter Notebooks with Academic _ Academic_files/dracula.min.css"
+        title="hl-dark" media="all" onload="this.media=&quot;all&quot;">
+    <meta name="author" content="Zhihang Liu 刘志航">
+    <meta name="description" content="Describe the top-down model on the epidemic network">
+    <!-- <link rel="alternate" hreflang="en-us" href="https://academic-demo.netlify.app/post/jupyter/"> -->
+    <link rel="canonical" href="https://academic-demo.netlify.app/post/jupyter/">
+    <link rel="manifest" href="https://academic-demo.netlify.app/manifest.webmanifest">
+    <link rel="icon" type="image/png"
+        href="https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png">
+    <link rel="apple-touch-icon" type="image/png"
+        href="https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png">
+    <meta name="theme-color" content="#1565c0">
+    <!-- <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@wowchemy">
+    <meta property="twitter:creator" content="@wowchemy">
+    <meta property="twitter:image" content="https://academic-demo.netlify.app/post/jupyter/featured.png"> -->
+    <meta property="og:site_name" content="Zhihang Liu 刘志航">
+    <meta property="og:url" content="https://academic-demo.netlify.app/post/jupyter/">
+    <meta property="og:title" content="Display Jupyter Notebooks with Academic | Academic">
+    <meta property="og:description" content="Learn how to blog in Academic using Jupyter notebooks">
+    <meta property="og:image" content="https://academic-demo.netlify.app/post/jupyter/featured.png">
+    <meta property="og:locale" content="en-us">
+    <meta property="article:published_time" content="2023-04-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2023-04-06T17:41:19+01:00">
+    <script
+        type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://academic-demo.netlify.app/post/jupyter/"},"headline":"Display Jupyter Notebooks with Academic","image":["https://academic-demo.netlify.app/post/jupyter/featured.png"],"datePublished":"2019-02-05T00:00:00Z","dateModified":"2022-10-02T17:41:19+01:00","author":{"@type":"Person","name":"Alice Wu 吳恩達"},"publisher":{"@type":"Organization","name":"Academic","logo":{"@type":"ImageObject","url":"https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png"}},"description":"Learn how to blog in Academic using Jupyter notebooks"}</script>
+    <title>Display Jupyter Notebooks with Academic | Academic</title>
+    <style type="text/css">
+        .medium-zoom-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity .3s;
+            will-change: opacity
+        }
+
+        .medium-zoom--opened .medium-zoom-overlay {
+            cursor: pointer;
+            cursor: zoom-out;
+            opacity: 1
+        }
+
+        .medium-zoom-image {
+            cursor: pointer;
+            cursor: zoom-in;
+            transition: transform .3s cubic-bezier(.2, 0, .2, 1) !important
+        }
+
+        .medium-zoom-image--hidden {
+            visibility: hidden
+        }
+
+        .medium-zoom-image--opened {
+            position: relative;
+            cursor: pointer;
+            cursor: zoom-out;
+            will-change: transform
+        }
+    </style>
+    <link rel="stylesheet" href="chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/styles/webpage.css">
+    <style>
+        @font-face {
+            font-family: KaTeX_AMS;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.73ea273a72f4aca30ca5.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.d562e886c52f12660a41.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Caligraphic;
+            font-style: normal;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.a1abf90dfd72792a577a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.d757c535a2e5902f1325.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.7489a2fbfb9bfe704420.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Caligraphic;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.d6484fce1ef428d5bd94.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.db074fa22cf224af93d7.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.7e873d3833eb108a0758.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Fraktur;
+            font-style: normal;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.931d67ea207ab37ee693.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.354501bac435c3264834.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.4c761b3711973ab04edf.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Fraktur;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.172d3529b26f8cedef6b.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.6fdf0ac577be0ba82a4c.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.ed305b5434865e06ffde.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Main;
+            font-style: normal;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.39890742bc957b368704.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.0c3b8929d377c0e9b2f3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Main;
+            font-style: italic;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.20f389c4120be058d80a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.428978dc7837d46de091.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.828abcb200061cffbaae.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Main;
+            font-style: italic;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fe2176f79edaa716e621.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fd947498bc16392e76c2.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fa675e5e4bec9eb250b6.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Main;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.f650f111a3b890d116f1.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.4f35fbcc9ee8614c2bcc.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Math;
+            font-style: italic;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.dcbcbd93bac0470b462d.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.3f07ed67f06c720120ce.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.bf2d440b3a42ea78a998.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Math;
+            font-style: italic;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.6d3d25f4820d0da8f01f.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.96759856b4e70f3a8338.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.8a5f936332e8028c7278.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: "KaTeX_SansSerif";
+            font-style: normal;
+            font-weight: 700;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.95591a929f0d32aa282a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.b9cd458ac6d5889ff9c3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.5b49f4993ae22d7975b4.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: "KaTeX_SansSerif";
+            font-style: italic;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.7d393d382f3e7fb1c637.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.8d593cfaa96238d5e2f8.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.b257a18c016f37ee4543.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: "KaTeX_SansSerif";
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.cd5e231e0cc53b2cb2c0.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.02271ec5cb9f5b4588ac.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.2f7bc363fc5424ebda59.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Script;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.c81d1b2a4b75d3eded60.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.073b3402d036714b4370.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.fc9ba5249878cd8f8d88.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Size1;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.6eec866c69313624be60.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.0108e89c9003e8c14ea3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.6de7d4b539221a49e9e2.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Size2;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.2960900c4f271311eb36.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.3a99e70aee4076660d38.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.57f5c1837853986ea1db.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Size3;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.8d6b6822586eea3d3b20.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Size4;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.e418bf257af1052628d8.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.aeffd8025cba3647f1a6.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.4ad7c7e8bb8d10a34bb7.ttf) format("truetype")
+        }
+
+        @font-face {
+            font-family: KaTeX_Typewriter;
+            font-style: normal;
+            font-weight: 400;
+            src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.c295e7f71970f03c0549.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.4c6b94fd1d07f8beff7c.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.c5c02d763c89380dcb4e.ttf) format("truetype")
+        }
+
+        .katex {
+            text-rendering: auto;
+            font: normal 1.21em KaTeX_Main, Times New Roman, serif;
+            line-height: 1.2;
+            text-indent: 0
+        }
+
+        .katex * {
+            -ms-high-contrast-adjust: none !important;
+            border-color: currentColor
+        }
+
+        .katex .katex-version:after {
+            content: "0.16.7"
+        }
+
+        .katex .katex-mathml {
+            clip: rect(1px, 1px, 1px, 1px);
+            border: 0;
+            height: 1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px
+        }
+
+        .katex .katex-html>.newline {
+            display: block
+        }
+
+        .katex .base {
+            position: relative;
+            white-space: nowrap;
+            width: -webkit-min-content;
+            width: -moz-min-content;
+            width: min-content
+        }
+
+        .katex .base,
+        .katex .strut {
+            display: inline-block
+        }
+
+        .katex .textbf {
+            font-weight: 700
+        }
+
+        .katex .textit {
+            font-style: italic
+        }
+
+        .katex .textrm {
+            font-family: KaTeX_Main
+        }
+
+        .katex .textsf {
+            font-family: KaTeX_SansSerif
+        }
+
+        .katex .texttt {
+            font-family: KaTeX_Typewriter
+        }
+
+        .katex .mathnormal {
+            font-family: KaTeX_Math;
+            font-style: italic
+        }
+
+        .katex .mathit {
+            font-family: KaTeX_Main;
+            font-style: italic
+        }
+
+        .katex .mathrm {
+            font-style: normal
+        }
+
+        .katex .mathbf {
+            font-family: KaTeX_Main;
+            font-weight: 700
+        }
+
+        .katex .boldsymbol {
+            font-family: KaTeX_Math;
+            font-style: italic;
+            font-weight: 700
+        }
+
+        .katex .amsrm,
+        .katex .mathbb,
+        .katex .textbb {
+            font-family: KaTeX_AMS
+        }
+
+        .katex .mathcal {
+            font-family: KaTeX_Caligraphic
+        }
+
+        .katex .mathfrak,
+        .katex .textfrak {
+            font-family: KaTeX_Fraktur
+        }
+
+        .katex .mathtt {
+            font-family: KaTeX_Typewriter
+        }
+
+        .katex .mathscr,
+        .katex .textscr {
+            font-family: KaTeX_Script
+        }
+
+        .katex .mathsf,
+        .katex .textsf {
+            font-family: KaTeX_SansSerif
+        }
+
+        .katex .mathboldsf,
+        .katex .textboldsf {
+            font-family: KaTeX_SansSerif;
+            font-weight: 700
+        }
+
+        .katex .mathitsf,
+        .katex .textitsf {
+            font-family: KaTeX_SansSerif;
+            font-style: italic
+        }
+
+        .katex .mainrm {
+            font-family: KaTeX_Main;
+            font-style: normal
+        }
+
+        .katex .vlist-t {
+            border-collapse: collapse;
+            display: inline-table;
+            table-layout: fixed
+        }
+
+        .katex .vlist-r {
+            display: table-row
+        }
+
+        .katex .vlist {
+            display: table-cell;
+            position: relative;
+            vertical-align: bottom
+        }
+
+        .katex .vlist>span {
+            display: block;
+            height: 0;
+            position: relative
+        }
+
+        .katex .vlist>span>span {
+            display: inline-block
+        }
+
+        .katex .vlist>span>.pstrut {
+            overflow: hidden;
+            width: 0
+        }
+
+        .katex .vlist-t2 {
+            margin-right: -2px
+        }
+
+        .katex .vlist-s {
+            display: table-cell;
+            font-size: 1px;
+            min-width: 2px;
+            vertical-align: bottom;
+            width: 2px
+        }
+
+        .katex .vbox {
+            align-items: baseline;
+            display: inline-flex;
+            flex-direction: column
+        }
+
+        .katex .hbox {
+            width: 100%
+        }
+
+        .katex .hbox,
+        .katex .thinbox {
+            display: inline-flex;
+            flex-direction: row
+        }
+
+        .katex .thinbox {
+            max-width: 0;
+            width: 0
+        }
+
+        .katex .msupsub {
+            text-align: left
+        }
+
+        .katex .mfrac>span>span {
+            text-align: center
+        }
+
+        .katex .mfrac .frac-line {
+            border-bottom-style: solid;
+            display: inline-block;
+            width: 100%
+        }
+
+        .katex .hdashline,
+        .katex .hline,
+        .katex .mfrac .frac-line,
+        .katex .overline .overline-line,
+        .katex .rule,
+        .katex .underline .underline-line {
+            min-height: 1px
+        }
+
+        .katex .mspace {
+            display: inline-block
+        }
+
+        .katex .clap,
+        .katex .llap,
+        .katex .rlap {
+            position: relative;
+            width: 0
+        }
+
+        .katex .clap>.inner,
+        .katex .llap>.inner,
+        .katex .rlap>.inner {
+            position: absolute
+        }
+
+        .katex .clap>.fix,
+        .katex .llap>.fix,
+        .katex .rlap>.fix {
+            display: inline-block
+        }
+
+        .katex .llap>.inner {
+            right: 0
+        }
+
+        .katex .clap>.inner,
+        .katex .rlap>.inner {
+            left: 0
+        }
+
+        .katex .clap>.inner>span {
+            margin-left: -50%;
+            margin-right: 50%
+        }
+
+        .katex .rule {
+            border: 0 solid;
+            display: inline-block;
+            position: relative
+        }
+
+        .katex .hline,
+        .katex .overline .overline-line,
+        .katex .underline .underline-line {
+            border-bottom-style: solid;
+            display: inline-block;
+            width: 100%
+        }
+
+        .katex .hdashline {
+            border-bottom-style: dashed;
+            display: inline-block;
+            width: 100%
+        }
+
+        .katex .sqrt>.root {
+            margin-left: .27777778em;
+            margin-right: -.55555556em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size1,
+        .katex .sizing.reset-size1.size1 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size2,
+        .katex .sizing.reset-size1.size2 {
+            font-size: 1.2em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size3,
+        .katex .sizing.reset-size1.size3 {
+            font-size: 1.4em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size4,
+        .katex .sizing.reset-size1.size4 {
+            font-size: 1.6em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size5,
+        .katex .sizing.reset-size1.size5 {
+            font-size: 1.8em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size6,
+        .katex .sizing.reset-size1.size6 {
+            font-size: 2em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size7,
+        .katex .sizing.reset-size1.size7 {
+            font-size: 2.4em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size8,
+        .katex .sizing.reset-size1.size8 {
+            font-size: 2.88em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size9,
+        .katex .sizing.reset-size1.size9 {
+            font-size: 3.456em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size10,
+        .katex .sizing.reset-size1.size10 {
+            font-size: 4.148em
+        }
+
+        .katex .fontsize-ensurer.reset-size1.size11,
+        .katex .sizing.reset-size1.size11 {
+            font-size: 4.976em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size1,
+        .katex .sizing.reset-size2.size1 {
+            font-size: .83333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size2,
+        .katex .sizing.reset-size2.size2 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size3,
+        .katex .sizing.reset-size2.size3 {
+            font-size: 1.16666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size4,
+        .katex .sizing.reset-size2.size4 {
+            font-size: 1.33333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size5,
+        .katex .sizing.reset-size2.size5 {
+            font-size: 1.5em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size6,
+        .katex .sizing.reset-size2.size6 {
+            font-size: 1.66666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size7,
+        .katex .sizing.reset-size2.size7 {
+            font-size: 2em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size8,
+        .katex .sizing.reset-size2.size8 {
+            font-size: 2.4em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size9,
+        .katex .sizing.reset-size2.size9 {
+            font-size: 2.88em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size10,
+        .katex .sizing.reset-size2.size10 {
+            font-size: 3.45666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size2.size11,
+        .katex .sizing.reset-size2.size11 {
+            font-size: 4.14666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size1,
+        .katex .sizing.reset-size3.size1 {
+            font-size: .71428571em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size2,
+        .katex .sizing.reset-size3.size2 {
+            font-size: .85714286em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size3,
+        .katex .sizing.reset-size3.size3 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size4,
+        .katex .sizing.reset-size3.size4 {
+            font-size: 1.14285714em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size5,
+        .katex .sizing.reset-size3.size5 {
+            font-size: 1.28571429em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size6,
+        .katex .sizing.reset-size3.size6 {
+            font-size: 1.42857143em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size7,
+        .katex .sizing.reset-size3.size7 {
+            font-size: 1.71428571em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size8,
+        .katex .sizing.reset-size3.size8 {
+            font-size: 2.05714286em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size9,
+        .katex .sizing.reset-size3.size9 {
+            font-size: 2.46857143em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size10,
+        .katex .sizing.reset-size3.size10 {
+            font-size: 2.96285714em
+        }
+
+        .katex .fontsize-ensurer.reset-size3.size11,
+        .katex .sizing.reset-size3.size11 {
+            font-size: 3.55428571em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size1,
+        .katex .sizing.reset-size4.size1 {
+            font-size: .625em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size2,
+        .katex .sizing.reset-size4.size2 {
+            font-size: .75em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size3,
+        .katex .sizing.reset-size4.size3 {
+            font-size: .875em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size4,
+        .katex .sizing.reset-size4.size4 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size5,
+        .katex .sizing.reset-size4.size5 {
+            font-size: 1.125em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size6,
+        .katex .sizing.reset-size4.size6 {
+            font-size: 1.25em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size7,
+        .katex .sizing.reset-size4.size7 {
+            font-size: 1.5em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size8,
+        .katex .sizing.reset-size4.size8 {
+            font-size: 1.8em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size9,
+        .katex .sizing.reset-size4.size9 {
+            font-size: 2.16em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size10,
+        .katex .sizing.reset-size4.size10 {
+            font-size: 2.5925em
+        }
+
+        .katex .fontsize-ensurer.reset-size4.size11,
+        .katex .sizing.reset-size4.size11 {
+            font-size: 3.11em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size1,
+        .katex .sizing.reset-size5.size1 {
+            font-size: .55555556em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size2,
+        .katex .sizing.reset-size5.size2 {
+            font-size: .66666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size3,
+        .katex .sizing.reset-size5.size3 {
+            font-size: .77777778em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size4,
+        .katex .sizing.reset-size5.size4 {
+            font-size: .88888889em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size5,
+        .katex .sizing.reset-size5.size5 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size6,
+        .katex .sizing.reset-size5.size6 {
+            font-size: 1.11111111em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size7,
+        .katex .sizing.reset-size5.size7 {
+            font-size: 1.33333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size8,
+        .katex .sizing.reset-size5.size8 {
+            font-size: 1.6em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size9,
+        .katex .sizing.reset-size5.size9 {
+            font-size: 1.92em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size10,
+        .katex .sizing.reset-size5.size10 {
+            font-size: 2.30444444em
+        }
+
+        .katex .fontsize-ensurer.reset-size5.size11,
+        .katex .sizing.reset-size5.size11 {
+            font-size: 2.76444444em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size1,
+        .katex .sizing.reset-size6.size1 {
+            font-size: .5em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size2,
+        .katex .sizing.reset-size6.size2 {
+            font-size: .6em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size3,
+        .katex .sizing.reset-size6.size3 {
+            font-size: .7em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size4,
+        .katex .sizing.reset-size6.size4 {
+            font-size: .8em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size5,
+        .katex .sizing.reset-size6.size5 {
+            font-size: .9em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size6,
+        .katex .sizing.reset-size6.size6 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size7,
+        .katex .sizing.reset-size6.size7 {
+            font-size: 1.2em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size8,
+        .katex .sizing.reset-size6.size8 {
+            font-size: 1.44em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size9,
+        .katex .sizing.reset-size6.size9 {
+            font-size: 1.728em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size10,
+        .katex .sizing.reset-size6.size10 {
+            font-size: 2.074em
+        }
+
+        .katex .fontsize-ensurer.reset-size6.size11,
+        .katex .sizing.reset-size6.size11 {
+            font-size: 2.488em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size1,
+        .katex .sizing.reset-size7.size1 {
+            font-size: .41666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size2,
+        .katex .sizing.reset-size7.size2 {
+            font-size: .5em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size3,
+        .katex .sizing.reset-size7.size3 {
+            font-size: .58333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size4,
+        .katex .sizing.reset-size7.size4 {
+            font-size: .66666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size5,
+        .katex .sizing.reset-size7.size5 {
+            font-size: .75em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size6,
+        .katex .sizing.reset-size7.size6 {
+            font-size: .83333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size7,
+        .katex .sizing.reset-size7.size7 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size8,
+        .katex .sizing.reset-size7.size8 {
+            font-size: 1.2em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size9,
+        .katex .sizing.reset-size7.size9 {
+            font-size: 1.44em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size10,
+        .katex .sizing.reset-size7.size10 {
+            font-size: 1.72833333em
+        }
+
+        .katex .fontsize-ensurer.reset-size7.size11,
+        .katex .sizing.reset-size7.size11 {
+            font-size: 2.07333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size1,
+        .katex .sizing.reset-size8.size1 {
+            font-size: .34722222em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size2,
+        .katex .sizing.reset-size8.size2 {
+            font-size: .41666667em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size3,
+        .katex .sizing.reset-size8.size3 {
+            font-size: .48611111em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size4,
+        .katex .sizing.reset-size8.size4 {
+            font-size: .55555556em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size5,
+        .katex .sizing.reset-size8.size5 {
+            font-size: .625em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size6,
+        .katex .sizing.reset-size8.size6 {
+            font-size: .69444444em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size7,
+        .katex .sizing.reset-size8.size7 {
+            font-size: .83333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size8,
+        .katex .sizing.reset-size8.size8 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size9,
+        .katex .sizing.reset-size8.size9 {
+            font-size: 1.2em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size10,
+        .katex .sizing.reset-size8.size10 {
+            font-size: 1.44027778em
+        }
+
+        .katex .fontsize-ensurer.reset-size8.size11,
+        .katex .sizing.reset-size8.size11 {
+            font-size: 1.72777778em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size1,
+        .katex .sizing.reset-size9.size1 {
+            font-size: .28935185em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size2,
+        .katex .sizing.reset-size9.size2 {
+            font-size: .34722222em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size3,
+        .katex .sizing.reset-size9.size3 {
+            font-size: .40509259em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size4,
+        .katex .sizing.reset-size9.size4 {
+            font-size: .46296296em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size5,
+        .katex .sizing.reset-size9.size5 {
+            font-size: .52083333em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size6,
+        .katex .sizing.reset-size9.size6 {
+            font-size: .5787037em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size7,
+        .katex .sizing.reset-size9.size7 {
+            font-size: .69444444em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size8,
+        .katex .sizing.reset-size9.size8 {
+            font-size: .83333333em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size9,
+        .katex .sizing.reset-size9.size9 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size10,
+        .katex .sizing.reset-size9.size10 {
+            font-size: 1.20023148em
+        }
+
+        .katex .fontsize-ensurer.reset-size9.size11,
+        .katex .sizing.reset-size9.size11 {
+            font-size: 1.43981481em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size1,
+        .katex .sizing.reset-size10.size1 {
+            font-size: .24108004em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size2,
+        .katex .sizing.reset-size10.size2 {
+            font-size: .28929605em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size3,
+        .katex .sizing.reset-size10.size3 {
+            font-size: .33751205em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size4,
+        .katex .sizing.reset-size10.size4 {
+            font-size: .38572806em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size5,
+        .katex .sizing.reset-size10.size5 {
+            font-size: .43394407em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size6,
+        .katex .sizing.reset-size10.size6 {
+            font-size: .48216008em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size7,
+        .katex .sizing.reset-size10.size7 {
+            font-size: .57859209em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size8,
+        .katex .sizing.reset-size10.size8 {
+            font-size: .69431051em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size9,
+        .katex .sizing.reset-size10.size9 {
+            font-size: .83317261em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size10,
+        .katex .sizing.reset-size10.size10 {
+            font-size: 1em
+        }
+
+        .katex .fontsize-ensurer.reset-size10.size11,
+        .katex .sizing.reset-size10.size11 {
+            font-size: 1.19961427em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size1,
+        .katex .sizing.reset-size11.size1 {
+            font-size: .20096463em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size2,
+        .katex .sizing.reset-size11.size2 {
+            font-size: .24115756em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size3,
+        .katex .sizing.reset-size11.size3 {
+            font-size: .28135048em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size4,
+        .katex .sizing.reset-size11.size4 {
+            font-size: .32154341em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size5,
+        .katex .sizing.reset-size11.size5 {
+            font-size: .36173633em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size6,
+        .katex .sizing.reset-size11.size6 {
+            font-size: .40192926em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size7,
+        .katex .sizing.reset-size11.size7 {
+            font-size: .48231511em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size8,
+        .katex .sizing.reset-size11.size8 {
+            font-size: .57877814em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size9,
+        .katex .sizing.reset-size11.size9 {
+            font-size: .69453376em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size10,
+        .katex .sizing.reset-size11.size10 {
+            font-size: .83360129em
+        }
+
+        .katex .fontsize-ensurer.reset-size11.size11,
+        .katex .sizing.reset-size11.size11 {
+            font-size: 1em
+        }
+
+        .katex .delimsizing.size1 {
+            font-family: KaTeX_Size1
+        }
+
+        .katex .delimsizing.size2 {
+            font-family: KaTeX_Size2
+        }
+
+        .katex .delimsizing.size3 {
+            font-family: KaTeX_Size3
+        }
+
+        .katex .delimsizing.size4 {
+            font-family: KaTeX_Size4
+        }
+
+        .katex .delimsizing.mult .delim-size1>span {
+            font-family: KaTeX_Size1
+        }
+
+        .katex .delimsizing.mult .delim-size4>span {
+            font-family: KaTeX_Size4
+        }
+
+        .katex .nulldelimiter {
+            display: inline-block;
+            width: .12em
+        }
+
+        .katex .delimcenter,
+        .katex .op-symbol {
+            position: relative
+        }
+
+        .katex .op-symbol.small-op {
+            font-family: KaTeX_Size1
+        }
+
+        .katex .op-symbol.large-op {
+            font-family: KaTeX_Size2
+        }
+
+        .katex .accent>.vlist-t,
+        .katex .op-limits>.vlist-t {
+            text-align: center
+        }
+
+        .katex .accent .accent-body {
+            position: relative
+        }
+
+        .katex .accent .accent-body:not(.accent-full) {
+            width: 0
+        }
+
+        .katex .overlay {
+            display: block
+        }
+
+        .katex .mtable .vertical-separator {
+            display: inline-block;
+            min-width: 1px
+        }
+
+        .katex .mtable .arraycolsep {
+            display: inline-block
+        }
+
+        .katex .mtable .col-align-c>.vlist-t {
+            text-align: center
+        }
+
+        .katex .mtable .col-align-l>.vlist-t {
+            text-align: left
+        }
+
+        .katex .mtable .col-align-r>.vlist-t {
+            text-align: right
+        }
+
+        .katex .svg-align {
+            text-align: left
+        }
+
+        .katex svg {
+            fill: currentColor;
+            stroke: currentColor;
+            fill-rule: nonzero;
+            fill-opacity: 1;
+            stroke-width: 1;
+            stroke-linecap: butt;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 4;
+            stroke-dasharray: none;
+            stroke-dashoffset: 0;
+            stroke-opacity: 1;
+            display: block;
+            height: inherit;
+            position: absolute;
+            width: 100%
+        }
+
+        .katex svg path {
+            stroke: none
+        }
+
+        .katex img {
+            border-style: none;
+            max-height: none;
+            max-width: none;
+            min-height: 0;
+            min-width: 0
+        }
+
+        .katex .stretchy {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            width: 100%
+        }
+
+        .katex .stretchy:after,
+        .katex .stretchy:before {
+            content: ""
+        }
+
+        .katex .hide-tail {
+            overflow: hidden;
+            position: relative;
+            width: 100%
+        }
+
+        .katex .halfarrow-left {
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            width: 50.2%
+        }
+
+        .katex .halfarrow-right {
+            overflow: hidden;
+            position: absolute;
+            right: 0;
+            width: 50.2%
+        }
+
+        .katex .brace-left {
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            width: 25.1%
+        }
+
+        .katex .brace-center {
+            left: 25%;
+            overflow: hidden;
+            position: absolute;
+            width: 50%
+        }
+
+        .katex .brace-right {
+            overflow: hidden;
+            position: absolute;
+            right: 0;
+            width: 25.1%
+        }
+
+        .katex .x-arrow-pad {
+            padding: 0 .5em
+        }
+
+        .katex .cd-arrow-pad {
+            padding: 0 .55556em 0 .27778em
+        }
+
+        .katex .mover,
+        .katex .munder,
+        .katex .x-arrow {
+            text-align: center
+        }
+
+        .katex .boxpad {
+            padding: 0 .3em
+        }
+
+        .katex .fbox,
+        .katex .fcolorbox {
+            border: .04em solid;
+            box-sizing: border-box
+        }
+
+        .katex .cancel-pad {
+            padding: 0 .2em
+        }
+
+        .katex .cancel-lap {
+            margin-left: -.2em;
+            margin-right: -.2em
+        }
+
+        .katex .sout {
+            border-bottom-style: solid;
+            border-bottom-width: .08em
+        }
+
+        .katex .angl {
+            border-right: .049em solid;
+            border-top: .049em solid;
+            box-sizing: border-box;
+            margin-right: .03889em
+        }
+
+        .katex .anglpad {
+            padding: 0 .03889em
+        }
+
+        .katex .eqn-num:before {
+            content: "(" counter(katexEqnNo) ")";
+            counter-increment: katexEqnNo
+        }
+
+        .katex .mml-eqn-num:before {
+            content: "(" counter(mmlEqnNo) ")";
+            counter-increment: mmlEqnNo
+        }
+
+        .katex .mtr-glue {
+            width: 50%
+        }
+
+        .katex .cd-vert-arrow {
+            display: inline-block;
+            position: relative
+        }
+
+        .katex .cd-label-left {
+            display: inline-block;
+            position: absolute;
+            right: calc(50% + .3em);
+            text-align: left
+        }
+
+        .katex .cd-label-right {
+            display: inline-block;
+            left: calc(50% + .3em);
+            position: absolute;
+            text-align: right
+        }
+
+        .katex-display {
+            display: block;
+            margin: 1em 0;
+            text-align: center
+        }
+
+        .katex-display>.katex {
+            display: block;
+            text-align: center;
+            white-space: nowrap
+        }
+
+        .katex-display>.katex>.katex-html {
+            display: block;
+            position: relative
+        }
+
+        .katex-display>.katex>.katex-html>.tag {
+            position: absolute;
+            right: 0
+        }
+
+        .katex-display.leqno>.katex>.katex-html>.tag {
+            left: 0;
+            right: auto
+        }
+
+        .katex-display.fleqn>.katex {
+            padding-left: 2em;
+            text-align: left
+        }
+
+        body {
+            counter-reset: katexEqnNo mmlEqnNo
+        }
+    </style>
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper dark"
+    data-wc-page-id="6e929dc84ed3ef80467b02e64cd2ed64" data-new-gr-c-s-check-loaded="14.1039.0"
+    data-gr-ext-installed="">
+    <script
+        src="./Display Jupyter Notebooks with Academic _ Academic_files/wowchemy-init.min.ec9d49ca50e4b80bdb08f0417a28ed84.js.下载"></script>
+    <aside class="search-modal" id="search">
+        <div class="container">
+            <section class="search-header">
+                <div class="row no-gutters justify-content-between mb-3">
+                    <div class="col-6">
+                        <h1>Search</h1>
+                    </div>
+                    <div class="col-6 col-search-close"><a class="js-search"
+                            href="https://academic-demo.netlify.app/post/jupyter/#" aria-label="Close"><i
+                                class="fas fa-times-circle text-muted" aria-hidden="true"></i></a></div>
+                </div>
+                <div id="search-box"><input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+                        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+                        aria-label="Search..."></div>
+            </section>
+            <section class="section-search-results">
+                <div id="search-hits"></div>
+            </section>
+        </div>
+    </aside>
+    <div class="page-header header--fixed headroom headroom--not-bottom headroom--pinned headroom--top">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+                <div class="container-xl">
+                    <div class="d-none d-lg-inline-flex"><a class="navbar-brand"
+                            href="https://academic-demo.netlify.app/">Academic</a></div><button type="button"
+                        class="navbar-toggler" data-toggle="collapse" data-target="#navbar-content"
+                        aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+                        <span><i class="fas fa-bars"></i></span></button>
+                    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none"><a class="navbar-brand"
+                            href="https://academic-demo.netlify.app/">Academic</a></div>
+                    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+                        <ul class="navbar-nav d-md-inline-flex">
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#about"><span>Home</span></a></li>
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#posts"><span>Posts</span></a></li>
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#projects"><span>Projects</span></a></li>
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#talks"><span>Talks</span></a></li>
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#featured"><span>Publications</span></a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link"
+                                    href="https://academic-demo.netlify.app/#contact"><span>Contact</span></a></li>
+                        </ul>
+                    </div>
+                    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+                        <li class="nav-item d-none d-lg-inline-flex"><a class="nav-link"
+                                href="https://twitter.com/GeorgeCushen" data-toggle="tooltip" data-placement="bottom"
+                                title="" target="_blank" rel="noopener" aria-label="Follow me on Twitter"
+                                data-original-title="Follow me on Twitter"><i class="fab fa-twitter"
+                                    aria-hidden="true"></i></a></li>
+                        <li class="nav-item"><a class="nav-link js-search"
+                                href="https://academic-demo.netlify.app/post/jupyter/#" aria-label="Search"><i
+                                    class="fas fa-search" aria-hidden="true"></i></a></li>
+                        <li class="nav-item dropdown theme-dropdown"><a
+                                href="https://academic-demo.netlify.app/post/jupyter/#" class="nav-link"
+                                data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences"><i
+                                    class="fas fa-moon" aria-hidden="true"></i></a>
+                            <div class="dropdown-menu"><a href="https://academic-demo.netlify.app/post/jupyter/#"
+                                    class="dropdown-item js-set-theme-light"><span>Light</span></a>
+                                <a href="https://academic-demo.netlify.app/post/jupyter/#"
+                                    class="dropdown-item js-set-theme-dark"><span>Dark</span></a>
+                                <a href="https://academic-demo.netlify.app/post/jupyter/#"
+                                    class="dropdown-item js-set-theme-auto dropdown-item-active"><span>Automatic</span></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    </div>
+    <div class="page-body">
+        <article class="article">
+            <div class="article-container pt-3">
+                <h1>Display Jupyter Notebooks with Academic</h1>
+                <p class="page-subtitle">Learn how to blog in Academic using Jupyter notebooks</p>
+                <div class="article-metadata">
+                    <div><span class="author-highlighted">Alice Wu 吳恩達</span></div><span class="article-date">Last
+                        updated on
+                        Oct 2, 2022</span>
+                    <span class="middot-divider"></span>
+                    <span class="article-reading-time">2 min read</span>
+                </div>
+            </div>
+            <div class="article-header article-container featured-image-wrapper mt-4 mb-4"
+                style="max-width:720px;max-height:313px">
+                <div style="position:relative"><img
+                        src="./Display Jupyter Notebooks with Academic _ Academic_files/featured_hub1daa031c2af6888ff37bd93eb033a1a_71549_720x2500_fit_q75_h2_lanczos_3.webp"
+                        width="720" height="313" alt="" class="featured-image"></div>
+            </div>
+            <div class="article-container">
+                <div class="article-style">
+                    <div class="highlight">
+                        <pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">Image</span>
+</span></span><span class="line"><span class="cl"><span class="n">Image</span><span class="p">(</span><span class="s1">'https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png'</span><span class="p">)</span>
+</span></span></code></pre><button class="btn btn-primary btn-copy-code">Copy</button>
+                    </div>
+                    <p></p>
+                    <figure>
+                        <div class="d-flex justify-content-center">
+                            <div class="w-100"><img
+                                    src="./Display Jupyter Notebooks with Academic _ Academic_files/index_1_0.png"
+                                    alt="png" loading="lazy" data-zoomable="" class="medium-zoom-image"></div>
+                        </div>
+                    </figure>
+                    <p></p>
+                    <div class="highlight">
+                        <pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">"Welcome to Academic!"</span><span class="p">)</span>
+</span></span></code></pre><button class="btn btn-primary btn-copy-code">Copy</button>
+                    </div>
+                    <pre><code>Welcome to Academic!
+</code><button class="btn btn-primary btn-copy-code">Copy</button></pre>
+                    <h2 id="install-python-and-jupyterlab">Install Python and JupyterLab</h2>
+                    <p><a href="https://www.anaconda.com/distribution/#download-section" target="_blank"
+                            rel="noopener">Install
+                            Anaconda</a> which includes Python 3 and JupyterLab.</p>
+                    <p>Alternatively, install JupyterLab with <code>pip3 install jupyterlab</code>.</p>
+                    <h2 id="create-or-upload-a-jupyter-notebook">Create or upload a Jupyter notebook</h2>
+                    <p>Run the following commands in your Terminal, substituting <code>&lt;MY-WEBSITE-FOLDER&gt;</code>
+                        and
+                        <code>&lt;SHORT-POST-TITLE&gt;</code> with the file path to your Academic website folder and a
+                        short title
+                        for your blog post (use hyphens instead of spaces), respectively:
+                    </p>
+                    <div class="highlight">
+                        <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p &lt;MY-WEBSITE-FOLDER&gt;/content/post/&lt;SHORT-POST-TITLE&gt;/
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> &lt;MY-WEBSITE-FOLDER&gt;/content/post/&lt;SHORT-POST-TITLE&gt;/
+</span></span><span class="line"><span class="cl">jupyter lab index.ipynb
+</span></span></code></pre><button class="btn btn-primary btn-copy-code">Copy</button>
+                    </div>
+                    <p>The <code>jupyter</code> command above will launch the JupyterLab editor, allowing us to add
+                        Academic
+                        metadata and write the content.</p>
+                    <h2 id="edit-your-post-metadata">Edit your post metadata</h2>
+                    <p>The first cell of your Jupter notebook will contain your post metadata (<a
+                            href="https://sourcethemes.com/academic/docs/front-matter/" target="_blank"
+                            rel="noopener">front
+                            matter</a>).</p>
+                    <p>In Jupter, choose <em>Markdown</em> as the type of the first cell and wrap your Academic metadata
+                        in three
+                        dashes, indicating that it is YAML front matter:</p>
+                    <div class="highlight">
+                        <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">title: My post's title
+</span></span><span class="line"><span class="cl">date: 2019-09-01
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Put any other Academic metadata here...
+</span></span><span class="line"><span class="cl">---
+</span></span></code></pre><button class="btn btn-primary btn-copy-code">Copy</button>
+                    </div>
+                    <p>Edit the metadata of your post, using the <a
+                            href="https://sourcethemes.com/academic/docs/managing-content" target="_blank"
+                            rel="noopener">documentation</a> as a guide to the available options.</p>
+                    <p>To set a <a href="https://sourcethemes.com/academic/docs/managing-content/#featured-image"
+                            target="_blank" rel="noopener">featured image</a>, place an image named
+                        <code>featured</code> into your post’s folder.</p>
+                    <p>For other tips, such as using math, see the guide on <a
+                            href="https://wowchemy.com/docs/content/writing-markdown-latex/" target="_blank"
+                            rel="noopener">writing
+                            content with Academic</a>.</p>
+                    <h2 id="convert-notebook-to-markdown">Convert notebook to Markdown</h2>
+                    <div class="highlight">
+                        <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">jupyter nbconvert index.ipynb --to markdown --NbConvertApp.output_files_dir<span class="o">=</span>.
+</span></span></code></pre><button class="btn btn-primary btn-copy-code">Copy</button>
+                    </div>
+                    <h2 id="example">Example</h2>
+                    <p>This post was created with Jupyter. The orginal files can be found at <a
+                            href="https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter"
+                            target="_blank"
+                            rel="noopener">https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter</a>
+                    </p>
+                </div>
+                <div class="share-box">
+                    <ul class="share">
+                        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F&amp;text=Display+Jupyter+Notebooks+with+Academic"
+                                target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter"><i
+                                    class="fab fa-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F&amp;t=Display+Jupyter+Notebooks+with+Academic"
+                                target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook"><i
+                                    class="fab fa-facebook"></i></a></li>
+                        <li><a href="mailto:?subject=Display%20Jupyter%20Notebooks%20with%20Academic&amp;body=https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F"
+                                target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope"><i
+                                    class="fas fa-envelope"></i></a></li>
+                        <li><a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F&amp;title=Display+Jupyter+Notebooks+with+Academic"
+                                target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in"><i
+                                    class="fab fa-linkedin-in"></i></a></li>
+                        <li><a href="whatsapp://send?text=Display+Jupyter+Notebooks+with+Academic%20https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F"
+                                target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp"><i
+                                    class="fab fa-whatsapp"></i></a></li>
+                        <li><a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Facademic-demo.netlify.app%2Fpost%2Fjupyter%2F&amp;title=Display+Jupyter+Notebooks+with+Academic"
+                                target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo"><i
+                                    class="fab fa-weibo"></i></a></li>
+                    </ul>
+                </div>
+                <div class="media author-card content-widget-hr"><a href="https://academic-demo.netlify.app/"><img
+                            class="avatar mr-3 avatar-circle"
+                            src="./Display Jupyter Notebooks with Academic _ Academic_files/avatar_hu3c64bd0f98018e2d901b7c60447ac42e_1387900_270x270_fill_q75_lanczos_center.jpg"
+                            alt="Alice Wu 吳恩達"></a>
+                    <div class="media-body">
+                        <h5 class="card-title"><a href="https://academic-demo.netlify.app/">Alice Wu 吳恩達</a></h5>
+                        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+                        <p class="card-text">My research interests include distributed robotics, mobile computing and
+                            programmable
+                            matter.</p>
+                        <ul class="network-icon" aria-hidden="true">
+                            <li><a href="https://academic-demo.netlify.app/#contact"><i class="fas fa-envelope"></i></a>
+                            </li>
+                            <li><a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener"><i
+                                        class="fab fa-twitter"></i></a></li>
+                            <li><a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank"
+                                    rel="noopener"><i class="fas fa-graduation-cap"></i></a></li>
+                            <li><a href="https://github.com/gcushen" target="_blank" rel="noopener"><i
+                                        class="fab fa-github"></i></a>
+                            </li>
+                            <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener"><i
+                                        class="fab fa-linkedin"></i></a>
+                            </li>
+                            <li><a href="https://academic-demo.netlify.app/uploads/resume.pdf"><i
+                                        class="ai ai-cv"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="page-footer">
+        <div class="container">
+            <footer class="site-footer">
+                <p class="powered-by copyright-license-text">© 2023 Me. This work is licensed under <a
+                        href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer"
+                        target="_blank">CC BY NC
+                        ND 4.0</a></p>
+                <p class="powered-by footer-license-icons"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0"
+                        rel="noopener noreferrer" target="_blank" aria-label="Creative Commons"><i
+                            class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+                        <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+                        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+                        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i></a></p>
+                <p class="powered-by">Published with <a href="https://wowchemy.com/?utm_campaign=poweredby"
+                        target="_blank" rel="noopener">Wowchemy</a> — the free, <a
+                        href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open
+                        source</a> website builder that empowers creators.</p>
+            </footer>
+        </div>
+    </div>
+    <script
+        src="./Display Jupyter Notebooks with Academic _ Academic_files/vendor-bundle.min.1d4346c6f7d46c340dc0a9058dd85c13.js.下载"></script>
+    <script id="search-hit-fuse-template" type="text/x-template">
+    <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+    </div>
+  </script>
+    <script src="./Display Jupyter Notebooks with Academic _ Academic_files/fuse.min.js.下载"
+        integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw=="
+        crossorigin="anonymous"></script>
+    <script src="./Display Jupyter Notebooks with Academic _ Academic_files/jquery.mark.min.js.下载"
+        integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg=="
+        crossorigin="anonymous"></script>
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+    <script
+        src="./Display Jupyter Notebooks with Academic _ Academic_files/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js.下载"
+        type="module"></script>
+    <script
+        src="./Display Jupyter Notebooks with Academic _ Academic_files/wowchemy.min.d1a621ded99ecec8400cbe9bc8c34b21.js.下载"></script>
+    <div id="modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cite</h5><button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <pre><code></code></pre>
+                </div>
+                <div class="modal-footer"><a class="btn btn-outline-primary my-1 js-copy-cite"
+                        href="https://academic-demo.netlify.app/post/jupyter/#" target="_blank"><i
+                            class="fas fa-copy"></i> Copy</a>
+                    <a class="btn btn-outline-primary my-1 js-download-cite"
+                        href="https://academic-demo.netlify.app/post/jupyter/#" target="_blank"><i
+                            class="fas fa-download"></i>
+                        Download</a>
+                    <div id="modal-error"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script
+        src="./Display Jupyter Notebooks with Academic _ Academic_files/wowchemy-publication.68f8d7090562ca65fc6d3cb3f8f2d2cb.js.下载"
+        type="module"></script>
+</body><scispace-div id="scispace-extension-root"><template shadowrootmode="open">
+        <style>
+            :host {
+                all: initial;
+                font-size: initial;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css"
+            href="chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/styles/styles-5c069e24d3025f3c42a6.css">
+        <div class="container">
+            <div id="scispace-extension-app-root">
+                <div class="box-border h-full w-full">
+                    <div data-plugin-state="COLLAPSED" data-plugin-context-id="1248dc13-5ed2-476b-9b4a-f96f2f9525b3">
+                    </div>
+                    <div class="relative">
+                        <div id="draggableOverlay"
+                            class="draggableOverlay bg-tranparent pointer-events-none fixed inset-0 z-extension box-border h-full w-full p-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template></scispace-div><grammarly-desktop-integration data-grammarly-shadow-root="true"><template
+        shadowrootmode="open">
+        <style>
+            div.grammarly-desktop-integration {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            div.grammarly-desktop-integration:before {
+                content: attr(data-content);
+            }
+        </style>
+        <div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration"
+            data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}">
+        </div>
+    </template></grammarly-desktop-integration>
+
+</html>

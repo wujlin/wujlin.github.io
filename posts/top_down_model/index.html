@@ -1,0 +1,3358 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)https://academic-demo.netlify.app/post/writing-technical-content/ -->
+<html lang="en-us"
+  class="wf-katexams-n4-active wf-katexcaligraphic-n4-active wf-katexcaligraphic-n7-active wf-katexfraktur-n4-active wf-katexfraktur-n7-active wf-katexmain-n7-active wf-katexmain-n4-active wf-katexmain-i4-active wf-katexmain-i7-active wf-katexmath-i4-active wf-katexmath-i7-active wf-katexsansserif-i4-active wf-katexsize1-n4-active wf-katexscript-n4-active wf-katexsize2-n4-active wf-katexsize4-n4-active wf-katextypewriter-n4-active wf-katexsize3-n4-active wf-katexsansserif-n4-active wf-katexsansserif-n7-active wf-active">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="generator" content="Wowchemy 5.7.0 for Hugo">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link rel="preload" as="style" href="./assets/utility/css2">
+  <link rel="stylesheet" href="./assets/utility/css2" media="all" onload="this.media=&quot;all&quot;">
+  <script src="./assets/js/mathjax-config.js"></script>
+  <link rel="stylesheet" href="./assets/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="all"
+    onload="this.media=&quot;all&quot;">
+  <link rel="stylesheet" href="./assets/css/academicons.min.css"
+    integrity="sha512-KlJCpRsLf+KKu2VQa5vmRuClRFjxc5lXO03ixZt82HZUk41+1I0bD8KBSA0fY290ayMfWYI9udIqeOWSu1/uZg=="
+    crossorigin="anonymous" media="all" onload="this.media=&quot;all&quot;">
+  <script src="./assets/js/tex-chtml.js" integrity="" crossorigin="anonymous" async=""></script>
+  <link rel="stylesheet" href="./assets/css/wowchemy.042e26407c9e383d96a1f26d6787c686.css">
+  <link rel="stylesheet" href="./assets/css/github-light.min.css" title="hl-light" media="all"
+    onload="this.media=&quot;all&quot;" disabled="">
+  <link rel="stylesheet" href="./assets/css/dracula.min.css" title="hl-dark" media="all"
+    onload="this.media=&quot;all&quot;">
+  <meta name="author" content="Zhihang Liu 刘志航">
+  <meta name="description" content="Describe the top-down model on the epidemic network">
+  <link rel="alternate" hreflang="en-us" href="https://academic-demo.netlify.app/post/writing-technical-content/">
+  <link rel="canonical" href="https://zhihangliu.cn/posts/top_down_model/">
+  <link rel="manifest" href="https://academic-demo.netlify.app/manifest.webmanifest">
+  <link rel="icon" type="image/png"
+    href="https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png"
+    href="https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png">
+  <meta name="theme-color" content="#1565c0">
+  <!-- <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@wowchemy">
+    <meta property="twitter:creator" content="@wowchemy">
+    <meta property="twitter:image" content="https://academic-demo.netlify.app/post/jupyter/featured.png"> -->
+  <meta property="og:site_name" content="Zhihang Liu 刘志航">
+  <meta property="og:url" content="https://zhihangliu.cn/posts/top_down_model/">
+  <meta property="og:title" content="Describe the top-down model on the epidemic network">
+  <meta property="og:description" content="Describe the top-down model on the epidemic network">
+  <meta property="og:image" content="https://academic-demo.netlify.app/post/jupyter/featured.png">
+  <meta property="og:locale" content="en-us">
+  <meta property="article:published_time" content="2023-04-05T00:00:00+00:00">
+  <meta property="article:modified_time" content="2023-04-06T17:41:19+01:00">
+  <!-- <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://academic-demo.netlify.app/post/writing-technical-content/"},"headline":"Writing technical content in Markdown","image":["https://academic-demo.netlify.app/post/writing-technical-content/featured.jpg"],"datePublished":"2019-07-12T00:00:00Z","dateModified":"2022-10-02T17:41:19+01:00","author":{"@type":"Person","name":"Alice Wu 吳恩達"},"publisher":{"@type":"Organization","name":"Academic","logo":{"@type":"ImageObject","url":"https://academic-demo.netlify.app/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png"}},"description":"Wowchemy is designed to give technical content creators a seamless experience. You can focus on the content and Wowchemy handles the rest.\nHighlight your code snippets, take notes on math classes, and draw diagrams from textual representation."}
+  </script> -->
+  <title>Top-down Dynamics Model: The Master Equation</title>
+  <script src="./assets/js/noerrors.js" charset="UTF-8"></script>
+  <style type="text/css">
+    .CtxtMenu_InfoClose {
+      top: .2em;
+      right: .2em;
+    }
+
+    .CtxtMenu_InfoContent {
+      overflow: auto;
+      text-align: left;
+      font-size: 80%;
+      padding: .4em .6em;
+      border: 1px inset;
+      margin: 1em 0px;
+      max-height: 20em;
+      max-width: 30em;
+      background-color: #EEEEEE;
+      white-space: normal;
+    }
+
+    .CtxtMenu_Info.CtxtMenu_MousePost {
+      outline: none;
+    }
+
+    .CtxtMenu_Info {
+      position: fixed;
+      left: 50%;
+      width: auto;
+      text-align: center;
+      border: 3px outset;
+      padding: 1em 2em;
+      background-color: #DDDDDD;
+      color: black;
+      cursor: default;
+      font-family: message-box;
+      font-size: 120%;
+      font-style: normal;
+      text-indent: 0;
+      text-transform: none;
+      line-height: normal;
+      letter-spacing: normal;
+      word-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      float: none;
+      z-index: 201;
+      border-radius: 15px;
+      /* Opera 10.5 and IE9 */
+      -webkit-border-radius: 15px;
+      /* Safari and Chrome */
+      -moz-border-radius: 15px;
+      /* Firefox */
+      -khtml-border-radius: 15px;
+      /* Konqueror */
+      box-shadow: 0px 10px 20px #808080;
+      /* Opera 10.5 and IE9 */
+      -webkit-box-shadow: 0px 10px 20px #808080;
+      /* Safari 3 & Chrome */
+      -moz-box-shadow: 0px 10px 20px #808080;
+      /* Forefox 3.5 */
+      -khtml-box-shadow: 0px 10px 20px #808080;
+      /* Konqueror */
+      filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true");
+      /* IE */
+    }
+  </style>
+  <style type="text/css">
+    .CtxtMenu_MenuClose {
+      position: absolute;
+      cursor: pointer;
+      display: inline-block;
+      border: 2px solid #AAA;
+      border-radius: 18px;
+      -webkit-border-radius: 18px;
+      /* Safari and Chrome */
+      -moz-border-radius: 18px;
+      /* Firefox */
+      -khtml-border-radius: 18px;
+      /* Konqueror */
+      font-family: "Courier New", Courier;
+      font-size: 24px;
+      color: #F0F0F0
+    }
+
+    .CtxtMenu_MenuClose span {
+      display: block;
+      background-color: #AAA;
+      border: 1.5px solid;
+      border-radius: 18px;
+      -webkit-border-radius: 18px;
+      /* Safari and Chrome */
+      -moz-border-radius: 18px;
+      /* Firefox */
+      -khtml-border-radius: 18px;
+      /* Konqueror */
+      line-height: 0;
+      padding: 8px 0 6px
+        /* may need to be browser-specific */
+    }
+
+    .CtxtMenu_MenuClose:hover {
+      color: white !important;
+      border: 2px solid #CCC !important
+    }
+
+    .CtxtMenu_MenuClose:hover span {
+      background-color: #CCC !important
+    }
+
+    .CtxtMenu_MenuClose:hover:focus {
+      outline: none
+    }
+  </style>
+  <style type="text/css">
+    .CtxtMenu_Menu {
+      position: absolute;
+      background-color: white;
+      color: black;
+      width: auto;
+      padding: 5px 0px;
+      border: 1px solid #CCCCCC;
+      margin: 0;
+      cursor: default;
+      font: menu;
+      text-align: left;
+      text-indent: 0;
+      text-transform: none;
+      line-height: normal;
+      letter-spacing: normal;
+      word-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      float: none;
+      z-index: 201;
+      border-radius: 5px;
+      /* Opera 10.5 and IE9 */
+      -webkit-border-radius: 5px;
+      /* Safari and Chrome */
+      -moz-border-radius: 5px;
+      /* Firefox */
+      -khtml-border-radius: 5px;
+      /* Konqueror */
+      box-shadow: 0px 10px 20px #808080;
+      /* Opera 10.5 and IE9 */
+      -webkit-box-shadow: 0px 10px 20px #808080;
+      /* Safari 3 & Chrome */
+      -moz-box-shadow: 0px 10px 20px #808080;
+      /* Forefox 3.5 */
+      -khtml-box-shadow: 0px 10px 20px #808080;
+      /* Konqueror */
+    }
+
+    .CtxtMenu_MenuItem {
+      padding: 1px 2em;
+      background: transparent;
+    }
+
+    .CtxtMenu_MenuArrow {
+      position: absolute;
+      right: .5em;
+      padding-top: .25em;
+      color: #666666;
+      font-family: null;
+      font-size: .75em
+    }
+
+    .CtxtMenu_MenuActive .CtxtMenu_MenuArrow {
+      color: white
+    }
+
+    .CtxtMenu_MenuArrow.CtxtMenu_RTL {
+      left: .5em;
+      right: auto
+    }
+
+    .CtxtMenu_MenuCheck {
+      position: absolute;
+      left: .7em;
+      font-family: null
+    }
+
+    .CtxtMenu_MenuCheck.CtxtMenu_RTL {
+      right: .7em;
+      left: auto
+    }
+
+    .CtxtMenu_MenuRadioCheck {
+      position: absolute;
+      left: .7em;
+    }
+
+    .CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {
+      right: .7em;
+      left: auto
+    }
+
+    .CtxtMenu_MenuInputBox {
+      padding-left: 1em;
+      right: .5em;
+      color: #666666;
+      font-family: null;
+    }
+
+    .CtxtMenu_MenuInputBox.CtxtMenu_RTL {
+      left: .1em;
+    }
+
+    .CtxtMenu_MenuComboBox {
+      left: .1em;
+      padding-bottom: .5em;
+    }
+
+    .CtxtMenu_MenuSlider {
+      left: .1em;
+    }
+
+    .CtxtMenu_SliderValue {
+      position: absolute;
+      right: .1em;
+      padding-top: .25em;
+      color: #333333;
+      font-size: .75em
+    }
+
+    .CtxtMenu_SliderBar {
+      outline: none;
+      background: #d3d3d3
+    }
+
+    .CtxtMenu_MenuLabel {
+      padding: 1px 2em 3px 1.33em;
+      font-style: italic
+    }
+
+    .CtxtMenu_MenuRule {
+      border-top: 1px solid #DDDDDD;
+      margin: 4px 3px;
+    }
+
+    .CtxtMenu_MenuDisabled {
+      color: GrayText
+    }
+
+    .CtxtMenu_MenuActive {
+      background-color: #606872;
+      color: white;
+    }
+
+    .CtxtMenu_MenuDisabled:focus {
+      background-color: #E8E8E8
+    }
+
+    .CtxtMenu_MenuLabel:focus {
+      background-color: #E8E8E8
+    }
+
+    .CtxtMenu_ContextMenu:focus {
+      outline: none
+    }
+
+    .CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {
+      outline: none
+    }
+
+    .CtxtMenu_SelectionMenu {
+      position: relative;
+      float: left;
+      border-bottom: none;
+      -webkit-box-shadow: none;
+      -webkit-border-radius: 0px;
+    }
+
+    .CtxtMenu_SelectionItem {
+      padding-right: 1em;
+    }
+
+    .CtxtMenu_Selection {
+      right: 40%;
+      width: 50%;
+    }
+
+    .CtxtMenu_SelectionBox {
+      padding: 0em;
+      max-height: 20em;
+      max-width: none;
+      background-color: #FFFFFF;
+    }
+
+    .CtxtMenu_SelectionDivider {
+      clear: both;
+      border-top: 2px solid #000000;
+    }
+
+    .CtxtMenu_Menu .CtxtMenu_MenuClose {
+      top: -10px;
+      left: -10px
+    }
+  </style>
+  <style id="plotly.js-style-global"></style>
+  <style type="text/css">
+    .medium-zoom-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity .3s;
+      will-change: opacity
+    }
+
+    .medium-zoom--opened .medium-zoom-overlay {
+      cursor: pointer;
+      cursor: zoom-out;
+      opacity: 1
+    }
+
+    .medium-zoom-image {
+      cursor: pointer;
+      cursor: zoom-in;
+      transition: transform .3s cubic-bezier(.2, 0, .2, 1) !important
+    }
+
+    .medium-zoom-image--hidden {
+      visibility: hidden
+    }
+
+    .medium-zoom-image--opened {
+      position: relative;
+      cursor: pointer;
+      cursor: zoom-out;
+      will-change: transform
+    }
+  </style>
+  <style id="MJX-CHTML-styles">
+    mjx-container[jax="CHTML"] {
+      line-height: 0;
+    }
+
+    mjx-container [space="1"] {
+      margin-left: .111em;
+    }
+
+    mjx-container [space="2"] {
+      margin-left: .167em;
+    }
+
+    mjx-container [space="3"] {
+      margin-left: .222em;
+    }
+
+    mjx-container [space="4"] {
+      margin-left: .278em;
+    }
+
+    mjx-container [space="5"] {
+      margin-left: .333em;
+    }
+
+    mjx-container [rspace="1"] {
+      margin-right: .111em;
+    }
+
+    mjx-container [rspace="2"] {
+      margin-right: .167em;
+    }
+
+    mjx-container [rspace="3"] {
+      margin-right: .222em;
+    }
+
+    mjx-container [rspace="4"] {
+      margin-right: .278em;
+    }
+
+    mjx-container [rspace="5"] {
+      margin-right: .333em;
+    }
+
+    mjx-container [size="s"] {
+      font-size: 70.7%;
+    }
+
+    mjx-container [size="ss"] {
+      font-size: 50%;
+    }
+
+    mjx-container [size="Tn"] {
+      font-size: 60%;
+    }
+
+    mjx-container [size="sm"] {
+      font-size: 85%;
+    }
+
+    mjx-container [size="lg"] {
+      font-size: 120%;
+    }
+
+    mjx-container [size="Lg"] {
+      font-size: 144%;
+    }
+
+    mjx-container [size="LG"] {
+      font-size: 173%;
+    }
+
+    mjx-container [size="hg"] {
+      font-size: 207%;
+    }
+
+    mjx-container [size="HG"] {
+      font-size: 249%;
+    }
+
+    mjx-container [width="full"] {
+      width: 100%;
+    }
+
+    mjx-box {
+      display: inline-block;
+    }
+
+    mjx-block {
+      display: block;
+    }
+
+    mjx-itable {
+      display: inline-table;
+    }
+
+    mjx-row {
+      display: table-row;
+    }
+
+    mjx-row>* {
+      display: table-cell;
+    }
+
+    mjx-mtext {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-mstyle {
+      display: inline-block;
+    }
+
+    mjx-merror {
+      display: inline-block;
+      color: red;
+      background-color: yellow;
+    }
+
+    mjx-mphantom {
+      visibility: hidden;
+    }
+
+    _::-webkit-full-page-media,
+    _:future,
+    :root mjx-container {
+      will-change: opacity;
+    }
+
+    mjx-assistive-mml {
+      position: absolute !important;
+      top: 0px;
+      left: 0px;
+      clip: rect(1px, 1px, 1px, 1px);
+      padding: 1px 0px 0px 0px !important;
+      border: 0px !important;
+      display: block !important;
+      width: auto !important;
+      overflow: hidden !important;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    mjx-assistive-mml[display="block"] {
+      width: 100% !important;
+    }
+
+    mjx-math {
+      display: inline-block;
+      text-align: left;
+      line-height: 0;
+      text-indent: 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 100%;
+      font-size-adjust: none;
+      letter-spacing: normal;
+      border-collapse: collapse;
+      word-wrap: normal;
+      word-spacing: normal;
+      white-space: nowrap;
+      direction: ltr;
+      padding: 1px 0;
+    }
+
+    mjx-container[jax="CHTML"][display="true"] {
+      display: block;
+      text-align: center;
+      margin: 1em 0;
+    }
+
+    mjx-container[jax="CHTML"][display="true"][width="full"] {
+      display: flex;
+    }
+
+    mjx-container[jax="CHTML"][display="true"] mjx-math {
+      padding: 0;
+    }
+
+    mjx-container[jax="CHTML"][justify="left"] {
+      text-align: left;
+    }
+
+    mjx-container[jax="CHTML"][justify="right"] {
+      text-align: right;
+    }
+
+    mjx-mi {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-c {
+      display: inline-block;
+    }
+
+    mjx-utext {
+      display: inline-block;
+      padding: .75em 0 .2em 0;
+    }
+
+    mjx-mspace {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-mpadded {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-rbox {
+      display: inline-block;
+      position: relative;
+    }
+
+    mjx-TeXAtom {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-msub {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-mo {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-stretchy-h {
+      display: inline-table;
+      width: 100%;
+    }
+
+    mjx-stretchy-h>* {
+      display: table-cell;
+      width: 0;
+    }
+
+    mjx-stretchy-h>*>mjx-c {
+      display: inline-block;
+      transform: scalex(1.0000001);
+    }
+
+    mjx-stretchy-h>*>mjx-c::before {
+      display: inline-block;
+      width: initial;
+    }
+
+    mjx-stretchy-h>mjx-ext {
+      /* IE */
+      overflow: hidden;
+      /* others */
+      overflow: clip visible;
+      width: 100%;
+    }
+
+    mjx-stretchy-h>mjx-ext>mjx-c::before {
+      transform: scalex(500);
+    }
+
+    mjx-stretchy-h>mjx-ext>mjx-c {
+      width: 0;
+    }
+
+    mjx-stretchy-h>mjx-beg>mjx-c {
+      margin-right: -.1em;
+    }
+
+    mjx-stretchy-h>mjx-end>mjx-c {
+      margin-left: -.1em;
+    }
+
+    mjx-stretchy-v {
+      display: inline-block;
+    }
+
+    mjx-stretchy-v>* {
+      display: block;
+    }
+
+    mjx-stretchy-v>mjx-beg {
+      height: 0;
+    }
+
+    mjx-stretchy-v>mjx-end>mjx-c {
+      display: block;
+    }
+
+    mjx-stretchy-v>*>mjx-c {
+      transform: scaley(1.0000001);
+      transform-origin: left center;
+      overflow: hidden;
+    }
+
+    mjx-stretchy-v>mjx-ext {
+      display: block;
+      height: 100%;
+      box-sizing: border-box;
+      border: 0px solid transparent;
+      /* IE */
+      overflow: hidden;
+      /* others */
+      overflow: visible clip;
+    }
+
+    mjx-stretchy-v>mjx-ext>mjx-c::before {
+      width: initial;
+      box-sizing: border-box;
+    }
+
+    mjx-stretchy-v>mjx-ext>mjx-c {
+      transform: scaleY(500) translateY(.075em);
+      overflow: visible;
+    }
+
+    mjx-mark {
+      display: inline-block;
+      height: 0px;
+    }
+
+    mjx-mfrac {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-frac {
+      display: inline-block;
+      vertical-align: 0.17em;
+      padding: 0 .22em;
+    }
+
+    mjx-frac[type="d"] {
+      vertical-align: .04em;
+    }
+
+    mjx-frac[delims] {
+      padding: 0 .1em;
+    }
+
+    mjx-frac[atop] {
+      padding: 0 .12em;
+    }
+
+    mjx-frac[atop][delims] {
+      padding: 0;
+    }
+
+    mjx-dtable {
+      display: inline-table;
+      width: 100%;
+    }
+
+    mjx-dtable>* {
+      font-size: 2000%;
+    }
+
+    mjx-dbox {
+      display: block;
+      font-size: 5%;
+    }
+
+    mjx-num {
+      display: block;
+      text-align: center;
+    }
+
+    mjx-den {
+      display: block;
+      text-align: center;
+    }
+
+    mjx-mfrac[bevelled]>mjx-num {
+      display: inline-block;
+    }
+
+    mjx-mfrac[bevelled]>mjx-den {
+      display: inline-block;
+    }
+
+    mjx-den[align="right"],
+    mjx-num[align="right"] {
+      text-align: right;
+    }
+
+    mjx-den[align="left"],
+    mjx-num[align="left"] {
+      text-align: left;
+    }
+
+    mjx-nstrut {
+      display: inline-block;
+      height: .054em;
+      width: 0;
+      vertical-align: -.054em;
+    }
+
+    mjx-nstrut[type="d"] {
+      height: .217em;
+      vertical-align: -.217em;
+    }
+
+    mjx-dstrut {
+      display: inline-block;
+      height: .505em;
+      width: 0;
+    }
+
+    mjx-dstrut[type="d"] {
+      height: .726em;
+    }
+
+    mjx-line {
+      display: block;
+      box-sizing: border-box;
+      min-height: 1px;
+      height: .06em;
+      border-top: .06em solid;
+      margin: .06em -.1em;
+      overflow: hidden;
+    }
+
+    mjx-line[type="d"] {
+      margin: .18em -.1em;
+    }
+
+    mjx-mrow {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-msup {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-mn {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-msubsup {
+      display: inline-block;
+      text-align: left;
+    }
+
+    mjx-script {
+      display: inline-block;
+      padding-right: .05em;
+      padding-left: .033em;
+    }
+
+    mjx-script>mjx-spacer {
+      display: block;
+    }
+
+    mjx-mtable {
+      display: inline-block;
+      text-align: center;
+      vertical-align: .25em;
+      position: relative;
+      box-sizing: border-box;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    mjx-mstyle[size="s"] mjx-mtable {
+      vertical-align: .354em;
+    }
+
+    mjx-labels {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    mjx-table {
+      display: inline-block;
+      vertical-align: -.5ex;
+      box-sizing: border-box;
+    }
+
+    mjx-table>mjx-itable {
+      vertical-align: middle;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    mjx-labels>mjx-itable {
+      position: absolute;
+      top: 0;
+    }
+
+    mjx-mtable[justify="left"] {
+      text-align: left;
+    }
+
+    mjx-mtable[justify="right"] {
+      text-align: right;
+    }
+
+    mjx-mtable[justify="left"][side="left"] {
+      padding-right: 0 ! important;
+    }
+
+    mjx-mtable[justify="left"][side="right"] {
+      padding-left: 0 ! important;
+    }
+
+    mjx-mtable[justify="right"][side="left"] {
+      padding-right: 0 ! important;
+    }
+
+    mjx-mtable[justify="right"][side="right"] {
+      padding-left: 0 ! important;
+    }
+
+    mjx-mtable[align] {
+      vertical-align: baseline;
+    }
+
+    mjx-mtable[align="top"]>mjx-table {
+      vertical-align: top;
+    }
+
+    mjx-mtable[align="bottom"]>mjx-table {
+      vertical-align: bottom;
+    }
+
+    mjx-mtable[side="right"] mjx-labels {
+      min-width: 100%;
+    }
+
+    mjx-mtr {
+      display: table-row;
+      text-align: left;
+    }
+
+    mjx-mtr[rowalign="top"]>mjx-mtd {
+      vertical-align: top;
+    }
+
+    mjx-mtr[rowalign="center"]>mjx-mtd {
+      vertical-align: middle;
+    }
+
+    mjx-mtr[rowalign="bottom"]>mjx-mtd {
+      vertical-align: bottom;
+    }
+
+    mjx-mtr[rowalign="baseline"]>mjx-mtd {
+      vertical-align: baseline;
+    }
+
+    mjx-mtr[rowalign="axis"]>mjx-mtd {
+      vertical-align: .25em;
+    }
+
+    mjx-mtd {
+      display: table-cell;
+      text-align: center;
+      padding: .215em .4em;
+    }
+
+    mjx-mtd:first-child {
+      padding-left: 0;
+    }
+
+    mjx-mtd:last-child {
+      padding-right: 0;
+    }
+
+    mjx-mtable>*>mjx-itable>*:first-child>mjx-mtd {
+      padding-top: 0;
+    }
+
+    mjx-mtable>*>mjx-itable>*:last-child>mjx-mtd {
+      padding-bottom: 0;
+    }
+
+    mjx-tstrut {
+      display: inline-block;
+      height: 1em;
+      vertical-align: -.25em;
+    }
+
+    mjx-labels[align="left"]>mjx-mtr>mjx-mtd {
+      text-align: left;
+    }
+
+    mjx-labels[align="right"]>mjx-mtr>mjx-mtd {
+      text-align: right;
+    }
+
+    mjx-mtd[extra] {
+      padding: 0;
+    }
+
+    mjx-mtd[rowalign="top"] {
+      vertical-align: top;
+    }
+
+    mjx-mtd[rowalign="center"] {
+      vertical-align: middle;
+    }
+
+    mjx-mtd[rowalign="bottom"] {
+      vertical-align: bottom;
+    }
+
+    mjx-mtd[rowalign="baseline"] {
+      vertical-align: baseline;
+    }
+
+    mjx-mtd[rowalign="axis"] {
+      vertical-align: .25em;
+    }
+
+    mjx-c::before {
+      display: block;
+      width: 0;
+    }
+
+    .MJX-TEX {
+      font-family: MJXZERO, MJXTEX;
+    }
+
+    .TEX-B {
+      font-family: MJXZERO, MJXTEX-B;
+    }
+
+    .TEX-I {
+      font-family: MJXZERO, MJXTEX-I;
+    }
+
+    .TEX-MI {
+      font-family: MJXZERO, MJXTEX-MI;
+    }
+
+    .TEX-BI {
+      font-family: MJXZERO, MJXTEX-BI;
+    }
+
+    .TEX-S1 {
+      font-family: MJXZERO, MJXTEX-S1;
+    }
+
+    .TEX-S2 {
+      font-family: MJXZERO, MJXTEX-S2;
+    }
+
+    .TEX-S3 {
+      font-family: MJXZERO, MJXTEX-S3;
+    }
+
+    .TEX-S4 {
+      font-family: MJXZERO, MJXTEX-S4;
+    }
+
+    .TEX-A {
+      font-family: MJXZERO, MJXTEX-A;
+    }
+
+    .TEX-C {
+      font-family: MJXZERO, MJXTEX-C;
+    }
+
+    .TEX-CB {
+      font-family: MJXZERO, MJXTEX-CB;
+    }
+
+    .TEX-FR {
+      font-family: MJXZERO, MJXTEX-FR;
+    }
+
+    .TEX-FRB {
+      font-family: MJXZERO, MJXTEX-FRB;
+    }
+
+    .TEX-SS {
+      font-family: MJXZERO, MJXTEX-SS;
+    }
+
+    .TEX-SSB {
+      font-family: MJXZERO, MJXTEX-SSB;
+    }
+
+    .TEX-SSI {
+      font-family: MJXZERO, MJXTEX-SSI;
+    }
+
+    .TEX-SC {
+      font-family: MJXZERO, MJXTEX-SC;
+    }
+
+    .TEX-T {
+      font-family: MJXZERO, MJXTEX-T;
+    }
+
+    .TEX-V {
+      font-family: MJXZERO, MJXTEX-V;
+    }
+
+    .TEX-VB {
+      font-family: MJXZERO, MJXTEX-VB;
+    }
+
+    mjx-stretchy-v mjx-c,
+    mjx-stretchy-h mjx-c {
+      font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+    }
+
+    @font-face
+
+    /* 0 */
+      {
+      font-family: MJXZERO;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 1 */
+      {
+      font-family: MJXTEX;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 2 */
+      {
+      font-family: MJXTEX-B;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 3 */
+      {
+      font-family: MJXTEX-I;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 4 */
+      {
+      font-family: MJXTEX-MI;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 5 */
+      {
+      font-family: MJXTEX-BI;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 6 */
+      {
+      font-family: MJXTEX-S1;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 7 */
+      {
+      font-family: MJXTEX-S2;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 8 */
+      {
+      font-family: MJXTEX-S3;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 9 */
+      {
+      font-family: MJXTEX-S4;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 10 */
+      {
+      font-family: MJXTEX-A;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 11 */
+      {
+      font-family: MJXTEX-C;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 12 */
+      {
+      font-family: MJXTEX-CB;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 13 */
+      {
+      font-family: MJXTEX-FR;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 14 */
+      {
+      font-family: MJXTEX-FRB;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 15 */
+      {
+      font-family: MJXTEX-SS;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 16 */
+      {
+      font-family: MJXTEX-SSB;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 17 */
+      {
+      font-family: MJXTEX-SSI;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 18 */
+      {
+      font-family: MJXTEX-SC;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 19 */
+      {
+      font-family: MJXTEX-T;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 20 */
+      {
+      font-family: MJXTEX-V;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+    }
+
+    @font-face
+
+    /* 21 */
+      {
+      font-family: MJXTEX-VB;
+      src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+    }
+
+    mjx-stretchy-v.mjx-c7C mjx-ext mjx-c::before {
+      content: "\2223";
+      width: 0.333em;
+    }
+
+    mjx-c.mjx-c1D43F.TEX-I::before {
+      padding: 0.683em 0.681em 0 0;
+      content: "L";
+    }
+
+    mjx-c.mjx-c1D434.TEX-I::before {
+      padding: 0.716em 0.75em 0 0;
+      content: "A";
+    }
+
+    mjx-c.mjx-c1D447.TEX-I::before {
+      padding: 0.677em 0.704em 0 0;
+      content: "T";
+    }
+
+    mjx-c.mjx-c1D438.TEX-I::before {
+      padding: 0.68em 0.764em 0 0;
+      content: "E";
+    }
+
+    mjx-c.mjx-c1D44B.TEX-I::before {
+      padding: 0.683em 0.852em 0 0;
+      content: "X";
+    }
+
+    mjx-c.mjx-c1D6FE.TEX-I::before {
+      padding: 0.441em 0.543em 0.216em 0;
+      content: "\3B3";
+    }
+
+    mjx-c.mjx-c1D45B.TEX-I::before {
+      padding: 0.442em 0.6em 0.011em 0;
+      content: "n";
+    }
+
+    mjx-c.mjx-c3D::before {
+      padding: 0.583em 0.778em 0.082em 0;
+      content: "=";
+    }
+
+    mjx-c.mjx-c28::before {
+      padding: 0.75em 0.389em 0.25em 0;
+      content: "(";
+    }
+
+    mjx-c.mjx-c1D431.TEX-B::before {
+      padding: 0.444em 0.607em 0 0;
+      content: "x";
+    }
+
+    mjx-c.mjx-c2212::before {
+      padding: 0.583em 0.778em 0.082em 0;
+      content: "\2212";
+    }
+
+    mjx-c.mjx-c31::before {
+      padding: 0.666em 0.5em 0 0;
+      content: "1";
+    }
+
+    mjx-c.mjx-c29::before {
+      padding: 0.75em 0.389em 0.25em 0;
+      content: ")";
+    }
+
+    mjx-c.mjx-c5B::before {
+      padding: 0.75em 0.278em 0.25em 0;
+      content: "[";
+    }
+
+    mjx-c.mjx-c2207::before {
+      padding: 0.683em 0.833em 0.033em 0;
+      content: "\2207";
+    }
+
+    mjx-c.mjx-c1D439.TEX-I::before {
+      padding: 0.68em 0.749em 0 0;
+      content: "F";
+    }
+
+    mjx-c.mjx-c5D::before {
+      padding: 0.75em 0.278em 0.25em 0;
+      content: "]";
+    }
+
+    mjx-c.mjx-c2225::before {
+      padding: 0.75em 0.5em 0.25em 0;
+      content: "\2225";
+    }
+
+    mjx-c.mjx-c32::before {
+      padding: 0.666em 0.5em 0 0;
+      content: "2";
+    }
+
+    mjx-c.mjx-c1D453.TEX-I::before {
+      padding: 0.705em 0.55em 0.205em 0;
+      content: "f";
+    }
+
+    mjx-c.mjx-c1D458.TEX-I::before {
+      padding: 0.694em 0.521em 0.011em 0;
+      content: "k";
+    }
+
+    mjx-c.mjx-c3B::before {
+      padding: 0.43em 0.278em 0.194em 0;
+      content: ";";
+    }
+
+    mjx-c.mjx-c1D45D.TEX-I::before {
+      padding: 0.442em 0.503em 0.194em 0;
+      content: "p";
+    }
+
+    mjx-c.mjx-c2217::before {
+      padding: 0.465em 0.5em 0 0;
+      content: "\2217";
+    }
+
+    mjx-c.mjx-c30::before {
+      padding: 0.666em 0.5em 0.022em 0;
+      content: "0";
+    }
+
+    mjx-c.mjx-c7B.TEX-S3::before {
+      padding: 1.45em 0.75em 0.949em 0;
+      content: "{";
+    }
+
+    mjx-c.mjx-c69::before {
+      padding: 0.669em 0.278em 0 0;
+      content: "i";
+    }
+
+    mjx-c.mjx-c66::before {
+      padding: 0.705em 0.372em 0 0;
+      content: "f";
+    }
+
+    mjx-c.mjx-cA0::before {
+      padding: 0 0.25em 0 0;
+      content: "\A0";
+    }
+
+    mjx-c.mjx-c2C::before {
+      padding: 0.121em 0.278em 0.194em 0;
+      content: ",";
+    }
+
+    mjx-c.mjx-c2E::before {
+      padding: 0.12em 0.278em 0 0;
+      content: ".";
+    }
+  </style>
+  <link rel="stylesheet" href="chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/styles/webpage.css">
+  <style>
+    @font-face {
+      font-family: KaTeX_AMS;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.73ea273a72f4aca30ca5.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.d562e886c52f12660a41.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Caligraphic;
+      font-style: normal;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.a1abf90dfd72792a577a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.d757c535a2e5902f1325.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Bold.7489a2fbfb9bfe704420.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Caligraphic;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.d6484fce1ef428d5bd94.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.db074fa22cf224af93d7.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Caligraphic-Regular.7e873d3833eb108a0758.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Fraktur;
+      font-style: normal;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.931d67ea207ab37ee693.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.354501bac435c3264834.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Bold.4c761b3711973ab04edf.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Fraktur;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.172d3529b26f8cedef6b.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.6fdf0ac577be0ba82a4c.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Fraktur-Regular.ed305b5434865e06ffde.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Main;
+      font-style: normal;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.39890742bc957b368704.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.0c3b8929d377c0e9b2f3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Main;
+      font-style: italic;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.20f389c4120be058d80a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.428978dc7837d46de091.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-BoldItalic.828abcb200061cffbaae.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Main;
+      font-style: italic;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fe2176f79edaa716e621.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fd947498bc16392e76c2.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Italic.fa675e5e4bec9eb250b6.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Main;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.f650f111a3b890d116f1.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.4f35fbcc9ee8614c2bcc.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Math;
+      font-style: italic;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.dcbcbd93bac0470b462d.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.3f07ed67f06c720120ce.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-BoldItalic.bf2d440b3a42ea78a998.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Math;
+      font-style: italic;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.6d3d25f4820d0da8f01f.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.96759856b4e70f3a8338.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Math-Italic.8a5f936332e8028c7278.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: "KaTeX_SansSerif";
+      font-style: normal;
+      font-weight: 700;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.95591a929f0d32aa282a.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.b9cd458ac6d5889ff9c3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Bold.5b49f4993ae22d7975b4.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: "KaTeX_SansSerif";
+      font-style: italic;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.7d393d382f3e7fb1c637.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.8d593cfaa96238d5e2f8.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Italic.b257a18c016f37ee4543.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: "KaTeX_SansSerif";
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.cd5e231e0cc53b2cb2c0.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.02271ec5cb9f5b4588ac.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_SansSerif-Regular.2f7bc363fc5424ebda59.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Script;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.c81d1b2a4b75d3eded60.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.073b3402d036714b4370.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Script-Regular.fc9ba5249878cd8f8d88.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Size1;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.6eec866c69313624be60.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.0108e89c9003e8c14ea3.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size1-Regular.6de7d4b539221a49e9e2.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Size2;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.2960900c4f271311eb36.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.3a99e70aee4076660d38.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size2-Regular.57f5c1837853986ea1db.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Size3;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size3-Regular.8d6b6822586eea3d3b20.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Size4;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.e418bf257af1052628d8.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.aeffd8025cba3647f1a6.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Size4-Regular.4ad7c7e8bb8d10a34bb7.ttf) format("truetype")
+    }
+
+    @font-face {
+      font-family: KaTeX_Typewriter;
+      font-style: normal;
+      font-weight: 400;
+      src: url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.c295e7f71970f03c0549.woff2) format("woff2"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.4c6b94fd1d07f8beff7c.woff) format("woff"), url(chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/fonts/KaTeX_Typewriter-Regular.c5c02d763c89380dcb4e.ttf) format("truetype")
+    }
+
+    .katex {
+      text-rendering: auto;
+      font: normal 1.21em KaTeX_Main, Times New Roman, serif;
+      line-height: 1.2;
+      text-indent: 0
+    }
+
+    .katex * {
+      -ms-high-contrast-adjust: none !important;
+      border-color: currentColor
+    }
+
+    .katex .katex-version:after {
+      content: "0.16.7"
+    }
+
+    .katex .katex-mathml {
+      clip: rect(1px, 1px, 1px, 1px);
+      border: 0;
+      height: 1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px
+    }
+
+    .katex .katex-html>.newline {
+      display: block
+    }
+
+    .katex .base {
+      position: relative;
+      white-space: nowrap;
+      width: -webkit-min-content;
+      width: -moz-min-content;
+      width: min-content
+    }
+
+    .katex .base,
+    .katex .strut {
+      display: inline-block
+    }
+
+    .katex .textbf {
+      font-weight: 700
+    }
+
+    .katex .textit {
+      font-style: italic
+    }
+
+    .katex .textrm {
+      font-family: KaTeX_Main
+    }
+
+    .katex .textsf {
+      font-family: KaTeX_SansSerif
+    }
+
+    .katex .texttt {
+      font-family: KaTeX_Typewriter
+    }
+
+    .katex .mathnormal {
+      font-family: KaTeX_Math;
+      font-style: italic
+    }
+
+    .katex .mathit {
+      font-family: KaTeX_Main;
+      font-style: italic
+    }
+
+    .katex .mathrm {
+      font-style: normal
+    }
+
+    .katex .mathbf {
+      font-family: KaTeX_Main;
+      font-weight: 700
+    }
+
+    .katex .boldsymbol {
+      font-family: KaTeX_Math;
+      font-style: italic;
+      font-weight: 700
+    }
+
+    .katex .amsrm,
+    .katex .mathbb,
+    .katex .textbb {
+      font-family: KaTeX_AMS
+    }
+
+    .katex .mathcal {
+      font-family: KaTeX_Caligraphic
+    }
+
+    .katex .mathfrak,
+    .katex .textfrak {
+      font-family: KaTeX_Fraktur
+    }
+
+    .katex .mathtt {
+      font-family: KaTeX_Typewriter
+    }
+
+    .katex .mathscr,
+    .katex .textscr {
+      font-family: KaTeX_Script
+    }
+
+    .katex .mathsf,
+    .katex .textsf {
+      font-family: KaTeX_SansSerif
+    }
+
+    .katex .mathboldsf,
+    .katex .textboldsf {
+      font-family: KaTeX_SansSerif;
+      font-weight: 700
+    }
+
+    .katex .mathitsf,
+    .katex .textitsf {
+      font-family: KaTeX_SansSerif;
+      font-style: italic
+    }
+
+    .katex .mainrm {
+      font-family: KaTeX_Main;
+      font-style: normal
+    }
+
+    .katex .vlist-t {
+      border-collapse: collapse;
+      display: inline-table;
+      table-layout: fixed
+    }
+
+    .katex .vlist-r {
+      display: table-row
+    }
+
+    .katex .vlist {
+      display: table-cell;
+      position: relative;
+      vertical-align: bottom
+    }
+
+    .katex .vlist>span {
+      display: block;
+      height: 0;
+      position: relative
+    }
+
+    .katex .vlist>span>span {
+      display: inline-block
+    }
+
+    .katex .vlist>span>.pstrut {
+      overflow: hidden;
+      width: 0
+    }
+
+    .katex .vlist-t2 {
+      margin-right: -2px
+    }
+
+    .katex .vlist-s {
+      display: table-cell;
+      font-size: 1px;
+      min-width: 2px;
+      vertical-align: bottom;
+      width: 2px
+    }
+
+    .katex .vbox {
+      align-items: baseline;
+      display: inline-flex;
+      flex-direction: column
+    }
+
+    .katex .hbox {
+      width: 100%
+    }
+
+    .katex .hbox,
+    .katex .thinbox {
+      display: inline-flex;
+      flex-direction: row
+    }
+
+    .katex .thinbox {
+      max-width: 0;
+      width: 0
+    }
+
+    .katex .msupsub {
+      text-align: left
+    }
+
+    .katex .mfrac>span>span {
+      text-align: center
+    }
+
+    .katex .mfrac .frac-line {
+      border-bottom-style: solid;
+      display: inline-block;
+      width: 100%
+    }
+
+    .katex .hdashline,
+    .katex .hline,
+    .katex .mfrac .frac-line,
+    .katex .overline .overline-line,
+    .katex .rule,
+    .katex .underline .underline-line {
+      min-height: 1px
+    }
+
+    .katex .mspace {
+      display: inline-block
+    }
+
+    .katex .clap,
+    .katex .llap,
+    .katex .rlap {
+      position: relative;
+      width: 0
+    }
+
+    .katex .clap>.inner,
+    .katex .llap>.inner,
+    .katex .rlap>.inner {
+      position: absolute
+    }
+
+    .katex .clap>.fix,
+    .katex .llap>.fix,
+    .katex .rlap>.fix {
+      display: inline-block
+    }
+
+    .katex .llap>.inner {
+      right: 0
+    }
+
+    .katex .clap>.inner,
+    .katex .rlap>.inner {
+      left: 0
+    }
+
+    .katex .clap>.inner>span {
+      margin-left: -50%;
+      margin-right: 50%
+    }
+
+    .katex .rule {
+      border: 0 solid;
+      display: inline-block;
+      position: relative
+    }
+
+    .katex .hline,
+    .katex .overline .overline-line,
+    .katex .underline .underline-line {
+      border-bottom-style: solid;
+      display: inline-block;
+      width: 100%
+    }
+
+    .katex .hdashline {
+      border-bottom-style: dashed;
+      display: inline-block;
+      width: 100%
+    }
+
+    .katex .sqrt>.root {
+      margin-left: .27777778em;
+      margin-right: -.55555556em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size1,
+    .katex .sizing.reset-size1.size1 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size2,
+    .katex .sizing.reset-size1.size2 {
+      font-size: 1.2em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size3,
+    .katex .sizing.reset-size1.size3 {
+      font-size: 1.4em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size4,
+    .katex .sizing.reset-size1.size4 {
+      font-size: 1.6em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size5,
+    .katex .sizing.reset-size1.size5 {
+      font-size: 1.8em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size6,
+    .katex .sizing.reset-size1.size6 {
+      font-size: 2em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size7,
+    .katex .sizing.reset-size1.size7 {
+      font-size: 2.4em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size8,
+    .katex .sizing.reset-size1.size8 {
+      font-size: 2.88em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size9,
+    .katex .sizing.reset-size1.size9 {
+      font-size: 3.456em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size10,
+    .katex .sizing.reset-size1.size10 {
+      font-size: 4.148em
+    }
+
+    .katex .fontsize-ensurer.reset-size1.size11,
+    .katex .sizing.reset-size1.size11 {
+      font-size: 4.976em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size1,
+    .katex .sizing.reset-size2.size1 {
+      font-size: .83333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size2,
+    .katex .sizing.reset-size2.size2 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size3,
+    .katex .sizing.reset-size2.size3 {
+      font-size: 1.16666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size4,
+    .katex .sizing.reset-size2.size4 {
+      font-size: 1.33333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size5,
+    .katex .sizing.reset-size2.size5 {
+      font-size: 1.5em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size6,
+    .katex .sizing.reset-size2.size6 {
+      font-size: 1.66666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size7,
+    .katex .sizing.reset-size2.size7 {
+      font-size: 2em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size8,
+    .katex .sizing.reset-size2.size8 {
+      font-size: 2.4em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size9,
+    .katex .sizing.reset-size2.size9 {
+      font-size: 2.88em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size10,
+    .katex .sizing.reset-size2.size10 {
+      font-size: 3.45666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size2.size11,
+    .katex .sizing.reset-size2.size11 {
+      font-size: 4.14666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size1,
+    .katex .sizing.reset-size3.size1 {
+      font-size: .71428571em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size2,
+    .katex .sizing.reset-size3.size2 {
+      font-size: .85714286em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size3,
+    .katex .sizing.reset-size3.size3 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size4,
+    .katex .sizing.reset-size3.size4 {
+      font-size: 1.14285714em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size5,
+    .katex .sizing.reset-size3.size5 {
+      font-size: 1.28571429em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size6,
+    .katex .sizing.reset-size3.size6 {
+      font-size: 1.42857143em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size7,
+    .katex .sizing.reset-size3.size7 {
+      font-size: 1.71428571em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size8,
+    .katex .sizing.reset-size3.size8 {
+      font-size: 2.05714286em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size9,
+    .katex .sizing.reset-size3.size9 {
+      font-size: 2.46857143em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size10,
+    .katex .sizing.reset-size3.size10 {
+      font-size: 2.96285714em
+    }
+
+    .katex .fontsize-ensurer.reset-size3.size11,
+    .katex .sizing.reset-size3.size11 {
+      font-size: 3.55428571em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size1,
+    .katex .sizing.reset-size4.size1 {
+      font-size: .625em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size2,
+    .katex .sizing.reset-size4.size2 {
+      font-size: .75em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size3,
+    .katex .sizing.reset-size4.size3 {
+      font-size: .875em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size4,
+    .katex .sizing.reset-size4.size4 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size5,
+    .katex .sizing.reset-size4.size5 {
+      font-size: 1.125em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size6,
+    .katex .sizing.reset-size4.size6 {
+      font-size: 1.25em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size7,
+    .katex .sizing.reset-size4.size7 {
+      font-size: 1.5em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size8,
+    .katex .sizing.reset-size4.size8 {
+      font-size: 1.8em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size9,
+    .katex .sizing.reset-size4.size9 {
+      font-size: 2.16em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size10,
+    .katex .sizing.reset-size4.size10 {
+      font-size: 2.5925em
+    }
+
+    .katex .fontsize-ensurer.reset-size4.size11,
+    .katex .sizing.reset-size4.size11 {
+      font-size: 3.11em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size1,
+    .katex .sizing.reset-size5.size1 {
+      font-size: .55555556em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size2,
+    .katex .sizing.reset-size5.size2 {
+      font-size: .66666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size3,
+    .katex .sizing.reset-size5.size3 {
+      font-size: .77777778em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size4,
+    .katex .sizing.reset-size5.size4 {
+      font-size: .88888889em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size5,
+    .katex .sizing.reset-size5.size5 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size6,
+    .katex .sizing.reset-size5.size6 {
+      font-size: 1.11111111em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size7,
+    .katex .sizing.reset-size5.size7 {
+      font-size: 1.33333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size8,
+    .katex .sizing.reset-size5.size8 {
+      font-size: 1.6em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size9,
+    .katex .sizing.reset-size5.size9 {
+      font-size: 1.92em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size10,
+    .katex .sizing.reset-size5.size10 {
+      font-size: 2.30444444em
+    }
+
+    .katex .fontsize-ensurer.reset-size5.size11,
+    .katex .sizing.reset-size5.size11 {
+      font-size: 2.76444444em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size1,
+    .katex .sizing.reset-size6.size1 {
+      font-size: .5em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size2,
+    .katex .sizing.reset-size6.size2 {
+      font-size: .6em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size3,
+    .katex .sizing.reset-size6.size3 {
+      font-size: .7em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size4,
+    .katex .sizing.reset-size6.size4 {
+      font-size: .8em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size5,
+    .katex .sizing.reset-size6.size5 {
+      font-size: .9em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size6,
+    .katex .sizing.reset-size6.size6 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size7,
+    .katex .sizing.reset-size6.size7 {
+      font-size: 1.2em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size8,
+    .katex .sizing.reset-size6.size8 {
+      font-size: 1.44em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size9,
+    .katex .sizing.reset-size6.size9 {
+      font-size: 1.728em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size10,
+    .katex .sizing.reset-size6.size10 {
+      font-size: 2.074em
+    }
+
+    .katex .fontsize-ensurer.reset-size6.size11,
+    .katex .sizing.reset-size6.size11 {
+      font-size: 2.488em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size1,
+    .katex .sizing.reset-size7.size1 {
+      font-size: .41666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size2,
+    .katex .sizing.reset-size7.size2 {
+      font-size: .5em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size3,
+    .katex .sizing.reset-size7.size3 {
+      font-size: .58333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size4,
+    .katex .sizing.reset-size7.size4 {
+      font-size: .66666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size5,
+    .katex .sizing.reset-size7.size5 {
+      font-size: .75em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size6,
+    .katex .sizing.reset-size7.size6 {
+      font-size: .83333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size7,
+    .katex .sizing.reset-size7.size7 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size8,
+    .katex .sizing.reset-size7.size8 {
+      font-size: 1.2em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size9,
+    .katex .sizing.reset-size7.size9 {
+      font-size: 1.44em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size10,
+    .katex .sizing.reset-size7.size10 {
+      font-size: 1.72833333em
+    }
+
+    .katex .fontsize-ensurer.reset-size7.size11,
+    .katex .sizing.reset-size7.size11 {
+      font-size: 2.07333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size1,
+    .katex .sizing.reset-size8.size1 {
+      font-size: .34722222em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size2,
+    .katex .sizing.reset-size8.size2 {
+      font-size: .41666667em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size3,
+    .katex .sizing.reset-size8.size3 {
+      font-size: .48611111em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size4,
+    .katex .sizing.reset-size8.size4 {
+      font-size: .55555556em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size5,
+    .katex .sizing.reset-size8.size5 {
+      font-size: .625em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size6,
+    .katex .sizing.reset-size8.size6 {
+      font-size: .69444444em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size7,
+    .katex .sizing.reset-size8.size7 {
+      font-size: .83333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size8,
+    .katex .sizing.reset-size8.size8 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size9,
+    .katex .sizing.reset-size8.size9 {
+      font-size: 1.2em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size10,
+    .katex .sizing.reset-size8.size10 {
+      font-size: 1.44027778em
+    }
+
+    .katex .fontsize-ensurer.reset-size8.size11,
+    .katex .sizing.reset-size8.size11 {
+      font-size: 1.72777778em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size1,
+    .katex .sizing.reset-size9.size1 {
+      font-size: .28935185em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size2,
+    .katex .sizing.reset-size9.size2 {
+      font-size: .34722222em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size3,
+    .katex .sizing.reset-size9.size3 {
+      font-size: .40509259em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size4,
+    .katex .sizing.reset-size9.size4 {
+      font-size: .46296296em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size5,
+    .katex .sizing.reset-size9.size5 {
+      font-size: .52083333em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size6,
+    .katex .sizing.reset-size9.size6 {
+      font-size: .5787037em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size7,
+    .katex .sizing.reset-size9.size7 {
+      font-size: .69444444em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size8,
+    .katex .sizing.reset-size9.size8 {
+      font-size: .83333333em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size9,
+    .katex .sizing.reset-size9.size9 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size10,
+    .katex .sizing.reset-size9.size10 {
+      font-size: 1.20023148em
+    }
+
+    .katex .fontsize-ensurer.reset-size9.size11,
+    .katex .sizing.reset-size9.size11 {
+      font-size: 1.43981481em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size1,
+    .katex .sizing.reset-size10.size1 {
+      font-size: .24108004em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size2,
+    .katex .sizing.reset-size10.size2 {
+      font-size: .28929605em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size3,
+    .katex .sizing.reset-size10.size3 {
+      font-size: .33751205em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size4,
+    .katex .sizing.reset-size10.size4 {
+      font-size: .38572806em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size5,
+    .katex .sizing.reset-size10.size5 {
+      font-size: .43394407em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size6,
+    .katex .sizing.reset-size10.size6 {
+      font-size: .48216008em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size7,
+    .katex .sizing.reset-size10.size7 {
+      font-size: .57859209em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size8,
+    .katex .sizing.reset-size10.size8 {
+      font-size: .69431051em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size9,
+    .katex .sizing.reset-size10.size9 {
+      font-size: .83317261em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size10,
+    .katex .sizing.reset-size10.size10 {
+      font-size: 1em
+    }
+
+    .katex .fontsize-ensurer.reset-size10.size11,
+    .katex .sizing.reset-size10.size11 {
+      font-size: 1.19961427em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size1,
+    .katex .sizing.reset-size11.size1 {
+      font-size: .20096463em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size2,
+    .katex .sizing.reset-size11.size2 {
+      font-size: .24115756em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size3,
+    .katex .sizing.reset-size11.size3 {
+      font-size: .28135048em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size4,
+    .katex .sizing.reset-size11.size4 {
+      font-size: .32154341em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size5,
+    .katex .sizing.reset-size11.size5 {
+      font-size: .36173633em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size6,
+    .katex .sizing.reset-size11.size6 {
+      font-size: .40192926em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size7,
+    .katex .sizing.reset-size11.size7 {
+      font-size: .48231511em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size8,
+    .katex .sizing.reset-size11.size8 {
+      font-size: .57877814em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size9,
+    .katex .sizing.reset-size11.size9 {
+      font-size: .69453376em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size10,
+    .katex .sizing.reset-size11.size10 {
+      font-size: .83360129em
+    }
+
+    .katex .fontsize-ensurer.reset-size11.size11,
+    .katex .sizing.reset-size11.size11 {
+      font-size: 1em
+    }
+
+    .katex .delimsizing.size1 {
+      font-family: KaTeX_Size1
+    }
+
+    .katex .delimsizing.size2 {
+      font-family: KaTeX_Size2
+    }
+
+    .katex .delimsizing.size3 {
+      font-family: KaTeX_Size3
+    }
+
+    .katex .delimsizing.size4 {
+      font-family: KaTeX_Size4
+    }
+
+    .katex .delimsizing.mult .delim-size1>span {
+      font-family: KaTeX_Size1
+    }
+
+    .katex .delimsizing.mult .delim-size4>span {
+      font-family: KaTeX_Size4
+    }
+
+    .katex .nulldelimiter {
+      display: inline-block;
+      width: .12em
+    }
+
+    .katex .delimcenter,
+    .katex .op-symbol {
+      position: relative
+    }
+
+    .katex .op-symbol.small-op {
+      font-family: KaTeX_Size1
+    }
+
+    .katex .op-symbol.large-op {
+      font-family: KaTeX_Size2
+    }
+
+    .katex .accent>.vlist-t,
+    .katex .op-limits>.vlist-t {
+      text-align: center
+    }
+
+    .katex .accent .accent-body {
+      position: relative
+    }
+
+    .katex .accent .accent-body:not(.accent-full) {
+      width: 0
+    }
+
+    .katex .overlay {
+      display: block
+    }
+
+    .katex .mtable .vertical-separator {
+      display: inline-block;
+      min-width: 1px
+    }
+
+    .katex .mtable .arraycolsep {
+      display: inline-block
+    }
+
+    .katex .mtable .col-align-c>.vlist-t {
+      text-align: center
+    }
+
+    .katex .mtable .col-align-l>.vlist-t {
+      text-align: left
+    }
+
+    .katex .mtable .col-align-r>.vlist-t {
+      text-align: right
+    }
+
+    .katex .svg-align {
+      text-align: left
+    }
+
+    .katex svg {
+      fill: currentColor;
+      stroke: currentColor;
+      fill-rule: nonzero;
+      fill-opacity: 1;
+      stroke-width: 1;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      stroke-miterlimit: 4;
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+      stroke-opacity: 1;
+      display: block;
+      height: inherit;
+      position: absolute;
+      width: 100%
+    }
+
+    .katex svg path {
+      stroke: none
+    }
+
+    .katex img {
+      border-style: none;
+      max-height: none;
+      max-width: none;
+      min-height: 0;
+      min-width: 0
+    }
+
+    .katex .stretchy {
+      display: block;
+      overflow: hidden;
+      position: relative;
+      width: 100%
+    }
+
+    .katex .stretchy:after,
+    .katex .stretchy:before {
+      content: ""
+    }
+
+    .katex .hide-tail {
+      overflow: hidden;
+      position: relative;
+      width: 100%
+    }
+
+    .katex .halfarrow-left {
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      width: 50.2%
+    }
+
+    .katex .halfarrow-right {
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      width: 50.2%
+    }
+
+    .katex .brace-left {
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      width: 25.1%
+    }
+
+    .katex .brace-center {
+      left: 25%;
+      overflow: hidden;
+      position: absolute;
+      width: 50%
+    }
+
+    .katex .brace-right {
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      width: 25.1%
+    }
+
+    .katex .x-arrow-pad {
+      padding: 0 .5em
+    }
+
+    .katex .cd-arrow-pad {
+      padding: 0 .55556em 0 .27778em
+    }
+
+    .katex .mover,
+    .katex .munder,
+    .katex .x-arrow {
+      text-align: center
+    }
+
+    .katex .boxpad {
+      padding: 0 .3em
+    }
+
+    .katex .fbox,
+    .katex .fcolorbox {
+      border: .04em solid;
+      box-sizing: border-box
+    }
+
+    .katex .cancel-pad {
+      padding: 0 .2em
+    }
+
+    .katex .cancel-lap {
+      margin-left: -.2em;
+      margin-right: -.2em
+    }
+
+    .katex .sout {
+      border-bottom-style: solid;
+      border-bottom-width: .08em
+    }
+
+    .katex .angl {
+      border-right: .049em solid;
+      border-top: .049em solid;
+      box-sizing: border-box;
+      margin-right: .03889em
+    }
+
+    .katex .anglpad {
+      padding: 0 .03889em
+    }
+
+    .katex .eqn-num:before {
+      content: "(" counter(katexEqnNo) ")";
+      counter-increment: katexEqnNo
+    }
+
+    .katex .mml-eqn-num:before {
+      content: "(" counter(mmlEqnNo) ")";
+      counter-increment: mmlEqnNo
+    }
+
+    .katex .mtr-glue {
+      width: 50%
+    }
+
+    .katex .cd-vert-arrow {
+      display: inline-block;
+      position: relative
+    }
+
+    .katex .cd-label-left {
+      display: inline-block;
+      position: absolute;
+      right: calc(50% + .3em);
+      text-align: left
+    }
+
+    .katex .cd-label-right {
+      display: inline-block;
+      left: calc(50% + .3em);
+      position: absolute;
+      text-align: right
+    }
+
+    .katex-display {
+      display: block;
+      margin: 1em 0;
+      text-align: center
+    }
+
+    .katex-display>.katex {
+      display: block;
+      text-align: center;
+      white-space: nowrap
+    }
+
+    .katex-display>.katex>.katex-html {
+      display: block;
+      position: relative
+    }
+
+    .katex-display>.katex>.katex-html>.tag {
+      position: absolute;
+      right: 0
+    }
+
+    .katex-display.leqno>.katex>.katex-html>.tag {
+      left: 0;
+      right: auto
+    }
+
+    .katex-display.fleqn>.katex {
+      padding-left: 2em;
+      text-align: left
+    }
+
+    body {
+      counter-reset: katexEqnNo mmlEqnNo
+    }
+  </style>
+  <link rel="preload" as="script" href="./assets/module/d3@7.8.5">
+  <link rel="preload" as="script" href="./assets/module/markmap-lib@0.15.4">
+  <link rel="preload" as="script" href="./assets/module/markmap-view@0.15.4">
+  <link rel="preload" as="script" href="./assets/module/markmap-toolbar@0.15.4">
+  <script src="./assets/moduled3@7.8.5"></script>
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <style id="plotly.js-style-modebar-719252"></style>
+  <script src="./assets/module/markmap-lib@0.15.4"></script>
+  <script src="./assets/module/markmap-view@0.15.4"></script>
+  <script src="./assets/module/markmap-toolbar@0.15.4"></script>
+  <link rel="preload" as="script" href="./assets/js/highlight.min.js">
+  <script src="./assets/js/highlight.min.js"></script>
+  <link rel="preload" as="script" href="./assets/js/katex.min.js">
+  <script src="./assets/js/katex.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/default.min.css">
+  <link rel="stylesheet" href="./assets/css/katex.min.css">
+  <link rel="preload" as="script" href="./assets/js/webfontloader.js">
+  <script src="./assets/js/webfontloader.js" defer=""></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper dark"
+  data-wc-page-id="07e02bccc368a192a0c76c44918396c3" data-new-gr-c-s-check-loaded="14.1039.0" data-gr-ext-installed="">
+  <style>
+    .markmap {
+      font: 300 16px/20px sans-serif
+    }
+
+    .markmap-link {
+      fill: none
+    }
+
+    .markmap-node>circle {
+      cursor: pointer
+    }
+
+    .markmap-foreign {
+      display: inline-block
+    }
+
+    .markmap-foreign a {
+      color: #0097e6
+    }
+
+    .markmap-foreign a:hover {
+      color: #00a8ff
+    }
+
+    .markmap-foreign code {
+      background-color: #f0f0f0;
+      border-radius: 2px;
+      color: #555;
+      font-size: calc(1em - 2px);
+      padding: .25em
+    }
+
+    .markmap-foreign pre {
+      margin: 0
+    }
+
+    .markmap-foreign pre>code {
+      display: block
+    }
+
+    .markmap-foreign del {
+      text-decoration: line-through
+    }
+
+    .markmap-foreign em {
+      font-style: italic
+    }
+
+    .markmap-foreign strong {
+      font-weight: 700
+    }
+
+    .markmap-foreign mark {
+      background: #ffeaa7
+    }
+  </style>
+  <script src="./assets/js/wowchemy-init.min.ec9d49ca50e4b80bdb08f0417a28ed84.js"></script>
+  <aside class="search-modal" id="search">
+    <div class="container">
+      <section class="search-header">
+        <div class="row no-gutters justify-content-between mb-3">
+          <div class="col-6">
+            <h1>Search</h1>
+          </div>
+          <div class="col-6 col-search-close"><a class="js-search" href="https://zhihangliu.cn/posts/top_down_model/#"
+              aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a></div>
+        </div>
+        <div id="search-box"><input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+            autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+            aria-label="Search..."></div>
+      </section>
+      <section class="section-search-results">
+        <div id="search-hits"></div>
+      </section>
+    </div>
+  </aside>
+  <div class="page-header header--fixed headroom headroom--not-bottom headroom--not-top headroom--unpinned">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+        <div class="container-xl">
+          <div class="d-none d-lg-inline-flex"><a class="navbar-brand" href="https://zhihangliu.cn/">zhihang Liu |
+              刘志航</a></div>
+          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-content"
+            aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fas fa-bars"></i></span></button>
+          <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+            <a class="navbar-brand" href="https://zhihangliu.cn/">Zhihang Liu | 刘志航</a>
+          </div>
+          <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+            <ul class="navbar-nav d-md-inline-flex">
+              <li class="nav-item">
+                <a class="nav-link active" href="https://zhihangliu.cn/#about"
+                  data-target="#about"><span>Home</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://zhihangliu.cn/#posts" data-target="#posts"><span>Posts</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://zhihangliu.cn/#projects"
+                  data-target="#projects"><span>Projects</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://zhihangliu.cn/#featured"
+                  data-target="#featured"><span>Publications</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://zhihangliu.cn/#talks"
+                  data-target="#talks"><span>Presentions</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://zhihangliu.cn/#contact"
+                  data-target="#contact"><span>Contact</span></a>
+              </li>
+            </ul>
+          </div>
+          <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+            <!-- <li class="nav-item d-none d-lg-inline-flex"><a class="nav-link" href="https://twitter.com/GeorgeCushen"
+                data-toggle="tooltip" data-placement="bottom" title="" target="_blank" rel="noopener"
+                aria-label="Follow me on Twitter" data-original-title="Follow me on Twitter"><i class="fab fa-twitter"
+                  aria-hidden="true"></i></a></li> -->
+            <li class="nav-item"><a class="nav-link js-search" href="https://zhihangliu.cn/posts/top_down_model/#"
+                aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a></li>
+            <li class="nav-item dropdown theme-dropdown"><a href="https://zhihangliu.cn/posts/top_down_model/#"
+                class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences"><i
+                  class="fas fa-moon" aria-hidden="true"></i></a>
+              <div class="dropdown-menu"><a href="https://zhihangliu.cn/posts/top_down_model/#"
+                  class="dropdown-item js-set-theme-light"><span>Light</span></a>
+                <a href="https://zhihangliu.cn/posts/top_down_model/#"
+                  class="dropdown-item js-set-theme-dark"><span>Dark</span></a>
+                <a href="https://zhihangliu.cn/posts/top_down_model/#"
+                  class="dropdown-item js-set-theme-auto dropdown-item-active"><span>Automatic</span></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+  </div>
+  <div class="page-body">
+    <article class="article">
+      <div class="article-container pt-3">
+        <h1>Top-down Dynamics Model: The Master Equation</h1>
+        <div class="article-metadata"><span class="article-date">Last updated on
+            Oct 1, 2023</span>
+          <span class="middot-divider"></span>
+          <span class="article-reading-time">6 min read</span>
+        </div>
+      </div>
+      <div class="article-header container featured-image-wrapper mt-4 mb-4" style="max-width:1200px;max-height:800px">
+        <!-- <div style="position:relative"><img src="./assets/images/图1.png" width="1200" height="800" alt=""
+            class="featured-image">
+          <span class="article-header-caption">Image credit: <a href="https://unsplash.com/photos/OGZtQF8iC0g"
+              target="_blank" rel="noopener"><strong>John Moeses Bauan</strong></a></span>
+        </div> -->
+      </div>
+      <div class="article-container">
+        <div class="article-style">
+          <p><strong>Introduction</strong>: This article is the second in a series of reading notes on the
+            <strong>Mathematics of epidemics on networks</strong>.
+            Here, we primarily discuss employing the master equation to illustrate the dynamics of spread over networks.
+            From the perspective of random processes, we introduce the master equation, often referred to as the
+            Top-down model, which defines the state space of a system.
+            Through this journey, we will explore Markov chains, state transition matrices, the dimensional reduction of
+            multidimensional master equations, and more, granting us tools to accurately depict temporal and spatial
+            changes within a system.
+          </p>
+
+          <h3 id="first part">What the Master Equation Addresses</h2>
+            <p>Consider this scenario: Disease transmission is viewed as a node transitioning between states. At any
+              given
+              instant, we presume that the only factors affecting the likelihood of a node altering its state are its
+              present state and the states of its neighboring nodes. For instance, the rate at which a susceptible node
+              gets infected is solely determined by the number of its neighbors that are infected. While neighbors can
+              influence node transitions, the rate might also be independent of them. Specifically, the recovery rate of
+              an infected node is not dependent on the state of any neighbor. If each node within a network of N nodes
+              can
+              be in one of m distinct states, then there are \(m^N\) combinations of states for the entire network. For
+              SIS, this amounts to \(2^N\) states and for SIR, \(3^N\) states. We term this collective set of all
+              possible
+              states as the state space, denoted as \(\{S_1, S_2,…, S_n\}\). Ideally, we want to predict the network's
+              state at all times.<strong>However, as the number of nodes increases, the number of equations required to
+                describe the system also grows exponentially. This prompts us to simplify our research problem; rather
+                than providing an equation for every state, we focus on the probability distribution of the number of
+                states.</strong></p>
+            <p>The primary questions addressed in this chapter can be summarized as:
+              What's the probability of a node having a particular state at a given time?
+              How many nodes are expected to have a certain state at a designated time?</p>
+
+            <h3 id="second part">A Basic Example</h2>
+              <p>Imagine a network constituted by three nodes, with each node toggling between two possible states. This
+                results in the network's state space comprising eight distinct states.</p>
+
+              <figure>
+                <div class="d-flex justify-content-center">
+                  <div class="w-100"><img
+                      src="./assets/images/插图1.webp" alt="png"
+                      loading="lazy" data-zoomable="" class="medium-zoom-image"></div>
+                </div>
+              </figure>
+
+              <p>Where \(τ\) represents the transmission rate and \(γ\) denotes the recovery rate. Factoring in the
+                relations between nodes, we deduce the following equations:</p>
+
+              \begin{align}
+              \dot{X_{SSS}} &= \gamma(X_{SSI} + X_{SIS} + X_{ISS}) \\
+              \dot{X_{SSI}} &= \gamma(X_{SII} + X{ISI}) - (2\tau + \gamma)X_{SSI}\\
+              \dot{X_{SIS}} &= \gamma(X_{SII} + X{IIS}) - (2\tau + \gamma)X_{SIS}\\
+              \dot{X_{ISS}} &= \gamma(X_{ISI} + X_{IIS}) - (2\tau + \gamma) X_{ISS} \\
+              \dot{X_{SII}} &= \gamma X_{III} + \tau(X_{SSI} + X_{SIS}) - 2(\tau + \gamma) X_{SII}\\
+              \dot{X_{ISI}} &= \gamma X_{III} + \tau(X_{SSI} + X_{ISS}) - 2(\tau + \gamma) X_{ISI}\\
+              \dot{X_{IIS}} &= \gamma X_{III} + \tau(X_{SIS} + X_{ISS}) - 2(\tau + \gamma)X_{IIS}\\
+              \dot{X_{III}} &= -3\gamma X_{III} + 2\tau(X_{SII}+X_{ISI} + X_{IIS})
+              \end{align}
+
+              <p><strong>**This set of equations is termed the Kolmogorov equations for the system or the master
+                  equation. Solutions to this equation provide the probability distribution of the system being in a
+                  particular state at a given moment.**</strong></p>
+
+              <p>If we only need to understand the likelihood of a certain number of nodes existing in each state, the
+                equations simplify. Instead of computing the probability of each state, we calculate the system's
+                probability distribution based on the count of infected nodes.</p>
+              \begin{align}
+              \dot{Y_0} &= \gamma Y_1 \\
+              \dot{Y_1} &= 2 \gamma Y_2 - \gamma Y_1 - 2 \tau Y_1 \\
+              \dot{Y_2} &= 2 \tau Y_1 - 2 \gamma Y_2 - 2 \tau Y_2 + 3 \gamma Y_3 \\
+              \dot{Y_3} &= 2 \tau Y_2 - 3 \gamma Y_3
+              \end{align}
+
+              <h3>Markov Chain (Markov-chain)</h3>
+              <p>Assuming the system's current state is \(S_i\), \(h(S_i, S_j)\) represents the rate of transition from
+                state i to state j. A critical equation associated with the detailed balance hypothesis of Markov chains
+                is introduced, equating the probability flowing out of state i to the probability flowing into it.</p>
+              <p>Using the aforementioned concept, we can predict the probability of the system being in a specific
+                state at the next moment, given the information available at the current moment.</p>
+
+              $$
+              P(S(t = \delta t) = S_j | S(t) = S_i) = h(S_i, S_j)\delta_t + \mathrm{o}(\delta t)
+              $$
+
+              <p>By integrating over the conditional probabilities, we obtain the marginal probabilities:</p>
+              \[
+              \begin{align}
+              X_j(t + \delta t) &= P(S(t + \delta t) = S_j) \\
+              &= \Sigma_{i=1}^n P(S(t + \delta t) = S_j | S(t) = S_i)P(S(t) = S_i) \\
+              &= \{\Sigma_{i \neq j} h(S_i, S_j) \delta t X_i(t)\} + (1 - h(S_j, S-j)\delta t) X_j(t) +
+              \mathrm{o}(\delta t)
+              \end{align}
+              \]
+
+              <p>By rearranging, we arrive at the following equation:</p>
+              \[
+              \dot{X_j(t)} = \Sigma_{i=1}^n a_{ij}X_i(t)
+              \]
+              <p>Expressed in matrix form, this becomes:</p>
+              \[
+              \dot{X} = P \vec{X}
+              \]
+
+              <p>P is the state transition matrix. If there are m states and N nodes, then P is an \(m^N \times m^N\)
+                matrix. The elements of this matrix are the transition rates h we defined earlier. Next, within a given
+                time frame, we allow only one random event to occur and provide an expression for h:</p>
+              \[
+              f(x) = \left\{
+              \begin{aligned}
+              0, & \quad \text{if } S_{\alpha} \text{ and } S_{\beta} \text{ differ in at least two nodes} \\
+              f_{QT}(n_{Q1}, n_{Q2}, \ldots, n_{Qn}), & \quad \text{if } S_{\alpha} \text{ and } S_{\beta} \text{ differ
+              at exactly node i} \\
+              -\Sigma_{l \neq \alpha} h(S_{\alpha}, S_l), & \quad \text{if } S_{\alpha} = S_{\beta}
+              \end{aligned}
+              \right.
+              \]
+
+
+
+              <h3>State Transition Rates in the SIS Model</h3>
+              Now, we delve deeper into defining transition rates between different states. If the possible states of a
+              node are {S, I}, then we introduce \(S_k^j\) to depict a specific state of the system, where the
+              superscript k denotes the number of I nodes in the network, and the subscript j represents the jth
+              permutation of k nodes. The transition \(S(k)_j \rightarrow S(k+1)_i\) signifies the transmission of a
+              disease in a node. The rate of this transition depends on the number of neighboring nodes that are
+              infected and is expressed as \(nτ\).
+
+              <h3>The Master Equation in the SIS Model</h3>
+
+              <p>Recall our basic example where eight equations were used to delineate the system's dynamics. We can
+                represent these equations in matrix form: \(\dot{X} = P \cdot \vec{X}\), where X denotes the system's
+                state space.
+
+                Elements of the matrix P are transition rates between states.</p>
+
+              <figure>
+                <div class="d-flex justify-content-center">
+                  <div class="w-100"><img
+                      src="./assets/images/插图2.webp" alt="png"
+                      loading="lazy" data-zoomable="" class="medium-zoom-image"></div>
+                </div>
+              </figure>
+
+              <p>If we decompose matrix P, we obtain:</p>
+
+              $$ P =
+              \begin{pmatrix}
+              B^0 & C^0 & 0 & 0 \\
+              A^1 & B^1 & C^1 & 0 \\
+              0 & A^2 & B^2 & C^2 \\
+              0 & 0 & A^3 & B ^ 3
+              \end{pmatrix}
+              $$
+
+              <p>From the matrix properties above, we infer:</p>
+              $$ \dot{X^k} = A^kX^{k-1} + B^kX^k + C^kX^(k+1) $$
+              <p>The matrix \(A^k\) represents the transition from Q to T, while the matrix \(C^k\) describes the
+                transition from T to Q. These matrices depend on the structure of the network as well as the transition
+                rates of \(f_{QT}\) and \(f_{TQ}\).</p>
+
+              <p>The element in the i-th row and j-th column of the matrix \(A_k\) is represented by \(A_k{i, j}\). It
+                gives the transition rate from \(S^{k−1}_j\) to \(S^k_i\), which is non-zero only when there's a
+                difference in a single node l, such that \(S^{k−1}_j (l) = Q\) and \(S^k_i (l) = T\). This rate depends
+                on the number of neighbors of node l that are in state T, i.e., \(A^k_{i, j} = h(S^{k−1}_j, S^k_i)\),
+                resulting in:</p>
+
+              \[
+              A^k_{i, j} = \left\{
+              \begin{align}
+              0, & \quad \text{if } S^{k-1}_j \text{ and } S^k_i \text{ differ in more than one node} \\
+              f_{QT}(n_T(l, S^{k-1}_j)), & \quad \text{if } S^{k-1}_j \text{ and } S^k_i \text{ differ only at node l}
+              \end{align}
+              \right.
+              \]
+
+              <p>Similarly, the entry in the i-th row and j-th column of matrix \(C^k\) is represented by \(C^k_{i, j}\)
+                and gives the transition rate from \(S^{k+1}_j\) to \(S^k_i\).</p>
+
+              <p>The matrix \(B^k\) is a diagonal matrix with \(c_k\) rows and columns. This is because \(B^k\) only
+                indicates the transition rates of state \(S^k_i \rightarrow S^k_j\). If \(S_i = S_j\), the transition
+                rate from \(S^k_i\) to \(S^k_j\) is zero. If \(S_i \neq S_j\), then:</p>
+
+              \[
+              B^k_{i, i} = -\Sigma^{c_{k+1}}_{j=1}A^{k+1}_{j, i} - \Sigma^{c_{k-1}}_{j=1}C^{k-1}_{j,i}
+              \]
+
+              <h3>Code</h3>
+              <p>Firstly, we need to establish a master equation model for an SIS model. For a fully connected network
+                with 3 nodes, we can define the following 8 states:</p>
+
+              <ol>
+                <li>All nodes are in a susceptible state: (S, S, S)</li>
+                <li>Node 1 is in an infected state, other nodes are susceptible: (I, S, S)</li>
+                <li>Node 2 is in an infected state, other nodes are susceptible: (S, I, S)</li>
+                <li>Node 3 is in an infected state, other nodes are susceptible: (S, S, I)</li>
+                <li>Nodes 1 and 2 are infected, node 3 is susceptible: (I, I, S)</li>
+                <li>Nodes 1 and 3 are infected, node 2 is susceptible: (I, S, I)</li>
+                <li>Nodes 2 and 3 are infected, node 1 is susceptible: (S, I, I)</li>
+                <li>All nodes are in an infected state: (I, I, I)</li>
+              </ol>
+
+              <p>Now, we need to establish a master equation for each state. Let the infection rate be \( \beta \) and
+                the recovery rate be \( \gamma \). For each of the aforementioned states, we can get the following
+                master equations:</p>
+              \begin{align}
+              \dot{X_{SSS}} &= \gamma(X_{SSI} + X_{SIS} + X_{ISS}) \\
+              \dot{X_{SSI}} &= \gamma(X_{SII} + X{ISI}) - (2\tau + \gamma)X_{SSI}\\
+              \dot{X_{SIS}} &= \gamma(X_{SII} + X{IIS}) - (2\tau + \gamma)X_{SIS}\\
+              \dot{X_{ISS}} &= \gamma(X_{ISI} + X_{IIS}) - (2\tau + \gamma) X_{ISS} \\
+              \dot{X_{SII}} &= \gamma X_{III} + \tau(X_{SSI} + X_{SIS}) - 2(\tau + \gamma) X_{SII}\\
+              \dot{X_{ISI}} &= \gamma X_{III} + \tau(X_{SSI} + X_{ISS}) - 2(\tau + \gamma) X_{ISI}\\
+              \dot{X_{IIS}} &= \gamma X_{III} + \tau(X_{SIS} + X_{ISS}) - 2(\tau + \gamma)X_{IIS}\\
+              \dot{X_{III}} &= -3\gamma X_{III} + 2\tau(X_{SII}+X_{ISI} + X_{IIS})
+              \end{align}
+
+              <p>We use the Python to execute the above equations and plot the results.</p>
+
+              <div class="highlight">
+                <pre class="chrome">
+                <code>
+                import numpy as np
+                from scipy.integrate import odeint
+
+
+                def sis_model(state, t, beta, gamma):
+                    p = state
+                    
+                    dpdt = [
+                        gamma * p[1] + gamma * p[2] + gamma * p[3] - 3 * beta * p[0],
+                        beta * p[0] + gamma * p[4] - (gamma + 2 * beta) * p[1],
+                        beta * p[0] + gamma * p[5] - (gamma + 2 * beta) * p[2],
+                        beta * p[0] + gamma * p[6] - (gamma + 2 * beta) * p[3],
+                        2 * beta * p[1] - (2 * gamma + beta) * p[4],
+                        2 * beta * p[2] - (2 * gamma + beta) * p[5],
+                        2 * beta * p[3] - (2 * gamma + beta) * p[6],
+                        beta * p[4] + beta * p[5] + beta * p[6] - 3 * gamma * p[7]
+                    ]
+                    
+                    return dpdt
+
+
+                # Parameters
+                beta = 0.5
+                gamma = 0.2
+                initial_state = [1, 0, 0, 0, 0, 0, 0, 0]
+                t = np.linspace(0, 50, 1000)
+
+                # Solve the systemof ODEs
+                solution = odeint(sis_model, initial_state, t, args=(beta, gamma))
+
+                # Plot the results
+                import matplotlib.pyplot as plt
+
+                plt.figure(figsize=(10, 6))
+                plt.plot(t, solution[:, 0], label="(S, S, S)")
+                plt.plot(t, solution[:, 1], label="(I, S, S)")
+                plt.plot(t, solution[:, 2], label="(S, I, S)")
+                plt.plot(t, solution[:, 3], label="(S, S, I)")
+                plt.plot(t, solution[:, 4], label="(I, I, S)")
+                plt.plot(t, solution[:, 5], label="(I, S, I)")
+                plt.plot(t, solution[:, 6], label="(S, I, I)")
+                plt.plot(t, solution[:, 7], label="(I, I, I)")
+
+                plt.xlabel("Time")
+                plt.ylabel("Probability")
+                plt.legend()
+                plt.title("SIS Model with 3 Nodes")
+                plt.show()
+                </code>
+              </pre>
+              </div>
+
+
+              <figure>
+                <div class="d-flex justify-content-center">
+                  <div class="w-100"><img
+                      src="./assets/images/结果图.png" alt="png"
+                      loading="lazy" data-zoomable="" class="medium-zoom-image"></div>
+                </div>
+              </figure>
+
+
+              <div class="media author-card content-widget-hr"><a href="https://zhihangliu.cn/"><img
+                    class="avatar mr-3 avatar-circle"
+                    src="./assets/images/avatar_hu52b4c1557bcb3599cc5c64f2ce5143cc_173763_270x270_fill_lanczos_center_3.png"
+                    alt="Zhihang Liu 刘志航"></a>
+                <div class="media-body">
+                  <h5 class="card-title"><a href="https://zhihangliu.cn/">Zhihang Liu 刘志航</a></h5>
+                  <h6 class="card-subtitle">Master student at the Peking University</h6>
+                  <p class="card-text">My research interests include Urban Computing, Computational Social Science,
+                    Complexity, and Complex Networks.</p>
+                </div>
+              </div>
+        </div>
+    </article>
+  </div>
+  <div class="page-footer">
+    <div class="container">
+      <footer class="site-footer">
+        <p class="powered-by copyright-license-text">© 2023 Me. This work is licensed under <a
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC
+            ND 4.0</a></p>
+        <!-- <p class="powered-by">Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank"
+            rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes"
+            target="_blank" rel="noopener">open source</a> website builder that empowers creators.</p> -->
+      </footer>
+    </div>
+  </div>
+  <script src="./assets/js/vendor-bundle.min.1d4346c6f7d46c340dc0a9058dd85c13.js"></script>
+  <script src="./assets/js/mermaid.min.js" integrity="sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="
+    crossorigin="anonymous" title="mermaid"></script>
+  <script id="search-hit-fuse-template" type="text/x-template">
+    <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script src="./assets/js/fuse.min.js"
+    integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw=="
+    crossorigin="anonymous"></script>
+  <script src="./assets/js/jquery.mark.min.js"
+    integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg=="
+    crossorigin="anonymous"></script>
+  <script src="./assets/js/plotly.min.js"
+    integrity="sha512-gttPT9uTUiaLBj6XZdcB0ydKXiDaBwstInkN4Qvp1Nz3iwXNc8TTQplIEPIGxyJBDqERjwkKxf2OyO47/0EHbQ=="
+    crossorigin="anonymous"></script>
+  <script id="page-data" type="application/json">{"use_headroom":true}</script>
+  <script src="./assets/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+  <style>
+    .markmap>svg {
+      width: 100%;
+      height: 100%
+    }
+  </style>
+  <script>window.markmap = { autoLoader: { manual: !1, onReady() { const { autoLoader: e, builtInPlugins: t } = window.markmap; e.transformPlugins = t.filter(e => e.name !== "prism") } } }</script>
+  <script src="./assets/utility/markmap-autoloader"></script>
+  <script src="./assets/js/wowchemy.min.d1a621ded99ecec8400cbe9bc8c34b21.js"></script>
+  <div id="modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cite</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <pre><code></code></pre>
+        </div>
+        <div class="modal-footer"><a class="btn btn-outline-primary my-1 js-copy-cite"
+            href="https://zhihangliu.cn/posts/top_down_model/#" target="_blank"><i class="fas fa-copy"></i> Copy</a>
+          <a class="btn btn-outline-primary my-1 js-download-cite" href="https://zhihangliu.cn/posts/top_down_model/#"
+            target="_blank"><i class="fas fa-download"></i> Download</a>
+          <div id="modal-error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./assets/js/wowchemy-publication.68f8d7090562ca65fc6d3cb3f8f2d2cb.js" type="module"></script><svg
+    id="js-plotly-tester" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    style="position: absolute; left: -10000px; top: -10000px; width: 9000px; height: 9000px; z-index: 1;">
+    <path class="js-reference-point" d="M0,0H1V1H0Z" style="stroke-width: 0; fill: black;"></path>
+  </svg>
+  <div class="mermaidTooltip" style="opacity: 0;"></div>
+</body><scispace-div id="scispace-extension-root"><template shadowrootmode="open">
+    <style>
+      :host {
+        all: initial;
+        font-size: initial;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css"
+      href="chrome-extension://cipccbpjpemcnijhjcdjmkjhmhniiick/static/styles/styles-5c069e24d3025f3c42a6.css">
+    <div class="container">
+      <div id="scispace-extension-app-root">
+        <div class="box-border h-full w-full">
+          <div data-plugin-state="COLLAPSED" data-plugin-context-id="f39f0ae0-d7dd-4336-9f5b-6df025d8892e"></div>
+          <div class="relative">
+            <div id="draggableOverlay"
+              class="draggableOverlay bg-tranparent pointer-events-none fixed inset-0 z-extension box-border h-full w-full p-3">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template></scispace-div><grammarly-desktop-integration data-grammarly-shadow-root="true"><template
+    shadowrootmode="open">
+    <style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style>
+    <div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration"
+      data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}">
+    </div>
+  </template></grammarly-desktop-integration>
+
+</html>

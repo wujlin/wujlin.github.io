@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    option = {
+        title: {
+            text: '酒店类型分布',
+            subtext: '数据来源：酒店之家'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['2023年4月', '2023年7月']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+            type: 'category',
+            // prettier-ignore
+            data: ['经济型', '中档型', '高档型', '豪华型']
+            }
+        ],
+        yAxis: [
+            {
+            type: 'value'
+            }
+        ],
+        series: [
+            {
+            name: '2023年4月',
+            type: 'bar',
+            data: [
+                551, 85, 27, 4
+            ],
+            markPoint: {
+                data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+                ]
+            },
+            markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+            }
+            },
+            {
+            name: '2023年7月',
+            type: 'bar',
+            data: [
+                858, 90, 33, 5
+            ],
+            markPoint: {
+                data: [
+                { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183 },
+                { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
+                ]
+            },
+            markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+            }
+            }
+        ]
+        };
+
+        option && myChart.setOption(option);        
+    
+
+
+    </script>
+
+</body>
+
+</html>

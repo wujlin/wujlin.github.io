@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    option = {
+        tooltip: {
+            trigger: 'item',
+        },
+        legend: {
+            top: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+            name: '年龄占比',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 2
+            },
+            label: {
+                show: false,
+                position: 'center',
+                //formatter: '{value} %'
+            },
+            emphasis: {
+                label: {
+                show: true,
+                fontSize: 40,
+                fontWeight: 'bold',
+                //formatter: '{value} %'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                { value: 27.32, name: '25岁以下' },
+                { value: 33.79, name: '25-34岁' },
+                { value: 24.6, name: '35-44岁' },
+                { value: 10.8, name: '45-54岁' },
+                { value: 3.54, name: '55岁及以上' }
+            ]
+            }
+        ]
+        };
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

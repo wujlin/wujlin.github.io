@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    myChart.showLoading();
+    $.get('assets/data/hotel_geo.json', function (hotel) {
+        $.get('assets/data/淄博市.json', function (zibo) {
+        myChart.hideLoading();
+        echarts.registerMap('zibo', zibo);
+        option = {
+            title: {
+            text: '淄博市民宿分布',
+            subtext: '数据来源：淄博市文化和旅游局',
+            sublink: 'https://data.sd.gov.cn/portal/search/index?Q=%E6%B7%84%E5%8D%9A&searchType=0',
+            left: 'right'
+            },
+            tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2
+            },
+            visualMap: {
+            left: 'right',
+            min: 15,
+            max: 1295,
+            inRange: {
+                color: [
+                '#313695',
+                //'#4575b4',
+                '#74add1',
+                //'#abd9e9',
+                '#e0f3f8',
+                //'#ffffbf',
+                '#fee090',
+                //'#fdae61',
+                '#f46d43',
+                //'#d73027',
+                '#a50026'
+                ]
+            },
+            text: ['High', 'Low'],
+            calculable: true
+            },
+            toolbox: {
+            show: true,
+            //orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+                dataView: { readOnly: false },
+                restore: {},
+                saveAsImage: {}
+            }
+            },
+            series: [
+            {
+                name: '淄博市民宿分布',
+                type: 'map',
+                roam: true,
+                map: 'zibo',
+                emphasis: {
+                label: {
+                    show: true
+                }
+                },
+                data: hotel
+            }
+            ]
+        };
+        myChart.setOption(option);
+        })
+    });    
+    
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    option = {
+        title:{
+            text: '淄博市烧烤店转让数量地理分布',
+            subtext: '数据来源：58同城',
+        },
+        legend: {
+            top: 'bottom'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            restore: { show: true },
+            saveAsImage: { show: true }
+            }
+        },
+            tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        series: [
+            {
+            name: '转让数量',
+            type: 'pie',
+            radius: [50, 250],
+            center: ['50%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 8
+            },
+            data:[{"name": "张店区", "value": 85}, {"name": "临淄区", "value": 12}, 
+            {"name": "周村区", "value": 11}, {"name": "淄川区", "value": 4}, 
+            {"name": "博山区", "value": 3}, {"name": "高新区", "value": 2}, 
+            {"name": "恒台县", "value": 2}, {"name": "沂源县", "value": 1}, 
+            {"name": "临川区", "value": 1}]
+            }
+        ]
+        };
+    
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

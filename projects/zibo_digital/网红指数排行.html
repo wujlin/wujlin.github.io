@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    option = {
+        title: {
+            text: '2023上半年中国网红城市排行榜',
+            subtext: '数据来源：鸥维数据（ovo.com.cn）'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            type: 'shadow'
+            }
+        },
+        legend: {},
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['淄博','西安','上海','成都','重庆','北京','南京','苏州','广州','深圳','杭州','青岛','武汉','香港','哈尔滨','大连','天津','洛阳','长沙','厦门'],
+            inverse: true},
+        series: [
+            {
+            name: '2023',
+            type: 'bar',
+            data: [212.46,
+                    149.42,
+                    138.62,
+                    126.16,
+                    125,
+                    121.93,
+                    117.9,
+                    93.12,
+                    92.96,
+                    92.76,
+                    88.34,
+                    88.17,
+                    82.51,
+                    76.25,
+                    72.84,
+                    72.2,
+                    71.08,
+                    66.83,
+                    65.06,
+                    64.99],
+            realtimeSort: true 
+            },
+        ]
+        };
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+{
+  "id": "2274290",
+  "name": "HTML+CSS",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19255166",
+      "name": "点",
+      "font_class": "dian",
+      "unicode": "e6d3",
+      "unicode_decimal": 59091
+    }
+  ]
+}

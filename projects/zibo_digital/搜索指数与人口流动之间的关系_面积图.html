@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    $.get('assets/data/search_mobility.json', function (data) {
+    option = {
+        title: {
+            text: '信息与人口流动之间的关系',
+            left: 'center'
+        },
+        grid: {
+            bottom: 80
+        },
+        toolbox: {
+            feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            type: 'cross',
+            animation: false,
+            label: {
+                backgroundColor: '#505765'
+            }
+            }
+        },
+        legend: {
+            data: ['搜索指数', '人口迁移指数'],
+            left: 10
+        },
+        dataZoom: [
+            {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100
+            },
+            {
+            type: 'inside',
+            realtime: true,
+            start: 0,
+            end: 100
+            }
+        ],
+        xAxis: [
+            {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: { onZero: false },
+            // prettier-ignore
+            data: data[0]
+            }
+        ],
+        yAxis: [
+            {
+            name: '人口迁移指数',
+            type: 'value'
+            },
+            {
+            name: '搜索指数',
+            nameLocation: 'start',
+            alignTicks: true,
+            type: 'value',
+            inverse: true
+            }
+        ],
+        series: [
+            {
+            name: '人口迁移指数',
+            type: 'line',
+            areaStyle: {},
+            lineStyle: {
+                width: 1
+            },
+            emphasis: {
+                focus: 'series'
+            },
+            markArea: {
+                silent: true,
+                itemStyle: {
+                opacity: 0.3
+                },
+                data: [
+                [
+                    {
+                    xAxis: '2009/9/12\n7:00'
+                    },
+                    {
+                    xAxis: '2009/9/22\n7:00'
+                    }
+                ]
+                ]
+            },
+            // prettier-ignore
+            data: data[2]
+            },
+            {
+            name: '搜索指数',
+            type: 'line',
+            yAxisIndex: 1,
+            areaStyle: {},
+            lineStyle: {
+                width: 1
+            },
+            emphasis: {
+                focus: 'series'
+            },
+            markArea: {
+                silent: true,
+                itemStyle: {
+                opacity: 0.3
+                },
+                data: [
+                [
+                    {
+                    xAxis: '2023-03-08'
+                    },
+                    {
+                    xAxis: '2023-05-08'
+                    }
+                ]
+                ]
+            },
+            // prettier-ignore
+            data: data[1]
+            }
+        ]
+        };
+      myChart.setOption(option);
+    });
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

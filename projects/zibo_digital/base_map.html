@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <script src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+
+</head>
+
+
+<body style="height: 100%; margin: 0">
+    <div id="main" style="height: 100%;"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+        $.getJSON('assets/style/style_map.json', function(styleJson){
+            var option = {
+                bmap: {
+                    center:[118.118600, 24.520422],
+                    zoom: 13,
+                    roam: true,
+                    mapStyle:{
+                        styleJson: styleJson
+                    }
+                },
+                title: {
+                    text: "",
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 30
+                    }
+                },
+                legend: {},
+                series: [{
+
+                }],
+            };
+            myChart.setOption(option, true)
+        })
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    var option;
+    // prettier-ignore
+    $.get('assets/data/search_mobility.json', function (data) {
+        option = {
+        title: {
+            text: '信息与人口流动之间的关系',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            animation: false
+            }
+        },
+        legend: {
+            data: ['人口迁移指数','搜索指数'],
+            left: 10
+        },
+        toolbox: {
+            feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+            }
+        },
+        axisPointer: {
+            link: [
+            {
+                xAxisIndex: 'all'
+            }
+            ]
+        },
+        dataZoom: [
+            {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100,
+            xAxisIndex: [0, 1]
+            },
+            {
+            type: 'inside',
+            realtime: true,
+            start: 0,
+            end: 100,
+            xAxisIndex: [0, 1]
+            }
+        ],
+        grid: [
+            {
+            left: 60,
+            right: 50,
+            height: '35%'
+            },
+            {
+            left: 60,
+            right: 50,
+            top: '55%',
+            height: '35%'
+            }
+        ],
+        xAxis: [
+            {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: { onZero: true },
+            data: data[0]
+            },
+            {
+            gridIndex: 1,
+            type: 'category',
+            boundaryGap: false,
+            axisLine: { onZero: true },
+            data: data[0],
+            position: 'top'
+            }
+        ],
+        yAxis: [
+            {
+            name: '人口迁徙指数',
+            type: 'value',
+            //max: 500
+            },
+            {
+            gridIndex: 1,
+            name: '搜索指数',
+            type: 'value',
+            inverse: true
+            }
+        ],
+        series: [
+            {
+            name: '人口迁徙指数',
+            type: 'line',
+            symbolSize: 8,
+            // prettier-ignore
+            data: data[2]
+            },
+            {
+            name: '搜索指数',
+            type: 'line',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            symbolSize: 8,
+            // prettier-ignore
+            data: data[1]
+            }
+        ]
+        };
+        myChart.setOption(option);
+    });
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+
+</html>

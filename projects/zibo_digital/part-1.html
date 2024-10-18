@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html style="height: 100%" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>衣食住行</title>
+    <!-- favicons Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicons/site.webmanifest">
+    <meta name="description" content="Azino Charity HTML Template">
+    <!-- fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/swiper.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/azino-icons.css">
+    <link rel="stylesheet" href="assets/css/odometer.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
+    <!-- template styles, 注意这里main不能用，因为会和动态echarts造成冲突 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- 但好像又能用，真是很奇怪 -->
+    <!-- 下拉菜单插件 -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel='stylesheet' href="assets/fonts/iconfont.css">
+    <!-- 气泡插件 -->
+    <link rel="stylesheet" href="assets/css/conversation.css">
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <script
+        src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+    <style type="text/css">
+        .chatbox {
+            height: auto;
+            width: 100%;
+            /* 指定宽度 */
+            max-width: 2400px;
+            /* 最大宽度 */
+            min-width: 300px;
+            /* 最小宽度 */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 50px auto;
+            /* 水平居中对话框 */
+            background-color: #f9f9f9;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 5px 0;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+
+        .left {
+            align-self: flex-start;
+            background-color: #e6e6e6;
+        }
+
+        .right {
+            align-self: flex-end;
+            background-color: #0099ff;
+            color: white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 5px;
+            order: -1;
+            /* 将头像放在文本前面 */
+        }
+
+        .right-avatar {
+            order: 1;
+            /* 将AI头像放在文本后面 */
+        }
+
+        .message-container {
+            display: flex;
+            align-items: center;
+            /* 使头像与消息文本垂直居中 */
+            cursor: pointer;
+            /* 当鼠标放在消息容器上时，显示为指针，提示用户可以点击 */
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        @font-face {
+            font-family: 'zitiao';
+            src: url('./assets/fonts/ZiTiao.ttf');
+        }
+
+        h2 {
+            font-family: "zitiao";
+        }
+
+        .ec-extension-bmap {
+            position: absolute;
+            width: 700px !important;
+            height: 700px !important;
+            overflow: hidden;
+            background-color: rgb(243, 241, 236);
+            color: rgb(0, 0, 0);
+            text-align: left;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* left: 34% !important */
+            /* position: absolute; width: 100%; height: 100%; overflow: hidden; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left; */
+        }
+
+        /* 选择含有_cid属性的span元素 */
+        span[_cid] {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+
+
+        /* 选择class为anchorBL的div元素 */
+        div.anchorBL {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- <div class="preloader"> -->
+    <!-- <img class="preloader__image" src="assets/images/沙漏.gif" alt="" style="width: 100px;"> -->
+    <!-- </div> -->
+    <!-- /.preloader -->
+    <div class="page-wrapper">
+        <header class="main-header" style="position: fixed;background-color: transparent;">
+            <div class="main-header__top" style="background-color: transparent;padding: 0;">
+                <div class=" container-fluid" style="display: flex; justify-content: space-between;">
+                    <!-- 下拉菜单开始！！！！！！！！ -->
+                    <div class="htmleaf-container ">
+                        <div>
+                            <a href="javascript:;" id="icon-dian"> <i class="iconfont icon-dian"
+                                    style="font-size: 40px; color: #000;line-height: 1; "></i></a>
+                            <ul class="menu ">
+                                <li>
+                                    <a href="./index.html " ,style="font-size: 14px;">淄博的潮起潮落</a>
+                                </li>
+                                <li class="menu-separator "></li>
+                                <li>
+                                    <a href="./part-1.html" , style="font-size: 12px;">人工智能做旅游攻略</a>
+                                </li>
+                                <li>
+                                    <a href="./part-2.html " , style="font-size: 12px;">热潮的回落</a>
+                                </li>
+                                <li>
+                                    <a href="./part-3.html " , style="font-size: 12px;">网红城市的热度消散</a>
+                                </li>
+                                <li>
+                                    <a href="./part-4.html " , style="font-size: 12px;">冷思考</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 下拉菜单结束！！！！！！！！ -->
+                </div>
+                <!-- /.container -->
+            </div>
+            <div class="container ">
+                <div class="inner-container ">
+                    <div class="row ">
+                        <!-- /.col-sm-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10 d-none d-md-none d-lg-none d-xl-block ">
+                            <nav class="main-menu dynamic-radius ">
+                                <!-- /.main-menu__list -->
+                            </nav>
+                            <!-- /.main-menu -->
+                            <!-- /.main-header__info -->
+                        </div>
+                        <!-- /.col-sm-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.inner-container -->
+            </div>
+            <!-- /.container -->
+        </header>
+        <!-- 放入背景图片和标题 -->
+        <section class="main-slider">
+            <div class="swiper-container thm-swiper__slider" data-swiper-options='{"slidesPerView": 1, "loop": false,
+    "effect": "fade",
+    "pagination": {
+        "el": "#main-slider-pagination",
+        "type": "bullets",
+        "clickable": true
+        },
+    "autoplay": {
+        "delay": 5000
+    }}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="transition-duration: 2000ms;">
+                        <div class="image-layer"
+                            style="background-image: linear-gradient(to top, rgb(34, 34, 34), transparent), url('assets/images/食住行_封面.jpg');background-position: center;">
+                        </div>
+                        <!-- /.image-layer -->
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-xl-12 col-lg-12 text-left" style="margin-top: -100px">
+                                    <h1 style="color: #fff; margin-top: -100px;">人工智能做旅游攻略：食住行</h1>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 text-left">
+                                    <h3 style="color: #fff; margin-top:10px; font-size: 2rem;">
+                                        显然，AI 对于人类的旅行攻略可以说是轻车熟路。只需输入想要了解的问题，他就可以迅速把我需要的信息搜集、整理、发送给我。 因此，我们决定大胆一些，沿着 AI
+                                        给我们设定的旅游攻略，在淄博好好玩上一圈。</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    </section>
+    <div class='container'>
+        <div class="col-lg-12 col-lg-6  word pt-60 juzhong">
+            <p>当我们提到要来一场旅行时，往往很难做到“说走就走”，而是更有可能辗转于携程、美团、微博、小红书、知乎等各大 App
+                之间，详细规划行程、预订往返机/车票和酒店、列出美食清单……可等规划好这些鸡毛蒜皮的小事，旅游的热情也许都被消磨了大半。
+                据马蜂窝发布的《2023 五⼀旅游大数据报告》，<span
+                    style="font-weight: bold; color: #ffa900;">今年五一假期期间，淄博凭借烧烤爆火出圈。</span>“烧烤地图”、“烧烤专列”、“牧羊村烧烤”等词条频上热搜，淄博热度的环比增长涨幅达到了
+                605%，位列城市榜第一。淄博商务局数据显示，自 2023 年 3 月份以来，淄博接待外地游客 480 多万人次，同比增长了 134%，旅游收入增长了 60%。
+            </p>
+            <p>因此，我们决定让“聪明”的 AI 来解放一下疲惫的大脑——<span
+                    style="font-weight: bold; color: #ffa900;">“人工智能做出来的淄博旅行攻略，会是什么样的？”</span></p>
+        </div>
+    </div>
+    <!-- 接下来制作与AI的对话气泡框，实现一个交互动画的效果 -->
+    <div class="container">
+        <div class="chatbox">
+            <div class="message-container">
+                <img src="assets/images/user-avatar.svg" alt="User Avatar" class="avatar right-avatar">
+                <div class="message right" id="message1">
+                    <p>我要去淄博旅游，帮我做个攻略，从出行、住宿、食物三个方面展开</p>
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message2-container">
+                <img src="assets/images/ai-avatar.svg" alt="AI Avatar" class="avatar left-avatar">
+                <div class="message left" id="message2">
+                    <p>出行的部分：</p>
+                    <p>首先，你要到达淄博，可以选择坐飞机、火车或者汽车。如果乘飞机的话，需要先飞至济南市，然后坐汽车前往淄博市。如果坐火车的话，你可以直接抵达淄博火车站。在淄博市内，公交车和出租车都是很好的选择。淄博市的公交线路比较完善，可以达到大部分旅游景点。出租车的话，虽然价格稍高，但是会更加方便快捷。
+                    </p>
+                    <p>住宿的部分：</p>
+                    <p>淄博市有很多酒店和招待所可以供你选择。如果预算比较充足的话，你可以选择如淄博希尔顿酒店、万达嘉华酒店等高端酒店。如果预算比较紧张的话，那么像速8酒店、7天连锁酒店等经济型酒店也会是不错的选择。
+                    </p>
+                    <p>食物的部分：</p>
+                    <p>淄博市的美食也是非常值得一试的。比如淄博烧烤，口感独特，非常美味。淄博还有一个非常有名的小吃，叫做焦玫瑰，是一种鸡蛋和玫瑰酱做的糕点，口味独特，非常好吃。</p>
+                    <p>旅游线路参考：</p>
+                    第一天：抵达淄博，安排好住宿后可以逛一逛淄博的市区，体验一下淄博的城市氛围，晚上可以尝试淄博烧烤。
+                    第二天：游览淄博的名胜古迹，例如周公城和著名的博山石城。
+                    第三天：逛淄博博物馆，了解淄博的历史文化，晚上可以品尝淄博的地道美食焦玫瑰。
+                    记得随时关注天气预报，良好的天气可以让你的旅行体验更佳。以上，祝你在淄博有一个愉快的旅行！
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message3-container">
+                <img src="assets/images/user-avatar.svg" alt="User Avatar" class="avatar right-avatar">
+                <div class="message right" id="message3">
+                    <p>那淄博有哪些好吃的烧烤店呢？推荐几个</p>
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message4-container">
+                <img src="assets/images/ai-avatar.svg" alt="AI Avatar" class="avatar left-avatar">
+                <div class="message left" id="message4">
+                    <p>食物的部分：</p>
+                    老郭羊肉串烧烤店：位于淄博市张店区新村路张石高速公路出口西50米。这里的羊肉串位居淄博烧烤之首，口味地道，入口即化。
+                    五岳烧烤城：位于张店区北城新区科技桥头。以野生山鸡、山鸽、野兔等独特的烧烤为主，新颖别致。
+                    青天烧烤店：位于淄博市桓台县中城风光大街中段。此店在当地是非常具有口碑的一家烧烤小店，受到了居民招牌烤肉十分受欢迎。
+                    官庄烧烤城：位于临淄区浩坤湖旁标题路与新河路交叉口。这是一家档口众多的大型烧烤广场，种类繁多，适合朋友聚会。
+                    以上几个都是非常不错的选择，具体可以根据你的口味和位置来选择。不过不论哪一家，由于烧烤店的营业时间有可能会有变动，建议在前往之前先致电商家确认。
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message5-container">
+                <img src="assets/images/user-avatar.svg" alt="User Avatar" class="avatar right-avatar">
+                <div class="message right" id="message5">
+                    <p>要吃淄博美食的话，哪些酒店比较适合居住呢？</p>
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message6-container">
+                <img src="assets/images/ai-avatar.svg" alt="AI Avatar" class="avatar left-avatar">
+                <div class="message left" id="message6">
+                    如果希望住宿地点旁边有丰富的美食选择，以下是一些在市中心、交通便利、周边美食众多的酒店推荐：
+                    淄博蓝海商务酒店：位于张店区，距离淄博站仅1公里，附近有多家餐厅和小吃店，非常方便尝试当地的美食。
+                    淄博元亨大酒店：位于淄川区大青山路，周围有很多路边小吃和餐馆，是品尝当地美食的好地方。
+                    万达嘉华酒店：位于张店区高新技术开发区内，酒店自身的餐饮设施就很完善，旁边就是万达广场，有众多的美食选择。
+                    共青团路伯爵大酒店：位于张店区，紧邻购物、餐饮等生活设施，交通便利，美食丰富。 选择酒店的时候，可以综合考虑交通便利性、周边的餐饮和购物设施、酒店自身的设施和服务等因素。
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message7-container">
+                <img src="assets/images/user-avatar.svg" alt="User Avatar" class="avatar right-avatar">
+                <div class="message right" id="message7">
+                    好嘞，现在出发！
+                </div>
+            </div>
+            </br>
+            <div class="message-container hidden" id="message8-container">
+                <img src="assets/images/ai-avatar.svg" alt="AI Avatar" class="avatar left-avatar">
+                <div class="message left" id="message8">
+                    祝你在淄博的旅途中体验到无尽的愉快与惊喜！这座城市充满了各种美食和不同的旅行体验，我真心期待你能在回来时，分享那些美味的菜肴、精彩的故事和令人难忘的瞬间。你知道，旅行总是充满了未知和奇妙的可能，我希望你能充分享受每一个瞬间，不管是在探索当地的风景名胜，还是在品尝各种地道的美食。
+                </div>
+            </div>
+            </br>
+        </div>
+    </div>
+    <div class='container'>
+        <div class="col-lg-12 col-lg-6 word pt-60">
+            <p>显然，AI 对于人类的旅行攻略可以说是轻车熟路。只需输入想要了解的问题，他就可以迅速把我需要的信息搜集、整理、发送给我。
+                因此，我们决定大胆一些，沿着 AI 给我们设定的旅游攻略，在淄博好好玩上一圈。</p>
+            <p><span style="font-weight: bold; color: #ffa900;">“淄博上次这么热闹，还是在齐国。”有网友如此调侃。</span>2023 年 4
+                月以来，“淄博烧烤”搜索量同比增长超 370%，全平台搜索量同比增长超 770%，全网浏览量超 200 亿次，相关话题多次登热搜榜首。
+                截至 4 月 25 日，抖音话题“淄博烧烤”的视频总播放量为 102.8 亿次，全国 13 亿人平均每人看 7、8 遍，可以说是真正的“全网围观”；话题“淄博”播放量 112
+                亿次；小红书上“淄博烧烤”笔记已经超过 96 万条；微博上，两个月内淄博共霸榜 18 次。</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-lg-12 col-lg-6 word pt-60">
+            <p><span style="font-weight: bold; color: #ffa900;">“五一”假期期间，淄博的“战绩”尤其突出。</span>据百度地图《2023
+                五一假期排队大数据》统计，淄博市张店区“八大局便民市场”排名第一，超过泰山、乌镇、八达岭长城等景区。
+                无独有偶，据《微信 2023“五一”游玩井喷数据报告》统计，五一期间淄博旅游相关行业日均销售金额环比增长 73%，游客在淄博本地中小商户日均消费金额环比增长近 40%。</p>
+            <p>旅游业爆火，带动了淄博整体的经济收入水平。据淄博市财政局数据显示，2023 年一季度当地一般公共预算收入约 111 亿元，同比增长约 4%，这一增幅列山东省第 3 位，比上月提升 7 个位次。
+                从月度数据来看，1 月当地收入出现两位数降幅，2 月份收入增速实现由负转正出现微增，而 3 月份收入增速高达 32%。</p>
+        </div>
+    </div>
+    <section class="event-details pt-120 pb-120"
+        style="background: url(./assets/images/交通.png) no-repeat; background-position:30% 0; background-size:100%;">
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 text-left">
+                <!-- <h2 style="color: #000;margin-top:12px;font-size: 3rem; font-family: zitiao;">交通</h2> -->
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="col-lg-12 col-lg-6 word pt-60">
+            <p>
+                想要“进淄赶烤”，第一件事自然是要先到当地去。
+                据济南局淄博车务段统计，2023 年 3 月 1 日至 4 月 15 日，淄博火车站日均发送旅客 1.9 万人次、到达旅客 2 万人次，到发旅客数量呈持续上升趋势，并打破近三年来车站单日到发旅客数新高。
+            </p>
+            <p>周末时段，淄博站的客流量更为旺盛。譬如 3 月 18 日，淄博站发送旅客 2.38 万人次，到达旅客 3.3 万人次，合计 5.68 万人次；
+                4 月 15 日，淄博站发送旅客 5.10 万人次，到达旅客 3.26 万人次，到发合计 8.36 万人次。不仅超越了春运客流量，还创造了车站单日到发旅客数历史纪录。</p>
+            <p><span style="font-weight: bold; color: #ffa900;">“五一”期间，根据多个 OTA（Online Travel
+                    Agency）平台数据显示，淄博位列多个高铁热门目的地榜单前十。</span></p>
+            <p>作为疫情后“出行第一年”，2023 年，疫情积压的出游需求大量释放。根据携程数据显示，截至 4 月 6 日，携程五一国内游订单已追平 2019 年同期，同比增长超 7 倍；
+                出境游预订同比增长超 18 倍，境外跟团游报名量较 4 月初增长 157%。而今年的淄博，正是出行链火热的典型缩影。</p>
+            <p>“进淄赶烤”的热度不断加码，也离不开官方在出行政策上的助推。3 月 31 日至 4 月 23 日，国铁济南局<span
+                    style="font-weight: bold; color: #ffa900;">加开了 24 列从济南至淄博间的周末往返“烧烤专列”</span>，40 分钟左右就可到达。
+                此外，还有<span style="font-weight: bold; color: #ffa900;">新增 21
+                    条定制烧烤公交专线</span>等一系列“保姆式服务”出台，淄博烧烤在各大平台的讨论度持续上升，成为了互联网的最新顶流。</p>
+        </div>
+    </div>
+    <section class=" " style="background-color: #fff;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <div class="row pt-30">
+                <div class="juzhong">
+                    <!-- <span>图2：日均人流量折线图</span> -->
+                    <div id="t_mobility" style="width: 700px;height: 550px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        var dom = document.getElementById('t_mobility');
+                        var chart2 = echarts.init(dom, null, {
+                            renderer: 'canvas',
+                            useDirtyRect: false
+                        });
+
+                        $.get('assets/data/mobility_time_new.json', function (data) {
+                            chart2.setOption(
+                                (option = {
+                                    graphic: [{
+                                        id: 'text1',
+                                        type: 'text',
+                                        style: {
+                                            text: '淄博日均迁入指数随着\n淄博烧烤热度的涨高而增加',
+                                            x: 100,
+                                            y: 430
+                                        },
+                                    },
+                                    {
+                                        type: 'circle',
+                                        shape: {
+                                            cx: 180,
+                                            cy: 460,
+                                            r: 8
+                                        },
+                                        style: {
+                                            fill: '#ffa900'
+                                        }
+                                    },]
+                                    ,
+                                    title: {
+                                        text: '图1：淄博日均迁入指数',
+                                        left: 'center',
+                                        top: 'top',
+                                        textStyle: {
+                                            fontSize: '24px',
+                                            fontWeight: 'bolder',
+                                            color: '#6d6b6c',
+                                            fontFamily: 'sans-serif'
+                                        }
+                                    },
+                                    tooltip: {
+                                        trigger: 'axis',
+                                        fontSize: 4,
+                                        formatter: function (params) {
+                                            // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                            // 你可以根据你的需求来自定义tooltip的内容和格式
+                                            // console.log(params[0]);
+                                            var date = params[0].name; // 获取日期
+                                            var value = params[0].value; // 获取迁移指数
+                                            var color = params[0].color; // 获取颜色
+                                            // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                            return (
+                                                '<p style="color:' +
+                                                '#000' +
+                                                ';font-size:12px;font-weight: bold; text-align: left; margin-bottom: 16px">' +
+                                                date +
+                                                '</p>' +
+                                                //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                                '<p style="color:' +
+                                                color +
+                                                ';font-size:14px;margin-botoom: 0px">' + '人口迁移指数：' +
+                                                value +
+                                                '</p>'
+                                            );
+                                        }
+                                    },
+                                    grid: {
+                                        left: '5%',
+                                        right: '15%',
+                                        bottom: '10%'
+                                    },
+                                    xAxis: {
+                                        data: data.map(function (item) {
+                                            return item[0];
+                                        })
+                                    },
+                                    yAxis: {},
+                                    toolbox: {
+                                        left: 10,
+                                        feature: {
+                                            dataZoom: {
+                                                yAxisIndex: 'none'
+                                            },
+                                            restore: {},
+                                            saveAsImage: {},
+                                            left: 'left',
+                                        }
+                                    },
+                                    dataZoom: [{
+                                        startValue: '2023-02-28'
+                                    },
+                                    {
+                                        type: 'inside'
+                                    }
+                                    ],
+                                    visualMap: {
+                                        // orient: 'horizontal',
+                                        top: 50,
+                                        right: 10,
+                                        pieces: [{
+                                            gt: 0,
+                                            lte: 50,
+                                            color: '#93CE07'
+                                        },
+                                        {
+                                            gt: 50,
+                                            lte: 100,
+                                            color: '#FBDB0F'
+                                        },
+                                        {
+                                            gt: 100,
+                                            lte: 150,
+                                            color: '#FC7D02'
+                                        },
+                                        {
+                                            gt: 150,
+                                            lte: 200,
+                                            color: '#FD0100'
+                                        },
+                                        {
+                                            gt: 200,
+                                            lte: 300,
+                                            color: '#AA069F'
+                                        },
+                                        {
+                                            gt: 300,
+                                            color: '#AC3B2A'
+                                        }
+                                        ],
+                                        outOfRange: {
+                                            color: '#999'
+                                        }
+                                    },
+                                    series: {
+                                        name: '迁移指数',
+                                        type: 'line',
+                                        data: data.map(function (item) {
+                                            return item[1];
+                                        }),
+                                    }
+                                })
+                            );
+                        });
+                    </script>
+                    <p style="color:#a0a3a4!important; font-size:13px!important;">数据来源： 高德数据API。</p>
+                    <p style="color:#a0a3a4!important; font-size:13px!important;">高德地图的迁入指数是一种反映人们对某个城市或地区迁入情况的指标。<br>它是通过分析高德地图用户在导航搜索目的地时驾车规划路线的数据来计算得出的。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-30 pb-60" style="background-color: #fff;">
+        <div class="word" style="color: #000;">
+            <!-- <p>如图1所示，我们可以看到4-5月份有来自全国的旅客前往淄博，这些人流为淄博的经济发展注入了活力。</p> -->
+        </div>
+        <div class="container" style="display: flex; align-items: center; justify-content: center;">
+            <div class="row resourse">
+                <div class="pt-20 juzhong" style="display: flex; align-items: center; justify-content: center;">
+                    <div id="ts_mobility" style="width: 700px; height: 700px; border: 0px solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart1 = echarts.init(document.getElementById('ts_mobility'));
+                        // 指定图表的配置项和数据
+                        $.getJSON('assets/data/ts_mobility.json', function (data) {
+                            $.getJSON('assets/style/styleJson_light.json', function (styleJson) {
+                                var options = []
+                                var hour = []
+                                for (var i = 0; i < data.length; i++) {
+                                    hour.push(data[i][0]['date'])
+                                    let [year, month, day] = data[i][0]['date'].split('-')
+                                    options.push({
+                                        title: {
+                                            text: '图2：' + year + '年' + month + '月' + day + '日' + '，淄博人口流入情况',
+                                            left: 'left',
+                                            top: 'top',
+                                            textStyle: {
+                                                fontSize: '24px',
+                                                fontWeight: 'bolder',
+                                                color: '#6d6b6c',
+                                                fontFamily: 'sans-serif'
+                                            }
+                                        },
+                                        series: [{
+                                            type: 'lines',
+                                            coordinateSystem: 'bmap',
+                                            data: data[i][0]['data'],
+                                            lineStyle: {
+                                                normal: {
+                                                    //color: '#a6c84c',
+                                                    width: 1.5,
+                                                    curveness: 0.1
+                                                }
+                                            },
+                                            effect: {
+                                                show: true,
+                                                period: 10,
+                                                constantSpeed: 100,
+                                                trailLength: 0.7,
+                                                symbolSize: 7
+                                            },
+                                        }, {
+                                            type: 'effectScatter',
+                                            coordinateSystem: 'bmap',
+                                            label: {
+                                                emphasis: {
+                                                    show: true,
+                                                    position: 'right',
+                                                    formatter: function (params) { return params['name'] }
+                                                }
+                                            },
+                                            data: data[i][1],
+                                            symbolSize: function (params) { return params[2] * 1.2 }
+                                        }]
+                                    })
+                                }
+
+                                var option = {
+                                    timeline: {
+                                        data: hour,
+                                        orient: 'vertical',
+                                        left: '8%',
+                                        top: '5%',
+                                        height: '80%',
+                                        width: '2%',
+                                        axisType: 'category',
+                                        autoPlay: true,
+                                        playInterval: 300,
+                                        //rewind: true,
+                                        currentIndex: 0,
+                                        inverse: true,
+                                        symbolSize: 5,
+                                        label: {
+                                            position: 'right',
+                                            formatter: function (value, index) {
+                                                // 格式化成月/日，只在第一个刻度显示年份
+                                                var date = new Date(value);
+                                                var texts = [(date.getMonth() + 1), date.getDate()];
+                                                if (index === 0) {
+                                                    texts.unshift(date.getFullYear());
+                                                }
+                                                return texts.join('/');
+                                            }
+                                        }
+                                    },
+                                    bmap: {
+                                        center: [110.036449, 33.103488],
+                                        zoom: 6,
+                                        roam: true,
+                                        mapStyle: {
+                                            styleJson: styleJson
+                                        }
+                                    },
+                                    visualMap: {
+                                        show: false,
+                                        left: 'left',
+                                        bottom: '1%',
+                                        max: 40,
+                                        inRange: {
+                                            color: ['green', '#eac736', '#d94e5d'],
+                                            colorAlpha: [0, 1]
+                                        },
+                                    },
+                                    title: {
+                                        text: "",
+                                        textStyle: {
+                                            color: '#fff',
+                                            fontSize: 30
+                                        }
+                                    },
+                                    legend: {},
+                                    series: [{}],
+                                    options: options
+                                };
+
+                                // 使用刚指定的配置项和数据显示图表。
+                                chart1.setOption(option, true);
+                            })
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="resourse">
+            <p style="color:#a0a3a4!important; align-items: center; text-align: center!important;">数据来源：高德数据API。</p>
+        </div>
+    </section>
+    <section class="event-details pt-120 pb-120"
+        style="background: url(./assets/images/住宿.png) no-repeat; background-position:30% 0; background-size:100%;">
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 text-left">
+                <!-- <h2 style="color: #000;margin-top:12px;font-size: 3rem; font-family: zitiao;">交通</h2> -->
+            </div>
+        </div>
+    </section>
+    <section class="pt-20 pb-20" style="background-color: #fff;">
+        <div class="container" style="width:800px">
+            <div class="row resourse ">
+                <div class="col-md-6 juzhong" style="padding-right:0px">
+                    <!-- <span>图3：酒店类型柱状图</span> -->
+                    <div id="hotel_class" style="width: 100%;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart3 = echarts.init(document.getElementById('hotel_class'));
+                        // 指定图表的配置项和数据
+
+                        var option;
+                        option = {
+                            title: {
+                                text: '图3：酒店类型分布',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log([params[0].color, params[1].color]);
+                                    // console.log([params[0]])
+                                    var name0 = params[0].name; // 获取酒店类型
+                                    var value0 = params[0].value; // 获取迁移指数
+                                    var color0 = params[0].color; // 获取颜色
+
+                                    var name1 = params[1].name;
+                                    var value1 = params[1].value;
+                                    var color1 = params[1].color;
+                                    // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                    return (
+                                        '<span style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom：4px!important">' +
+                                        name0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                        '<span style="color:' +
+                                        color0 +
+                                        '!important;font-size:10px!important;margin：0">' + '2023年4月数据：' +
+                                        value0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        '<span style="color:' +
+                                        color1 +
+                                        '!important;font-size:10px!important;margin：0">' + '2023年7月数据：' +
+                                        value1 +
+                                        '</span>'
+                                    );
+                                }
+                            },
+                            legend: {
+                                data: ['2023年4月', '2023年7月'],
+                                left: 'center',
+                                orient: 'horizontal',
+                                top: 'bottom',
+                            },
+                            toolbox: {
+                                show: false,
+                                feature: {
+                                    dataView: { show: true, readOnly: false },
+                                    magicType: { show: true, type: ['line', 'bar'] },
+                                    restore: { show: true },
+                                    saveAsImage: { show: true }
+                                },
+                                left: 'left'
+                            },
+                            calculable: true,
+                            xAxis: [{
+                                type: 'category',
+                                // prettier-ignore
+                                data: ['经济型', '中档型', '高档型', '豪华型']
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                max: 900,
+                            }],
+                            series: [{
+                                name: '2023年4月',
+                                type: 'bar',
+                                data: [
+                                    551, 85, 27, 4
+                                ],
+                                markPoint: {
+                                    data: [
+                                        { type: 'max', name: 'Max' },
+                                        { type: 'min', name: 'Min' }
+                                    ]
+                                },
+                            },
+                            {
+                                name: '2023年7月',
+                                type: 'bar',
+                                data: [
+                                    858, 90, 33, 5
+                                ],
+                                markPoint: {
+                                    data: [
+                                        { type: 'max', name: 'Max' },
+                                        { type: 'min', name: 'Min' }
+                                    ]
+                                },
+                            }
+                            ]
+                        };
+
+                        option && chart3.setOption(option);
+                    </script>
+                    <p>数据来源： 酒店之家。<br> 图中标记了数量最多的酒店类型和数量最少的酒店类型。</p>
+                </div>
+                <!-- 类型图结束 -->
+                <div class="col-md-6 juzhong" style="padding-left:0px">
+                    <div id="s_minsu" style="width: 100%;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart4 = echarts.init(document.getElementById('s_minsu'));
+                        // 指定图表的配置项和数据
+                        $.get('assets/data/hotel_geo.json', function (hotel) {
+                            $.get('assets/data/淄博市.json', function (zibo) {
+                                echarts.registerMap('zibo', zibo);
+                                var option = {
+                                    title: {
+                                        text: '图4：淄博市民宿分布',
+                                        left: 'center',
+                                        top: 'top',
+                                        textStyle: {
+                                            fontSize: '24px',
+                                            fontWeight: 'bolder',
+                                            color: '#6d6b6c',
+                                            fontFamily: 'sans-serif'
+                                        },
+                                    },
+                                    tooltip: {
+                                        trigger: 'item',
+                                        showDelay: 0,
+                                        transitionDuration: 0.2,
+                                        padding: 2,
+                                        formatter: function (params) {
+                                            // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                            // 你可以根据你的需求来自定义tooltip的内容和格式
+                                            // console.log([params[0].color, params[1].color]);
+                                            // console.log(params)
+                                            var name0 = params.name; // 获取酒店类型
+                                            var value0 = params.value; // 获取迁移指数
+                                            var color0 = params.color; // 获取颜色
+
+                                            // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                            return (
+                                                '<span style="color:' +
+                                                '#000' +
+                                                ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom：4px!important">' +
+                                                name0 +
+                                                '</span>' +
+                                                '<br>' +
+                                                //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                                '<span style="color:' +
+                                                color0 +
+                                                '!important;font-size:10px!important;margin：0">' + '民宿数量：' +
+                                                value0 +
+                                                '</span>'
+                                            );
+                                        }
+                                    },
+                                    visualMap: {
+                                        left: 'right',
+                                        top: '5%',
+                                        min: 15,
+                                        max: 1295,
+                                        inRange: {
+                                            color: [
+                                                '#313695',
+                                                //'#4575b4',
+                                                '#74add1',
+                                                //'#abd9e9',
+                                                '#e0f3f8',
+                                                //'#ffffbf',
+                                                '#fee090',
+                                                //'#fdae61',
+                                                '#f46d43',
+                                                //'#d73027',
+                                                '#a50026'
+                                            ]
+                                        },
+                                        text: ['High', 'Low'],
+                                        calculable: true
+                                    },
+                                    toolbox: {
+                                        show: false,
+                                        //orient: 'vertical',
+                                        left: 'left',
+                                        top: 'top',
+                                        feature: {
+                                            dataView: { readOnly: false },
+                                            restore: {},
+                                            saveAsImage: {}
+                                        }
+                                    },
+                                    series: [{
+                                        name: '淄博市民宿分布',
+                                        type: 'map',
+                                        roam: true,
+                                        map: 'zibo',
+                                        emphasis: {
+                                            label: {
+                                                show: true
+                                            }
+                                        },
+                                        data: hotel
+                                    }]
+                                };
+                                chart4.setOption(option);
+                            })
+                        });
+                    </script>
+                    <p>数据来源： 淄博市文化和旅游局。<br>
+                        链接：https://data.sd.gov.cn/portal/search/index?Q=%E6%B7%84%E5%8D%9A&searchType=0</p>
+                </div>
+                <!-- 地图结束 -->
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="col-lg-12 col-lg-6 word pt-60">
+            <p>来到淄博后，可以选择先去预定好的住处小憩一下。<span
+                    style="font-weight: bold; color: #ffa900;">伴随着“淄博烧烤”的热度上升，五一期间淄博酒店的平台预订量迅速上涨。</span>
+                截至 2023 年 4 月 10 日，淄博五一住宿的预订数量较 2019 年增长超过 800%，并带动青岛、威海、济南和烟台的住宿预订数量突破全国前 20，迎来了一波客流高峰。
+                从整体来看，山东省酒店预订量较 2019 年同期增长近 3 倍，增速位居全国第一。</p>
+            <p>
+                <span style="font-weight: bold; color: #ffa900;">酒店预定量、订单量飞速增长的同时，住宿价格也水涨船高，部分酒店周末甚至一房难求。</span>
+                为了解决酒店价格飞升的问题，4 月 16 日，淄博市场监管局发布《关于规范经营者价格行为提醒告诫书》，要求加强价格自律，为广大消费者提供价格合理的商品和服务。
+                4 月 22 日，淄博市发展和改革委员会、淄博市市场监督管理局联合发布《关于阶段性对宾馆酒店客房哄抬价格行为认定有关问题的通知》，明确 2023
+                年“五一”假期前后，在全市范围内对宾馆酒店客房价格实行<span style="font-weight: bold; color: #ffa900;">涨价幅度控制措施</span>。
+                按照 3 月 1 日至 3 月 31 日宾馆酒店各类型客房平均实际成交价格（包含线上、线下所有实际交易结算金额），明确规定价格涨幅不能超过 50%，否则按照哄抬价格行为予以查处。
+            </p>
+            <p>
+                淄博的现象级流量为当地酒店行业带来了巨大的商机，各类型酒店、民宿的数量、床位数也都有所增加。
+            </p>
+            <p>但同时不可避免的是，淄博与周边部分地区的酒店热度形成了较大差异。</p>
+        </div>
+    </div>
+    <section class="pt-20 pb-20" style="background-color: #fff;">
+        <div class="word" style="color: #000">
+            <!-- <p>我们对淄博与周边县市的酒店预订率进行了统计，如图5显示，淄博市的酒店预订率明显高于周边县市，这也说明了淄博市的酒店热度远高于周边县市。</p> -->
+        </div>
+        <div class="container" , style="display: flex; justify-content: center; align-items: center;">
+            <div class="row resourse pb-20">
+                <div class="'pb-20 juzhong">
+                    <!-- <span>图5：酒店预订率对比</span> -->
+                    <div id="hotel_reservation" style="width: 650px;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart5 = echarts.init(document.getElementById('hotel_reservation'));
+                        // 指定图表的配置项和数据
+
+                        var option_5 = {
+                            title: {
+                                text: '图5：酒店预订率对比',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '20px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log([params[0].color, params[1].color]);
+                                    // console.log([params[0]])
+                                    var name0 = params[0].name; // 获取酒店类型
+                                    var value0 = params[0].value; // 获取迁移指数
+                                    var color0 = params[0].color; // 获取颜色
+
+                                    var name1 = params[1].name;
+                                    var value1 = params[1].value;
+                                    var color1 = params[1].color;
+                                    // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                    return (
+                                        '<span style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom：4px!important">' +
+                                        name0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                        '<span style="color:' +
+                                        color0 +
+                                        '!important;font-size:10px!important;margin：0">' + '淄博市酒店预订率：' +
+                                        value0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        '<span style="color:' +
+                                        color1 +
+                                        '!important;font-size:10px!important;margin：0">' + '周边县市酒店预订率：' +
+                                        value1 +
+                                        '</span>'
+                                    );
+                                }
+                            },
+                            legend: {
+                                top: 'bottom',
+                            },
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    dataZoom: {
+                                        yAxisIndex: 'none'
+                                    },
+                                    dataView: { readOnly: false },
+                                    magicType: { type: ['line', 'bar'] },
+                                    restore: {},
+                                    saveAsImage: {}
+                                },
+                                left: 'left'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: ['2023-04-27',
+                                    '2023-04-28',
+                                    '2023-04-29',
+                                    '2023-04-30',
+                                    '2023-05-01',
+                                    '2023-05-02',
+                                    '2023-05-03',
+                                ]
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisLabel: {
+                                    formatter: '{value} %'
+                                }
+                            },
+                            series: [{
+                                name: '淄博市',
+                                type: 'line',
+                                data: [96.0,
+                                    99.0,
+                                    100.0,
+                                    100.0,
+                                    99.0,
+                                    96.0,
+                                    94.0,
+                                ],
+                                markPoint: {
+                                    data: [
+                                        { type: 'max', name: 'Max' },
+                                        { type: 'min', name: 'Min' }
+                                    ]
+                                },
+                                // markLine: {
+                                //     data: [{ type: 'average', name: 'Avg' }]
+                                // }
+                            },
+                            {
+                                name: '周边县市',
+                                type: 'line',
+                                data: [75.0,
+                                    91.0,
+                                    92.0,
+                                    94.0,
+                                    93.0,
+                                    86.0,
+                                    75.0
+                                ],
+                                markPoint: {
+                                    data: [{ type: 'max', name: 'Max' },
+                                    { type: 'min', name: 'Min' }
+                                    ]
+                                },
+                                // markLine: {
+                                //     data: [
+                                //         { type: 'average', name: 'Avg' },
+                                //         [{
+                                //             symbol: 'none',
+                                //             x: '90%',
+                                //             yAxis: 'max'
+                                //         },
+                                //         {
+                                //             symbol: 'circle',
+                                //             label: {
+                                //                 position: 'start',
+                                //                 formatter: 'Max'
+                                //             },
+                                //             type: 'max',
+                                //             name: '最高点'
+                                //         }
+                                //         ]
+                                //     ]
+                                // }
+                            }
+                            ]
+                        };
+                        chart5.setOption(option_5);
+                    </script>
+                    <p>数据来源： 淄博市商务局微信公众号。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="col-lg-12 col-lg-6 word pt-20">
+            <p>据《中国旅游目的地复苏调查报告》显示，来淄博旅游的游客中，<span style="font-weight: bold; color: #ffa900;">“90 后”、“00 后”群体占比超八成，其中“00
+                    后”超五成，其中有不少是到淄博来体验烧烤的大学生。</span></p>
+        </div>
+    </div>
+    <section class="pt-20" style="background-color: #fff;">
+        <div class="container" style="width: 1000px">
+            <div class="row resourse">
+                <div class="col-md-6 juzhong" style="padding-left:0px">
+                    <!-- <span>图6：游客年龄分布</span> -->
+                    <div id="tourist_age" style="width: 100%;height: 300px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart6 = echarts.init(document.getElementById('tourist_age'));
+                        // 指定图表的配置项和数据
+
+                        var option = {
+                            title: {
+                                text: '图6：游客年龄分布',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log([params[0].color, params[1].color]);
+                                    console.log(params)
+                                    var name0 = params.name; // 获取酒店类型
+                                    var value0 = params.value; // 获取迁移指数
+                                    var color0 = params.color; // 获取颜色
+
+                                    // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                    return (
+                                        '<span style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom：4px!important">' +
+                                        name0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                        '<span style="color:' +
+                                        color0 +
+                                        '!important;font-size:10px!important;margin：0">' + '年龄占比：' +
+                                        value0 + '%' +
+                                        '</span>'
+                                    );
+                                }
+                            },
+                            legend: {
+                                top: '5%',
+                                left: 'left',
+                                orient: 'vertical',
+                            },
+                            series: [{
+                                name: '年龄占比',
+                                type: 'pie',
+                                radius: ['20%', '60%'],
+                                avoidLabelOverlap: false,
+                                itemStyle: {
+                                    borderRadius: 10,
+                                    borderColor: '#fff',
+                                    borderWidth: 2
+                                },
+                                label: {
+                                    show: false,
+                                    position: 'center',
+                                    //formatter: '{value} %'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true,
+                                        fontSize: 20,
+                                        fontWeight: 'bold',
+                                        //formatter: '{value} %'
+                                    }
+                                },
+                                labelLine: {
+                                    show: false
+                                },
+                                data: [
+                                    { value: 27.32, name: '25岁以下' },
+                                    { value: 33.79, name: '25-34岁' },
+                                    { value: 24.6, name: '35-44岁' },
+                                    { value: 10.8, name: '45-54岁' },
+                                    { value: 3.54, name: '55岁及以上' }
+                                ]
+                            }]
+                        };
+                        chart6.setOption(option);
+                    </script>
+                    <p>数据来源： 中国旅游目的地复苏调查报告。</p>
+                </div>
+                <!-- 饼图1结束 -->
+                <div class="col-md-6 juzhong" style="padding-left:0px">
+                    <!-- <span>图7：游客来源地分布</span> -->
+                    <!-- 插入旅客来源的饼图 -->
+                    <div id="tourist_source" style="width: 100%;height: 300px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart7 = echarts.init(document.getElementById('tourist_source'));
+                        // 指定图表的配置项和数据
+
+                        var option = {
+                            graphic: [{
+                                type: 'text',
+                                left: '23%', // 调整到适合的位置
+                                bottom: '30%', // 距离底部的距离
+                                style: {
+                                    text: '4月',
+                                    textAlign: 'center',
+                                    fill: '#333',
+                                    fontSize: 14,
+                                    fontWeight: 'bold'
+                                }
+                            }, {
+                                type: 'text',
+                                left: '65%', // 调整到适合的位置
+                                bottom: '30%', // 距离底部的距离
+                                style: {
+                                    text: '7月',
+                                    textAlign: 'center',
+                                    fill: '#333',
+                                    fontSize: 14,
+                                    fontWeight: 'bold'
+                                }
+                            }],
+                            title: {
+                                text: '图7：4月份与7月份淄博游客来源对比',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{a}（{b}） {c}%'
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                left: '0%',
+                                top: 'bottom'
+                            },
+                            series: [{
+                                name: '4月份游客来源',
+                                type: 'pie',
+                                radius: '25%',
+                                center: ['25%', '50%'],
+                                data: [
+                                    { value: 80, name: '山东' },
+                                    { value: 20, name: '其他地方' },
+                                ],
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            },
+                            {
+                                name: '7月份游客来源',
+                                type: 'pie',
+                                radius: '25%',
+                                center: ['65%', '50%'],
+                                data: [
+                                    { value: 80, name: '北京、上海、江苏、\n 广东、河北、山西' },
+                                    { value: 20, name: '其他地方' },
+                                ],
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                            ]
+                        };
+                        chart7.setOption(option);
+                    </script>
+                    <p>数据来源：《实地调研：淄博餐饮、住宿业财源滚滚，供不应求隐忧浮现》</p>
+                </div>
+                <!-- 饼图2结束 -->
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="col-lg-12 col-lg-6 word pt-60">
+            <p>为了服务好“下一代消费者”，淄博市 38 处青年驿站全部向青年学生开放。
+                来淄求职、就业的青年可在青年驿站享受每年 3 次、每次 2 晚的免费入住；
+                来淄实习、游玩、访友的市外高校在校大学生，可享受每年 4 次、每次 5 天的半价入住。
+                除了大学生之外，为了让游客住得更舒适、更放心，许多酒店也不断提高服务标准，致力于让来到这里的每一位游客宾至如归。</p>
+        </div>
+    </div>
+    <section class="pb-20" style="background-color: #fff;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <div class="row resourse">
+                <div class="juzhong">
+                    <!-- <span>图8：酒店等级分布</span> -->
+                    <!-- 酒店钻级分布 -->
+                    <div id="star" style="width: 650px;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart8 = echarts.init(document.getElementById('star'));
+                        // 指定图表的配置项和数据
+
+                        var option = {
+                            title: {
+                                text: '图8：酒店等级分布',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    // Use axis to trigger tooltip
+                                    type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                                },
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log([params[0].color, params[1].color]);
+                                    console.log(params);
+                                    var county = params[0].axisValue; // 定义为一些数组
+
+                                    var types = []; // 定义一个空数组，用来存放酒店类型
+                                    var values = []; // 定义一个空数组，用来存放迁移指数
+                                    var colors = []; // 定义一个空数组，用来存放颜色
+                                    // 遍历params数组，获取酒店类型、迁移指数、颜色，并且push进定义好的数组中
+                                    for (var i = 0; i < params.length; i++) {
+                                        types.push(params[i].seriesName);
+                                        values.push(params[i].value);
+                                        colors.push(params[i].color);
+                                    }
+
+                                    // 定义一个空字符串，用来拼接HTML字符串
+                                    var html = "";
+                                    // 将县名放在第一行，字体加粗，居左对齐
+                                    html += '<span style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom：4px!important">' +
+                                        county +
+                                        '</span>' +
+                                        '<br>';
+                                    // 遍历数组，将每个酒店类型、迁移指数、颜色放在一行，字体颜色与图例一致，居右对齐
+                                    for (var i = 0; i < types.length; i++) {
+                                        html += '<span style="color:' +
+                                            colors[i] +
+                                            '!important;font-size:10px!important;margin：0">' + types[i] + '：' +
+                                            values[i] +
+                                            '</span>' +
+                                            '<br>';
+                                    }
+                                    // 返回HTML字符串
+                                    return html;
+                                }
+
+                            },
+                            legend: {
+                                top: 'bottom',
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value'
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['临淄区', '博山区', '周村区', '张店区', '桓台县', '沂源县', '淄川区', '高青县']
+                            },
+                            series: [{
+                                name: '2星级',
+                                type: 'bar',
+                                stack: 'total',
+                                label: {
+                                    show: true,
+                                    formatter: function (params) {
+                                        return params.value === 0 ? '' : params.value;
+                                    }
+                                },
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: [2, 0, 0, 0, 0, 2, 0, 0]
+                            },
+                            {
+                                name: '3星级',
+                                type: 'bar',
+                                stack: 'total',
+                                label: {
+                                    show: true,
+                                    formatter: function (params) {
+                                        return params.value === 0 ? '' : params.value;
+                                    }
+                                },
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: [0, 2, 11, 4, 4, 0, 9, 2]
+                            },
+                            {
+                                name: '4 星级',
+                                type: 'bar',
+                                stack: 'total',
+                                label: {
+                                    show: true,
+                                    formatter: function (params) {
+                                        return params.value === 0 ? '' : params.value;
+                                    }
+                                },
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: [0, 2, 4, 2, 0, 0, 0, 2]
+                            },
+
+                            ]
+                        };
+                        chart8.setOption(option);
+                    </script>
+                    <p>数据来源：酒店之家</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p><span style="font-weight: bold; color: #ffa900;">一方面，酒店本身积极推进供给侧创新，在降本增效的同时加速酒店品牌与产品升级。</span>
+                    在游客看得见的地方，许多酒店启用了机器人、自助机器、室内自动系统等等，大力推进智能化服务。
+                    在游客看不见的地方，也有以大数据为基础的数据情报、未来策略、即时价格决策、网格化营销等平台服务，为数以千计的酒店提供数字化运营支持。
+                </p>
+                <p><span style="font-weight: bold; color: #ffa900;">另一方面，不少酒店借势跨界，在淄博烧烤的基础上玩出了新花样。</span>
+                    比如淄博的 21 家尚客优酒店，在五一期间推出了“包在尚客优”免费存包服务。
+                    同时，还依托尚美数智旗下的 4145 家门店优势与 1.3 亿会员体系，通过多产品叠加模式，将淄博特色烧烤推向全国。
+                    不仅获得了游客的高度好评，也为文旅产业创新探索了更多可能性。
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- <img src="assets/images/roast_1.png" alt="9.png" style="width: 980px; height: 896px; object-fit: cover; object-position: 50% 50%;" width="980" height="620" fetchpriority="high"> -->
+    <section class="event-details pt-120 pb-120"
+        style="background: url(./assets/images/饮食.png) no-repeat; background-position:30% 0; background-size:100%;">
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 text-left">
+                <!-- <h2 style="color: #000;margin-top:12px;font-size: 3rem; font-family: zitiao;">交通</h2> -->
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word">
+                <p>在住处休憩片刻，就可以出门来一顿正宗的淄博烧烤啦。
+                    以在市场监管部门办理营业执照的数量统计，截至 4 月中旬，淄博全市有 1270 多家烧烤店；
+                    截至 5 月 8 日，淄博市新增烧烤相关企业 735 家。
+                    据企查查数据显示，淄博市现存烧烤相关企业 3488 家，2023 年第一季度淄博市新增烧烤相关企业 338 家，同比上涨 12.58％。</p>
+            </div>
+        </div>
+    </section>
+    <section class="pt-20" style="background-color: #fff;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <div class="row resourse">
+                <div class="juzhong">
+                    <!-- <span>图9：餐桌需求量和用电量之间的关系</span> -->
+                    <!-- 酒店钻级分布 -->
+                    <div id="ele_demand" style="width: 650px;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        var chart9 = echarts.init(document.getElementById('ele_demand'));
+
+                        const colors = ['#5470C6', '#EE6666'];
+                        var option = {
+                            title: {
+                                text: '图9：餐桌需求量和用电量之间的关系',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            color: colors,
+                            tooltip: {
+                                trigger: 'none',
+                                axisPointer: {
+                                    type: 'cross'
+                                }
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                left: 'center',
+                                top: 'bottom',
+
+                            },
+                            grid: {
+                                top: 70,
+                                bottom: 50
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                axisTick: {
+                                    alignWithLabel: true
+                                },
+                                axisLine: {
+                                    onZero: false,
+                                    lineStyle: {
+                                        color: colors[0]
+                                    }
+                                },
+                                axisPointer: {
+                                    label: {
+                                        width: 190,
+                                        formatter: function (params) {
+                                            return (
+                                                params.value + '年烤店桌位需求数量：' +
+                                                // params.value +
+                                                params.seriesData[0].data + "桌"
+                                            );
+                                        }
+                                    }
+                                },
+                                data: ['2021', '2022', '2023-04']
+                            },
+                            {
+                                type: 'category',
+                                axisTick: {
+                                    alignWithLabel: true
+                                },
+                                axisLine: {
+                                    onZero: false,
+                                    lineStyle: {
+                                        color: colors[1]
+                                    }
+                                },
+                                axisPointer: {
+                                    label: {
+                                        width: 220,
+                                        formatter: function (params) {
+                                            return (
+                                                params.value + '年烧烤店用电量：' +
+                                                params.seriesData[0].data + "(千瓦时)"
+                                            );
+                                        }
+                                    }
+                                },
+                                data: ['2018', '2020', '2022', '2023-04']
+                            }
+                            ],
+                            yAxis: [{
+                                type: 'value',
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[0]
+                                    }
+                                }
+                            },
+                            {
+                                type: 'value',
+                                splitLine: {
+                                    show: false
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[1]
+                                    }
+                                }
+                            }
+                            ],
+                            series: [{
+                                name: '烧烤店桌位需求数量',
+                                type: 'line',
+                                xAxisIndex: 0,
+                                yAxisIndex: 0,
+                                smooth: true,
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: [53, 62, 203]
+                            },
+                            {
+                                name: '烧烤店用电量（千瓦时）',
+                                type: 'line',
+                                xAxisIndex: 1,
+                                yAxisIndex: 1,
+                                smooth: true,
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: [1200, 1800, 2200, 3350]
+                            }
+                            ]
+                        };
+
+                        option && chart9.setOption(option);
+                    </script>
+                    <p>数据来源：康山烧烤店报告</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word">
+                <p>浙江大学国际联合商学院数字经济与金融创新研究中心联席主任、研究员盘和林指出，与一些其他城市的代表美食相比，淄博烧烤还多了一份独特的“人间烟火气”。
+                    将这份“人间烟火气”与淄博政府推出的一系列游客就餐环境优化举措相结合，淄博烧烤热度再次攀升，烧烤店前大排长龙的场景，成为了淄博 3-4 月以来的常态。</p>
+            </div>
+        </div>
+    </section>
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/roast_2.png"
+                        style="margin-left: 40px;margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/roast_3.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/roast_4.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container pt-120">
+            <div class="row justify-content-start">
+                <div class="col-xl-12 col-lg-12 text-left">
+                    <a href="./part-2.html" :hover="color:#fff">
+                        <image src="./assets/images/three.png" alt>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    <!-- 加载i一些js文件 -->
+    <script src="assets/js/bootstrap.bundle.min.js "></script>
+    <script src="assets/js/swiper.min.js "></script>
+    <script src="assets/js/jquery.ajaxchimp.min.js "></script>
+    <script src="assets/js/jquery.magnific-popup.min.js "></script>
+    <script src="assets/js/jquery.validate.min.js "></script>
+    <script src="assets/js/bootstrap-select.min.js "></script>
+    <script src="assets/js/wow.js "></script>
+    <script src="assets/js/odometer.min.js "></script>
+    <script src="assets/js/jquery.appear.min.js "></script>
+    <!-- 加载气泡文件 -->
+    <script src="assets/js/conversation.js"></script>
+    <!-- template js -->
+    <script src="assets/js/theme.js "></script>
+    <!-- 下拉菜单 -->
+    <script>
+        $(function () {
+            $(".htmleaf-container div").click(function () {
+                $(this).children("ul").slideToggle();
+                event.stopPropagation();
+            });
+            $(document).click(function () {
+                $(".htmleaf-container ul").slideUp();
+            });
+        })
+    </script>
+</body>
+
+</html>

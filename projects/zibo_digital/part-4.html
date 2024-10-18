@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html style="height: 100%" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷思考</title>
+    <!-- favicons Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicons/site.webmanifest">
+    <meta name="description" content="Azino Charity HTML Template">
+
+    <!-- fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/swiper.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/azino-icons.css">
+    <link rel="stylesheet" href="assets/css/odometer.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
+
+    <!-- template styles, 注意这里main不能用，因为会和动态echarts造成冲突 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- 但好像又能用，真是很奇怪 -->
+    <!-- 下拉菜单插件 -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel='stylesheet' href="assets/fonts/iconfont.css">
+
+    <!-- 气泡插件 -->
+    <link rel="stylesheet" href="assets/css/conversation.css">
+
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <script
+        src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+
+    <style type="text/css">
+        @font-face {
+            font-family: 'zitiao';
+            src: url('./assets/fonts/ZiTiao.ttf');
+        }
+
+        h2 {
+            font-family: "zitiao";
+        }
+
+        .ec-extension-bmap {
+            position: absolute;
+            width: 680px !important;
+            height: 700px !important;
+            overflow: hidden;
+            background-color: rgb(243, 241, 236);
+            color: rgb(0, 0, 0);
+            text-align: left;
+            z-index: 0;
+            left: 35% !important
+        }
+
+        /* 选择含有_cid属性的span元素 */
+        span[_cid] {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+
+
+        /* 选择class为anchorBL的div元素 */
+        div.anchorBL {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+    </style>
+
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- <div class="preloader"> -->
+    <!-- <img class="preloader__image" src="assets/images/沙漏.gif" alt="" style="width: 100px;"> -->
+    <!-- </div> -->
+    <!-- /.preloader -->
+    <div class="page-wrapper">
+        <header class="main-header" style="position: fixed;background-color: transparent;">
+            <div class="main-header__top" style="background-color: transparent;padding: 0;">
+                <div class=" container-fluid" style="display: flex; justify-content: space-between;">
+                    <!-- 下拉菜单开始！！！！！！！！ -->
+                    <div class="htmleaf-container ">
+                        <div>
+                            <a href="javascript:;" id="icon-dian"> <i class="iconfont icon-dian"
+                                    style="font-size: 40px; color: #000;line-height: 1; "></i></a>
+                            <ul class="menu ">
+                                <li>
+                                    <a href="index.html " ,style="font-size: 14px;">淄博的潮起潮落</a>
+                                </li>
+                                <li class="menu-separator "></li>
+                                <li>
+                                    <a href="part-1.html" , style="font-size: 12px;">人工智能做旅游攻略</a>
+                                </li>
+                                <li>
+                                    <a href="part-2.html " , style="font-size: 12px;">热潮的回落</a>
+                                </li>
+                                <li>
+                                    <a href="part-3.html " , style="font-size: 12px;">网红城市的热度消散</a>
+                                </li>
+                                <li>
+                                    <a href="part-4.html " , style="font-size: 12px;">冷思考</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- 下拉菜单结束！！！！！！！！ -->
+
+                </div>
+
+
+                <!-- /.container -->
+            </div>
+
+            <div class="container ">
+                <div class="inner-container ">
+                    <div class="row ">
+                        <!-- /.col-sm-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10 d-none d-md-none d-lg-none d-xl-block ">
+                            <nav class="main-menu dynamic-radius ">
+
+                                <!-- /.main-menu__list -->
+                            </nav>
+                            <!-- /.main-menu -->
+                            <!-- /.main-header__info -->
+                        </div>
+                        <!-- /.col-sm-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.inner-container -->
+            </div>
+            <!-- /.container -->
+        </header>
+
+        <!-- 放入背景图片和标题 -->
+        <section class="main-slider">
+            <div class="swiper-container thm-swiper__slider" data-swiper-options='{"slidesPerView": 1, "loop": false,
+    "effect": "fade",
+    "pagination": {
+        "el": "#main-slider-pagination",
+        "type": "bullets",
+        "clickable": true
+        },
+    "autoplay": {
+        "delay": 5000
+    }}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="transition-duration: 2000ms;">
+                        <div class="image-layer"
+                            style="background-image: linear-gradient(to top, rgb(0, 0, 0), transparent), url('assets/images/冷思考封面.jpg');background-position: center;">
+                        </div>
+                        <!-- /.image-layer -->
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-xl-12 col-lg-12 text-left">
+                                    <h1 style="color: #fff; margin-top: 12px;">冷思考</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    当我们再把目光转向淄博的时候，就需要思考，淄博有什么优势？流量能给淄博长期的发展带来什么？政府、群众等又如何能协力将突如其来的热度转化成长久的效益？</p>
+                <p>
+                    来自山东威海的肖先生，最近去了淄博旅游，他提到：“淄博作为刚火起来的城市，很多地方还保留着老城区的烟火气息。和威海现代化的旅游设施不同，淄博很重要的是——人情味。我来淄博的感受是人流量没有五一时候宣传的那么大了，但在那些老字号的烧烤店和八大局附近，还是有很多外地游客和年轻人。”
+                </p>
+                <p>
+                    谈到如何看待淄博烧烤热度的回落时，“热度的回落必然是一个发展规律，我们外地游客来到淄博，感受到了当地人民的热情服务，所以以后等到了适合吃烧烤的季节，我会再来旅游的。”
+                </p>
+                <p>
+                    和肖先生观点一致，北京商报社总编辑助理齐琳表示，“利用社交媒体精准定位年轻客群，是淄博火出圈的第一步。在淄博出圈后，当地政府的管理与疏导也至关重要。好客的淄博人更是做到了“让景于客”“让路于客”。“通过解析两个非一线城市的出圈之路，我们发现，<span
+                        style="font-weight: bold; color:#ffa900">出圈的城市需要有很好的表达能力、科学的管理能力以及创新的运营能力。”</span>
+                </p>
+                <p>
+                    获取热度是第一步，利用媒体突围、政府群众合力，在保持高水准服务水平和服务质量的同时，持续将淄博友善美好的一面输出给每一位来淄旅客，久久为功，才是能实现城市发展的重中之重。<span
+                        style="font-weight: bold; color:#ffa900">而当我们把话筒递给chatGPT时，人工智能给了我们淄博未来的方向：</span>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/第四章结尾图片.png" style=" width: 680px; height: 380px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pb-30">
+
+    </div>
+
+    </div>
+
+
+
+
+    <section class="site-footer dark " style="background: linear-gradient(#343a40, #000), url('assets/images/结尾花纹.jpg');
+    background-repeat: repeat; 
+    background-size: auto;      
+    background-position: center;">
+        <div class="members pt-60 pb-60 ">
+            <div class="container ">
+                <div class="row pb-120 ">
+                    <div class="col-md-6 col-lg-6 ">
+                        <h3>淄博烧烤：<br> 城市发展的潮起潮落</h3>
+                        <p style="color: #fff; text-transform: uppercase;">Zibo Grill: <br> The Ebb and Flow of Urban
+                            Development</p>
+                    </div>
+                    <div class="col-md-6 col-lg-6 " style="text-align: left;text-transform: uppercase ">
+                        <div>
+                            <h3 style="color: #fff; ">兰州大学LAN DATA团队</h3>
+                            <p style="color:#fff;margin: 0; ">团队成员：肖宁XIAO NING</p>
+                            <p style="color: #fff;margin: 0; ">&emsp;&emsp;&emsp;&emsp;&emsp;巫金林WU JINLIN </p>
+                            <p style="color: #fff;margin: 0; ">&emsp;&emsp;&emsp;&emsp;&emsp;马维佳MA WEIJIA</p>
+                            <p style="color: #fff;margin: 0; ">&emsp;&emsp;&emsp;&emsp;&emsp;李柳炜LI LIUWEI</p>
+                            <p style="color: #fff; margin-top: 20px;margin-bottom: 0; ">指导老师：梁玮 Liang Wei
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-60 " style="border-top: 1px solid #868686; width: 25%; "></div>
+                <div class="col-md-10 col-lg-10">
+                    <p style="text-align: left;">
+                        数据来源： <br>
+                        1）山东公共数据公开网：https://data.sd.gov.cn/portal/search/index?Q=%E6%B7%84%E5%8D%9A&searchType=0 <br>
+                        2）投资界：年轻人「赶烤」淄博，文旅业如何借势？，2023年4月。<br>
+                        3）58同城，淄博店铺转让，2023年6月30日—2023年8月30日。<br>
+                        4）鸥维数据：《2023 上半年中国网红城市指数 TOP20》。<br>
+                        5）北京日报：《中国旅游目的地复苏调查报告》，2023年5月。<br>
+                        6）西安市文化与旅游局：http://wlj.xa.gov.cn/xxgk/tjxx/1.html <br>
+                        7）厦门文化和旅游局：http://wlj.xm.gov.cn/zfxxgk/fdzdgknr/tjxx/ <br>
+                        8）抖音短视频：《短视频与城市形象研究白皮书》，2018年9月。<br>
+                        9）网易数读：《中国最网红的城市在哪里》，2020年4月，https://www.163.com/data/article/FAQPIR2A000181IU.html <br>
+                        10）阿里研究院：《淘宝村百强县名单发布，看看你们那儿上榜了吗？》，2020年9月。<br>
+                        11）中欧商业：《褪去“宇宙中心”的网红滤镜，曹县到底做对了什么？》，2021年12月。<br>
+                        12）陈晓红,李杨扬,汪阳洁等：《网红城市、流量效应与旅游发展》，管理科学学报,2022年1月。<br>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.main-footer -->
+        <div class="footer-bottom ">
+            <div class="container ">
+                <span class="scroll-to-top scroll-to-target " data-target="html "><i
+                        class="far fa-angle-up "></i></span>
+                <p>Copyright &copy; 2023.LD All rights reserved.</p>
+
+                <!-- /.footer-social -->
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /.footer-bottom -->
+    </section>
+
+
+    <!-- 加载i一些js文件 -->
+    <script src="assets/js/bootstrap.bundle.min.js "></script>
+    <script src="assets/js/swiper.min.js "></script>
+    <script src="assets/js/jquery.ajaxchimp.min.js "></script>
+    <script src="assets/js/jquery.magnific-popup.min.js "></script>
+    <script src="assets/js/jquery.validate.min.js "></script>
+    <script src="assets/js/bootstrap-select.min.js "></script>
+    <script src="assets/js/wow.js "></script>
+    <script src="assets/js/odometer.min.js "></script>
+    <script src="assets/js/jquery.appear.min.js "></script>
+
+    <!-- 加载气泡文件 -->
+    <script src="assets/js/conversation.js"></script>
+
+    <!-- template js -->
+    <script src="assets/js/theme.js "></script>
+    <!-- 下拉菜单 -->
+    <script>
+        $(function () {
+            $(".htmleaf-container div").click(function () {
+                $(this).children("ul").slideToggle();
+                event.stopPropagation();
+            });
+            $(document).click(function () {
+                $(".htmleaf-container ul").slideUp();
+            });
+        })
+    </script>
+</body>
+
+</html>

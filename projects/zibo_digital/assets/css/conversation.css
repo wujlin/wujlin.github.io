@@ -1,0 +1,56 @@
+.chatbox {
+    height: auto;
+    width: 100%;       /* 指定宽度 */
+    max-width: 2400px; /* 最大宽度 */
+    min-width: 300px; /* 最小宽度 */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 50px auto; /* 水平居中对话框 */
+    background-color: #f9f9f9;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 5px 0;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.left {
+    align-self: flex-start;
+    background-color: #e6e6e6;
+}
+
+.right {
+    align-self: flex-end;
+    background-color: #0099ff;
+    color: white;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    order: -1; /* 将头像放在文本前面 */
+}
+
+.right-avatar {
+    order: 1; /* 将AI头像放在文本后面 */
+}
+
+.message-container {
+    display: flex;
+    align-items: center; /* 使头像与消息文本垂直居中 */
+    cursor: pointer; /* 当鼠标放在消息容器上时，显示为指针，提示用户可以点击 */
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.hidden {
+    display: none;
+}

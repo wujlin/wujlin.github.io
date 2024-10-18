@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html style="height: 100%" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热潮的回落</title>
+    <!-- favicons Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicons/site.webmanifest">
+    <meta name="description" content="Azino Charity HTML Template">
+
+    <!-- fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/swiper.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/azino-icons.css">
+    <link rel="stylesheet" href="assets/css/odometer.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
+
+    <!-- template styles, 注意这里main不能用，因为会和动态echarts造成冲突 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- 但好像又能用，真是很奇怪 -->
+    <!-- 下拉菜单插件 -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel='stylesheet' href="assets/fonts/iconfont.css">
+
+    <!-- 气泡插件 -->
+    <link rel="stylesheet" href="assets/css/conversation.css">
+
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <script
+        src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+    <style type="text/css">
+        @font-face {
+            font-family: 'zitiao';
+            src: url('./assets/fonts/ZiTiao.ttf');
+        }
+
+        h2 {
+            font-family: "zitiao";
+        }
+
+        .ec-extension-bmap {
+            position: absolute;
+            width: 680px !important;
+            height: 700px !important;
+            overflow: hidden;
+            background-color: rgb(243, 241, 236);
+            color: rgb(0, 0, 0);
+            text-align: left;
+            z-index: 0;
+            left: 35% !important
+        }
+
+        /* 选择含有_cid属性的span元素 */
+        span[_cid] {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+
+
+        /* 选择class为anchorBL的div元素 */
+        div.anchorBL {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- <div class="preloader"> -->
+    <!-- <img class="preloader__image" src="assets/images/沙漏.gif" alt="" style="width: 100px;"> -->
+    <!-- </div> -->
+    <!-- /.preloader -->
+    <div class="page-wrapper">
+        <header class="main-header" style="position: fixed;background-color: transparent;">
+            <div class="main-header__top" style="background-color: transparent;padding: 0;">
+                <div class=" container-fluid" style="display: flex; justify-content: space-between;">
+                    <!-- 下拉菜单开始！！！！！！！！ -->
+                    <div class="htmleaf-container ">
+                        <div>
+                            <a href="javascript:;" id="icon-dian"> <i class="iconfont icon-dian"
+                                    style="font-size: 40px; color: #000;line-height: 1; "></i></a>
+                            <ul class="menu ">
+                                <li>
+                                    <a href="index.html" ,style="font-size: 14px;">淄博的潮起潮落</a>
+                                </li>
+                                <li class="menu-separator "></li>
+                                <li>
+                                    <a href="part-1.html" , style="font-size: 12px;">人工智能做旅游攻略</a>
+                                </li>
+                                <li>
+                                    <a href="part-2.html " , style="font-size: 12px;">热潮的回落</a>
+                                </li>
+                                <li>
+                                    <a href="part-3.html " , style="font-size: 12px;">网红城市的热度消散</a>
+                                </li>
+                                <li>
+                                    <a href="part-4.html " , style="font-size: 12px;">冷思考</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- 下拉菜单结束！！！！！！！！ -->
+
+                </div>
+
+
+                <!-- /.container -->
+            </div>
+
+            <div class="container ">
+                <div class="inner-container ">
+                    <div class="row ">
+                        <!-- /.col-sm-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10 d-none d-md-none d-lg-none d-xl-block ">
+                            <nav class="main-menu dynamic-radius ">
+
+                                <!-- /.main-menu__list -->
+                            </nav>
+                            <!-- /.main-menu -->
+                            <!-- /.main-header__info -->
+                        </div>
+                        <!-- /.col-sm-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.inner-container -->
+            </div>
+            <!-- /.container -->
+        </header>
+
+        <!-- 放入背景图片和标题 -->
+        <section class="main-slider">
+            <div class="swiper-container thm-swiper__slider" data-swiper-options='{"slidesPerView": 1, "loop": false,
+    "effect": "fade",
+    "pagination": {
+        "el": "#main-slider-pagination",
+        "type": "bullets",
+        "clickable": true
+        },
+    "autoplay": {
+        "delay": 5000
+    }}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="transition-duration: 2000ms;">
+                        <div class="image-layer"
+                            style="background-image: linear-gradient(to top, rgb(0, 0, 0), transparent), url('assets/images/八大局便民市场人流回落.png');background-position: center;">
+                        </div>
+                        <!-- /.image-layer -->
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-xl-12 col-lg-12 text-left" style="margin-top: -100px">
+                                    <h1 style="color: #fff; margin-top: -100px;">热潮的回落</h1>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 text-left">
+                                    <h3 style="color: #fff; margin-top:10px; font-size: 2rem;">
+                                        淄博在今年五一假期期间冲上热度顶峰，纷至沓来的游客像是在参加某场狂欢，热情充斥在街头巷尾，像烧烤炉里燃烧的炭。<span
+                                            style="font-size: 2rem;font-weight:bold;color:#ffa900;">时隔数月，淄博烧烤热情虽有，但热度不再如昨。</span>
+                                        7 月的淄博伴随着高温与暑热，与逐渐降温下来的淄博烧烤形成了鲜明的对比。</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+
+
+
+    <section class="container">
+        <!-- <div class="page-header__bg" style="background-color: #ffebcd; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(assets/images/烧烤店转让_h2.png);background-repeat: no-repeat;background-position: center center;"></div> -->
+        <div class="col-lg-12 col-lg-6 text-left">
+            <h2 style="color: #000;margin-top:12px;font-size: 3rem;">大批烧烤店转让</h2>
+        </div>
+    </section>
+
+
+
+    <!-- <div class="page-header__bg" style="border: 2px solid gold; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(assets/images/烧烤店转让_h2.png);background-size: 50%;background-repeat: no-repeat;background-position: center center;background-color: transparent;"></div> -->
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>7 月份以来，<span style="font-weight:bold;color:#ffa900;">烧烤店转让数量为 122 家</span>知名网红烧烤店的翻桌数也从火热时期的日均 178
+                    桌降至当前约 120 桌。
+                    热潮的回落，首当其冲出现的就是多家烧烤店面的转让。
+                    在 2023 年 7 月 1 日以来，58 同城网站上出现了数百条淄博烧烤店铺转让信息，其中不少店铺都具有新开业、新装修和新设备等特点。自今年 7 月份以来，发布的烧烤店铺转让信息达 122
+                    家，主要分布于淄博张店区。
+                    其中按照平均转让费从高到低排布分别为：<span style="font-weight:bold;color:#ffa900;">临淄区、张店区和高青县</span>。</p>
+                <p style="font-weight: bold;color: #ffa900;">
+                    当地烧烤店老板：“倒闭的大多是此前蹭热度开的新店。”
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="pt-20 pb-20" style="background-color: #fff;">
+        <div class="container" style="width:1000px">
+            <div class="row resourse col-lg-12">
+                <div class="col-md-6 juzhong" style="padding-right:0px">
+                    <div id="transfer_pie" style="width: 100%;height: 700px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                    // 初始化图表时设置style
+                    var chart10 = echarts.init(document.getElementById('transfer_pie'));
+                    // 指定图表的配置项和数据
+    
+                    var option = {
+                        title: {
+                            text: '图10：淄博市烧烤店转让数量地理分布',
+                            left: 'center',
+                            top: 'top',
+                            textStyle: {
+                                fontSize: '15px',
+                                fontWeight: 'bolder',
+                                color: '#6d6b6c',
+                                fontFamily: 'sans-serif'
+                            }
+                        },
+                        legend: {
+                            top: 'bottom',
+                        },
+                        toolbox: {
+                            left: 'left',
+                            show: false,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        },
+                        series: [{
+                            name: '转让数量',
+                            type: 'pie',
+                            radius: [30, 150],
+                            center: ['50%', '50%'],
+                            roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 8
+                            },
+                            data: [{ "name": "张店区", "value": 85 }, { "name": "临淄区", "value": 12 },
+                                { "name": "周村区", "value": 11 }, { "name": "淄川区", "value": 4 },
+                                { "name": "博山区", "value": 3 }, { "name": "高新区", "value": 2 },
+                                { "name": "恒台县", "value": 2 }, { "name": "沂源县", "value": 1 },
+                                { "name": "临川区", "value": 1 }
+                            ]
+                        }]
+                    };
+    
+                    option && chart10.setOption(option);
+                    </script>
+                    <p style="font-size: 13px!important; color: #a0a3a4!important">数据来源： 58同城。</p>
+                </div>
+
+                <div class="col-md-6 juzhong" style="padding-left:0px">
+                    <div id="transfer_cost" style="width: 100%;height: 700px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                    // 初始化图表时设置style
+                    var chart11 = echarts.init(document.getElementById('transfer_cost'));
+                    // 指定图表的配置项和数据
+    
+                    $.get('assets/data/transfer_cost.json', function(hotel) {
+                        $.get('assets/data/淄博市.json', function(zibo) {
+                            chart11.hideLoading();
+                            echarts.registerMap('zibo', zibo);
+                            var option = {
+                                title: {
+                                    text: '图11：各区烧烤店平均转让成本（单位：元/每平方米）',
+                                    left: 'center',
+                                    top: 'top',
+                                    textStyle: {
+                                        fontSize: '15px',
+                                        fontWeight: 'bolder',
+                                        color: '#6d6b6c',
+                                        fontFamily: 'sans-serif'
+                                    }
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    showDelay: 0,
+                                    transitionDuration: 0.2
+                                },
+                                visualMap: {
+                                    left: 'right',
+                                    min: 100,
+                                    max: 900,
+                                    inRange: {
+                                        color: [
+                                            '#313695',
+                                            //'#4575b4',
+                                            '#74add1',
+                                            //'#abd9e9',
+                                            '#e0f3f8',
+                                            //'#ffffbf',
+                                            '#fee090',
+                                            //'#fdae61',
+                                            '#f46d43',
+                                            //'#d73027',
+                                            '#a50026'
+                                        ]
+                                    },
+                                    text: ['High', 'Low'],
+                                    calculable: true
+                                },
+                                toolbox: {
+                                    show: false,
+                                    //orient: 'vertical',
+                                    left: 'left',
+                                    top: 'top',
+                                    feature: {
+                                        dataView: { readOnly: false },
+                                        restore: {},
+                                        saveAsImage: {}
+                                    }
+                                },
+                                series: [{
+                                    name: '淄博市烧烤店平均转让费用',
+                                    type: 'map',
+                                    roam: true,
+                                    map: 'zibo',
+                                    emphasis: {
+                                        label: {
+                                            show: true
+                                        }
+                                    },
+                                    data: hotel
+                                }]
+                            };
+                            chart11.setOption(option);
+                            chart11.resize();
+                        });
+                    });
+                    </script>
+                    <!-- <p>数据来源： 58同城。</p> -->
+                </div>
+                <!-- 地图结束 -->
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/八大局便民市场人流回落.png); background-repeat: no-repeat;background-position: center;"></div> -->
+        <div class="col-lg-12 col-lg-6 text-left">
+            <h2 style="color: #000;margin-top:12px;font-size: 3rem;">八大局便民市场的人流回落</h2>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    淄博人眼中不起眼的<span style="font-weight:bold;color:#ffa900;">八大局菜市场</span>，在热度高峰时期，一天的浏览量曾高达 10 万人次。
+                    但如今虽仍有游客慕名而来、拍照纪念，但门头上的电子屏已不再显示“游客数量”。</p>
+                <p>
+                    八大局作为淄博地区有代表性的旅游地点，人流量相较于其他地方还是很密集的。
+                    笔者于 9 月 4 日探访八大局发现，在商业街门口可以看到有市场管理人员在维持秩序，周边排布了各种网红小吃店。晚上 18:00
+                    左右，人流量明显多了很多，有网红举着设备在这里直播，来游玩的年轻人也会更多。
+                    走进八大局，可以发现里面主要是一些小商铺，以美食小吃为主，包括当地比较网红的紫米饼、炒锅饼、肥肠包等。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/书法_背景_1.png" style="margin-right: 40px; width: 300px; height: 220px;">
+                </div>
+                <div>
+                    <img src="assets/images/书法_背景_2.png" style="margin-right: 40px; width: 300px; height: 220px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    除了美食小吃，可以看到八大局还开设了一个专门的书画苑，基本都是当地的艺术工作者现场作画、写字，在淄博当地比较盛行。大厅内的摊位很多，但人流量很少。
+                    据摊主介绍，五六月份时的书画大厅里可以说是人满为患，现在则是门可罗雀。
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <div class="container" style="width: 680px;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/书法_3.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/书法_4.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/书法_5.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/书法_6.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <div>
+                    <img src="assets/images/书法_7.png" style="margin-right: 40px; width: 210px; height: 280px;">
+                </div>
+                <!-- 添加一行浅灰色小字 -->
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center; color: #999999; font-size: 12px;">左右滑动查看更多图片</div>
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    在饭点随机挑选了几家八大局周围的烧烤店，发现店里店外都没有什么客人。
+                    <span style="font-weight: bold;color: #ffa900;">店主坦言，人流量在四五月份之后大大流失。</span>
+                    走到另外一家名叫“王氏牧羊村”的烧烤店，可以发现规模很大，但没什么人来吃。结合总体走访的情况来看，此前做得比较好的老店，到目前的影响都不是很大，而 <span
+                        style="font-weight: bold;color: #ffa900;">新开的、偏网红性质的店面基本都受到了非常大的影响。</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container">
+        <div class=" ">
+            <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/不再拥挤的车流_封面.png); background-repeat: no-repeat;background-position: center;"></div> -->
+            <div class="col-lg-12 col-lg-6 text-left">
+                <h2 style="color: #000; margin-top: 12px; font-size: 3rem;">不再拥挤的车流</h2>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    相较于五一假期淄博创下的到发旅客数量新高，现如今高铁、城际公交以及市内网约车订单量也在回落，曾经“一票难求”、“一车难约”的现状不再显现。</p>
+                <p>
+                    假期五天淄博站客发量分别为 41279、46697、53924、53001、45351 人次。合计 240252 人次，旅客到达量 240934 人次。全市投入城市公交 6.48 万班次运送乘客
+                    186.2 万人次，各长途客运站累计运输旅客 7.82 万人次。
+                </p>
+                <p>
+                    现如今，<span
+                        style="font-weight: bold; color:#ffa900">随着人流的减弱，车流也变得不那么拥挤，</span>五一过后，淄博各公共交通系统数据呈现总体回落，淄博出租车和网约车的订单数量和日单数逐渐回落。
+                    据滴滴出行提供的数据显示，淄博 4 月以来打车需求持续上涨，4 月 22 日通过滴滴呼叫网约车、出租车的打车需求同比去年上涨 258%
+                </p>
+                <p>
+                    司机刘师傅在淄博开了 20 多年的出租车，在谈到如今淄博交通现状时，刘师傅提到：<span style="font-weight: bold; color:#ffa900">“在 4、5
+                        月份最火的时候一天能挣 400 多块钱，但随着现在人流减少，一天也就能挣 200 多了。相比于五一假期的时候，现在的人流差不多快少一半了。”</span>
+                    对于人流减少的原因，刘师傅认为主要有两点：一是学生们要开学了；二是随着天气逐渐转凉，坐在室外吃烧烤的人也渐渐减少了。预计十一假期结束之后，人流会更少。
+                </p>
+                <p>
+                    <span style="font-weight: bold; color:#ffa900">“不过淄博现在全国人民都知道了也是很不容易了，”</span>
+                    <!-- <span style="font-weight: bold; color:#8e1414">jdfkjsakfjklasdjf</span> -->
+                    刘师傅很欣慰的笑了，
+                    <span
+                        style="font-weight: bold; color:#ffa900">“淄博不是一个旅游城市，能火成这样老百姓和政府都尽力了。以前的时候都不知道淄博是哪里，现在叫全国的人都能知道淄博烧烤了，就已经很不错的了！我们知道这些都是有始有终的，不可能永远那么红火的。”</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section style="background: url(./assets/images/背景图.png) no-repeat;background-size: 100%; background-position: 50% 50%;">
+        <section class="container pt-20">
+            <div class=" ">
+                <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/淄博潮起潮落中的“贝壳”_封面.png); background-repeat: no-repeat;background-position: center;"></div> -->
+                <div class="col-lg-12 col-lg-6 text-left">
+                    <h2 style="color:#000; margin-top: 60px; font-size: 3rem;">淄博潮起潮落中的“贝壳”</h2>
+                </div>
+            </div>
+        </section>
+        <div class="container" style="margin-top: 20px;">
+            <div class="col-lg-12 col-lg-6 word pt-20 pb-60">
+                <p style="color:#000">
+                    彭姐是淄博本地人，她经营的“兴华原味烧烤店”在淄博网红打卡地八大局周边。店面原来是经营体育用品的商店，随着淄博烧烤的爆火，她便把店面改为烧烤店。但门面上目前还保留着之前“多威体育”的招牌。彭姐介绍说，<span
+                        style="font-weight: bold; color:#ffa900">现在和最火的 5 月份相比，客流少了将近三分之二。</span></p>
+                <p style="color:#000">
+                    彭姐介绍，八大局周边都是老城区，以前是市中心。这里相较于其他地方人流量还是很密集的。现在晚上来这里吃烧烤的大部分是外地车辆，都想来感受一下淄博烧烤的氛围。到现在八大局周边的停车场都是免费的，方便外地游客在此地停车休息。4、5
+                    月份的时候人都是挤不动的，淄博人民很热情，看到外地游客来了都主动让位置。
+                    客流虽然很多但淄博烧烤的价格一直没有涨价，保持着 2.5-2.9 一串。像牧羊村这些传统的烧烤店，没有扫码点餐，都是给顾客一张纸质菜单，如果顾客看到价格不合适可以直接走。
+                </p>
+                <p style="color:#000">
+                    谈到营业时间，彭姐介绍说,<span
+                        style="font-weight: bold; color:#ffa900">“我们一般营业到十点钟左右，淄博烧烤火爆的时候能到凌晨还有顾客。”</span>彭姐的店面不大，一共 15
+                    张桌，从晚上六点到十点，基本都能保持满座。5 月份最忙碌的时候，当时店里面的服务员都是外面雇来的。现在学生们逐渐开学了，客流变少了，店里面就是家人帮帮忙了。
+                </p>
+                <p style="color:#000">
+                    彭姐最后感慨：<span
+                        style="font-weight: bold; color:#ffa900">“现在淄博烧烤这么火，多亏了市政府引导的好。疫情三年老百姓都想趁着这次难得的机会挣点钱。没有政府的帮助和引导，我们在室外摆上烧烤摊也不可能实现。
+                        因为政府有所作为，才让我们这种经营小本生意的和外地来的游客都省心。”</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    淄博热潮的回落展现了一个新兴网红城市的发展规律。 <span
+                        style="font-weight: bold; color:#ffa900">“如何吸取经验，将流量彻底转化为旅游资源，将服务转化为自身实力”</span>，是淄博未来将要思考的问题。
+                </p>
+                <p>
+                    热度下降这是可以预见的。当前淄博热度虽然比不上“顶流期”，但淄博烧烤已经成为一个品牌。只有坚持发展下去，将城市名片融入其中。
+                    一个城市靠单一产业是发展不下去的，只有联动其他产业，协同发展才能行稳致远。当地文旅局在进一步开发淄博的优质文化旅游资源，打造高质量的文旅活动，努力做到“吸引来游客、留得住游客”。
+                </p>
+                <p>
+                    <span
+                        style="font-weight: bold; color:#ffa900;font-size: 24px;">“网红城市想要发展绝不是一群人的短暂狂欢，而应该是热闹非凡后的余韵悠长。”</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container pt-120">
+            <div class="row justify-content-start">
+                <div class="col-xl-12 col-lg-12 text-left">
+                    <a href="./part-3.html" :hover="color:#fff">
+                        <image src="./assets/images/three.png" alt>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div>
+
+    <!-- 加载i一些js文件 -->
+    <script src="assets/js/bootstrap.bundle.min.js "></script>
+    <script src="assets/js/swiper.min.js "></script>
+    <script src="assets/js/jquery.ajaxchimp.min.js "></script>
+    <script src="assets/js/jquery.magnific-popup.min.js "></script>
+    <script src="assets/js/jquery.validate.min.js "></script>
+    <script src="assets/js/bootstrap-select.min.js "></script>
+    <script src="assets/js/wow.js "></script>
+    <script src="assets/js/odometer.min.js "></script>
+    <script src="assets/js/jquery.appear.min.js "></script>
+
+    <!-- 加载气泡文件 -->
+    <script src="assets/js/conversation.js"></script>
+
+    <!-- template js -->
+    <script src="assets/js/theme.js "></script>
+    <!-- 下拉菜单 -->
+    <script>
+        $(function () {
+            $(".htmleaf-container div").click(function () {
+                $(this).children("ul").slideToggle();
+                event.stopPropagation();
+            });
+            $(document).click(function () {
+                $(".htmleaf-container ul").slideUp();
+            });
+        })
+    </script>
+</body>
+
+</html>

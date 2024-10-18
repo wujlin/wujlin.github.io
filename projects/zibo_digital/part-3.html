@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html style="height: 100%" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/echarts.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前车可鉴：网红城市的热度消散</title>
+    <!-- favicons Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicons/site.webmanifest">
+    <meta name="description" content="Azino Charity HTML Template">
+    <!-- fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/swiper.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/azino-icons.css">
+    <link rel="stylesheet" href="assets/css/odometer.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
+    <!-- template styles, 注意这里main不能用，因为会和动态echarts造成冲突 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- 但好像又能用，真是很奇怪 -->
+    <!-- 下拉菜单插件 -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel='stylesheet' href="assets/fonts/iconfont.css">
+    <!-- 气泡插件 -->
+    <link rel="stylesheet" href="assets/css/conversation.css">
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bmap.js"></script>
+    <script
+        src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+    <style type="text/css">
+        @font-face {
+            font-family: 'zitiao';
+            src: url('./assets/fonts/ZiTiao.ttf');
+        }
+
+        h2 {
+            font-family: "zitiao";
+        }
+
+        .ec-extension-bmap {
+            position: absolute;
+            width: 680px !important;
+            height: 700px !important;
+            overflow: hidden;
+            background-color: rgb(243, 241, 236);
+            color: rgb(0, 0, 0);
+            text-align: left;
+            z-index: 0;
+            left: 35% !important
+        }
+
+        /* 选择含有_cid属性的span元素 */
+        span[_cid] {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+
+
+        /* 选择class为anchorBL的div元素 */
+        div.anchorBL {
+            /* 将其显示属性设置为none，即隐藏 */
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- <div class="preloader"> -->
+    <!-- <img class="preloader__image" src="assets/images/沙漏.gif" alt="" style="width: 100px;"> -->
+    <!-- </div> -->
+    <!-- /.preloader -->
+    <div class="page-wrapper">
+        <header class="main-header" style="position: fixed;background-color: transparent;">
+            <div class="main-header__top" style="background-color: transparent;padding: 0;">
+                <div class=" container-fluid" style="display: flex; justify-content: space-between;">
+                    <!-- 下拉菜单开始！！！！！！！！ -->
+                    <div class="htmleaf-container ">
+                        <div>
+                            <a href="javascript:;" id="icon-dian"> <i class="iconfont icon-dian"
+                                    style="font-size: 40px; color: #000;line-height: 1; "></i></a>
+                            <ul class="menu ">
+                                <li>
+                                    <a href="index.html " ,style="font-size: 14px;">淄博的潮起潮落</a>
+                                </li>
+                                <li class="menu-separator "></li>
+                                <li>
+                                    <a href="part-1.html" , style="font-size: 12px;">人工智能做旅游攻略</a>
+                                </li>
+                                <li>
+                                    <a href="part-2.html " , style="font-size: 12px;">热潮的回落</a>
+                                </li>
+                                <li>
+                                    <a href="part-3.html " , style="font-size: 12px;">网红城市的热度消散</a>
+                                </li>
+                                <li>
+                                    <a href="part-4.html " , style="font-size: 12px;">冷思考</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 下拉菜单结束！！！！！！！！ -->
+                </div>
+                <!-- /.container -->
+            </div>
+            <div class="container ">
+                <div class="inner-container ">
+                    <div class="row ">
+                        <!-- /.col-sm-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10 d-none d-md-none d-lg-none d-xl-block ">
+                            <nav class="main-menu dynamic-radius ">
+                                <!-- /.main-menu__list -->
+                            </nav>
+                            <!-- /.main-menu -->
+                            <!-- /.main-header__info -->
+                        </div>
+                        <!-- /.col-sm-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.inner-container -->
+            </div>
+            <!-- /.container -->
+        </header>
+        <!-- 放入背景图片和标题 -->
+        <section class="main-slider">
+            <div class="swiper-container thm-swiper__slider" data-swiper-options='{"slidesPerView": 1, "loop": false,
+    "effect": "fade",
+    "pagination": {
+        "el": "#main-slider-pagination",
+        "type": "bullets",
+        "clickable": true
+        },
+    "autoplay": {
+        "delay": 5000
+    }}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="transition-duration: 2000ms;">
+                        <div class="image-layer"
+                            style="background-image: linear-gradient(to top, rgb(0, 0, 0), transparent), url('./assets/images/第三章封面图.jpg');background-position: center;">
+                        </div>
+                        <!-- /.image-layer -->
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-xl-12 col-lg-12 text-left">
+                                    <h1 style="color: #fff; margin-top: -150px;">前车可鉴：网红城市的热度消散</h1>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 text-left">
+                                    <h3 style="color: #fff; margin-top:10px; font-size: 2rem;">
+                                        像<span style="font-weight: bold; color: #ffa900;">淄博</span>一样的网红城市，该何去何从？</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-6 col-lg-12 word pt-60">
+                <p> 诸如淄博此类短时间内，在互联网获得大量关注的、热度骤升的城市被称为网红城市。鸥维数据显示，淄博以 212.46 的网络热度指数遥遥领先，高居 2023 上半年中国网红城市指数
+                    TOP1，同比增长更是高达 975%。</p>
+            </div>
+    </section>
+    <section class="pt-20 pb-20" style="background-color: #fff;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <div class="row resourse">
+                <div class="juzhong">
+                    <!-- <span>图1: 网红城市排行</span> -->
+                    <!-- 酒店钻级分布 -->
+                    <div id="wanghong" style="width: 650px;height: 600px;border: 0 solid;"></div>
+                    <script type="text/javascript">
+                        // 初始化图表时设置style
+                        var chart1 = echarts.init(document.getElementById('wanghong'));
+                        // 指定图表的配置项和数据
+
+                        var option = {
+                            title: {
+                                text: '图12：2023上半年中国网红城市排行榜',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log(params);
+                                    var name = params[0].axisValue; // 获取日期
+                                    var value = params[0].data; // 获取迁移指数
+                                    var color = params[0].color; // 获取颜色
+                                    // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                    return (
+                                        '<p style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom: 0px!important;padding-top:0px!important;">' +
+                                        name +
+                                        '</p>' +
+                                        //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                        '<p style="color:' +
+                                        '#000!important' +
+                                        ';font-size:14px!important;margin-bottom: 0px!important">' + '热度指数：' +
+                                        value +
+                                        '</p>'
+                                    );
+                                }
+
+                            },
+                            legend: {
+                                bottom: '0',
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 0.01]
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['淄博', '西安', '上海', '成都', '重庆', '北京', '南京', '苏州', '广州', '深圳', '杭州', '青岛', '武汉', '香港', '哈尔滨', '大连', '天津', '洛阳', '长沙', '厦门'],
+                                inverse: true
+                            },
+                            series: [{
+                                name: '热度指数',
+                                type: 'bar',
+                                data: [212.46,
+                                    149.42,
+                                    138.62,
+                                    126.16,
+                                    125,
+                                    121.93,
+                                    117.9,
+                                    93.12,
+                                    92.96,
+                                    92.76,
+                                    88.34,
+                                    88.17,
+                                    82.51,
+                                    76.25,
+                                    72.84,
+                                    72.2,
+                                    71.08,
+                                    66.83,
+                                    65.06,
+                                    64.99
+                                ],
+                                realtimeSort: true
+                            },]
+                        };
+                        chart1.setOption(option);
+                    </script>
+                    <p>数据来源：鸥维数据（ovo.com.cn）</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    这种网红城市其实并不罕见，诸如厦门、重庆、曹县等都是在短时间内在社交媒体上热度骤升的网红城市。这些城市未必具有突出的经济实力，但或出名于悠久的历史文化、或闻名于优美的自然风光、抑或是新奇的美食体验等，或仅仅因为社交媒体平台的网络爆梗，就在短时间内吸引了众多游客来参游玩打卡。
+                </p>
+                <p>
+                    <span style="font-weight: bold; color: #ffa900;">而面临同样涌入的热量，这些城市目前的发展却背道而驰。</span>
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="container  pt-60 pb-60">
+        <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/厦门老牌衰落，旅游产业结构滞后_封面.jpg); background-repeat: no-repeat;background-position: center;"></div> -->
+        <div class="col-lg-12 col-lg-6 text-left">
+            <h2 style="color:#000; font-size: 3rem;">厦门：老牌衰落，旅游产业结构滞后</h2>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    早在短视频时代到来之前，厦门已凭借具有地域特色的自然景观，构建“小清新”、“小资”等标签吸引诸多游客，跻身初代网红城市。
+                    一批又一批的文艺青年徘徊在鼓浪屿的小路上，穿梭在曾厝安的店铺中。厦门对城市形象的包装契合了“逃离北上广”的时代需求，为大城市病带来出口，成为都市青年的“田园牧歌”的精神朝圣地。</p>
+                <p>
+                    而面临短视频时代来势汹汹的重庆、成都、西安等新晋网红城市冲击时，厦门却没有做出应对，在城市旅游的竞争中逐渐式微，落入下风。
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/厦门邮轮.jpg" style="margin-right: 40px; width: 280px; height: 210px;">
+                </div>
+                <div>
+                    <img src="assets/images/厦门老牌衰落，旅游产业结构滞后_封面.jpg"
+                        style="margin-right: 40px; width: 280px; height: 210px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    一方面，厦门旅游高昂的交通成本与消费成本一定程度限制了热度消散后的游客持续输入，在性价比上已经失去人心。且与营销不匹配的城市服务，如坐地起价的出租车司机、良莠不齐的餐厅、价格服务不匹配的民宿等等都使旅游体验下降，逐渐让游客失去信心。
+                </p>
+                <p>
+                    另一方面，厦门房价、物价偏高，且城市内高新就业岗位有限，岛内岛外差距巨大，外部更是面临长三角、珠三角虹吸效应，难以大范围吸引人才，为城市长期发展积累人才储备。
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="pt-20 pb-20" style="background-color: #fff;">
+        <div class="container" style="width:800px">
+            <div class="row resourse ">
+                <div class="juzhong">
+                    <!-- 放旅游人数变化 -->
+                    <div id="tour_number" style="width: 650px;height: 600px;border: 0 solid;padding-left: 100px;"></div>
+                    <script type="text/javascript">
+                        var dom = document.getElementById('tour_number');
+                        var chart13 = echarts.init(dom, null, {
+                            renderer: 'canvas',
+                            useDirtyRect: false
+                        });
+                        const colors = ['#5470C6', '#91CC75', '#EE6666', '#ffa900'];
+                        var option = {
+                            title: {
+                                text: '图13：城市历年旅游人数及旅游业收入变化',
+                                left: 'center',
+                                top: 'top',
+                                textStyle: {
+                                    fontSize: '24px',
+                                    fontWeight: 'bolder',
+                                    color: '#6d6b6c',
+                                    fontFamily: 'sans-serif'
+                                },
+                            },
+                            color: colors,
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross'
+                                },
+                                formatter: function (params) {
+                                    // params是一个数组，每个元素是一个对象，包含了当前鼠标所在的数据点的信息
+                                    // 你可以根据你的需求来自定义tooltip的内容和格式
+                                    // console.log([params[0].color, params[1].color]);
+                                    // console.log([params[0]])
+                                    var name0 = params[0].name; // 获取酒店类型
+                                    var value0 = params[0].value; // 获取迁移指数
+                                    var color0 = params[0].color; // 获取颜色
+
+                                    var name1 = params[1].name;
+                                    var value1 = params[1].value;
+                                    var color1 = params[1].color;
+
+                                    var name2 = params[2].name;
+                                    var value2 = params[2].value;
+                                    var color2 = params[2].color;
+
+                                    var name3 = params[3].name;
+                                    var value3 = params[3].value;
+                                    var color3 = params[3].color;
+                                    // 返回一个HTML字符串，使用span标签来设置字体颜色和大小，使用margin-right来设置距离
+                                    return (
+                                        '<span style="color:' +
+                                        '#000' +
+                                        ';font-size:14px!important;font-weight: bold; text-align: left!important; margin-bottom:4px!important">' +
+                                        name0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        //'<span style="margin-right:5px;"></span>' + // 设置距离为5px
+                                        '<span style="color:' +
+                                        color0 +
+                                        '!important;font-size:10px!important;margin:0">' + '厦门接待游客数：' +
+                                        value0 +
+                                        '</span>' +
+                                        '<br>' +
+                                        '<span style="color:' +
+                                        color1 +
+                                        '!important;font-size:10px!important;margin:0">' + '西安接待游客数：' +
+                                        value1 +
+                                        '</span>' +
+                                        '<br>' +
+                                        '<span style="color:' +
+                                        color2 +
+                                        '!important;font-size:10px!important;margin:0">' + '厦门旅游业收入：' +
+                                        value2 +
+                                        '</span>' +
+                                        '<br>' +
+                                        '<span style="color:' +
+                                        color3 +
+                                        '!important;font-size:10px!important;margin:0">' + '西安旅游业收入：' +
+                                        value3 +
+                                        '</span>'
+                                    );
+                                },
+                            },
+                            grid: {
+                                right: '10%'
+                            },
+                            toolbox: {
+                                show: false,
+                                feature: {
+                                    dataView: { show: true, readOnly: false },
+                                    restore: { show: true },
+                                    saveAsImage: { show: true }
+                                }
+                            },
+                            legend: {
+                                data: ['厦门接待游客数', '西安接待游客数', '厦门旅游业收入', '西安旅游业收入'],
+                                bottom: '0'
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    axisTick: {
+                                        alignWithLabel: true
+                                    },
+                                    // prettier-ignore
+                                    data: ['2016', '2017', '2020', '2021']
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    name: '接待旅游收入/亿元',
+                                    position: 'right',
+                                    alignTicks: true,
+                                    axisLine: {
+                                        show: true,
+                                        lineStyle: {
+                                            // color: colors[0]
+                                        }
+                                    },
+                                    axisLabel: {
+                                        formatter: '{value}'
+                                    }
+                                },
+
+                                {
+                                    type: 'value',
+                                    name: '接待游客数/万人次',
+                                    position: 'left',
+                                    alignTicks: true,
+                                    axisLine: {
+                                        show: true,
+                                        lineStyle: {
+                                            // color: colors[1]
+                                        }
+                                    },
+                                    axisLabel: {
+                                        formatter: '{value}'
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '厦门接待游客数',
+                                    type: 'bar',
+                                    yAxisIndex: 1,
+                                    data: [6770.16, 7830.52, 7830.52, 6568.75]
+                                },
+                                {
+                                    name: '西安接待游客数',
+                                    type: 'bar',
+                                    yAxisIndex: 1,
+                                    data: [15012.56, 18093.14, 24000, 20000]
+                                },
+                                {
+                                    name: '厦门旅游业收入',
+                                    type: 'line',
+                                    yAxisIndex: 0,
+                                    data: [968.26, 1168.52, 1301.00, 855.17]
+                                },
+                                {
+                                    name: '西安旅游业收入',
+                                    type: 'line',
+                                    yAxisIndex: 0,
+                                    data: [1213.81, 1633.3, 2460, 2030]
+                                },
+                            ]
+                        };
+                        chart13.setOption(option);
+                    </script>
+                    <p style="padding-left: 100px;">数据来源：厦门文化和旅游局&西安文化和旅游局</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    因为时代特征而偶然抓住流量的初代网红城市，与其说是因为自身独特的旅游资源、过硬的旅游服务支撑，更多地是在互联网上构建了符合当时人们精神出口的城市符号，在吸引了第一批、第二批进行精神朝圣的游客之后，游客不再通过雾里看花进行构建式想象，城市旅游治理不足、旅游产业结构滞后等缺陷逐渐显露，旅游业也逐渐式微。
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- <section class="enent-details pt-120 pb-120" style="background: url(assets/images/厦门邮轮.jpg) no-repeat; background-color: transparent; background-position: 10%; background-size:50%"> -->
+    <!-- <div class="container"> -->
+    <!-- <div class=" "> -->
+    <!-- <div class="word pt-60"> -->
+    <!-- <p style="margin-left: 70%;"> -->
+    <!-- 因为时代特征而偶然抓住流量的初代网红城市，与其说是因为自身独特的旅游资源、过硬的旅游服务支撑，更多地是在互联网上构建了符合当时人们精神出口的城市符号，在吸引了第一批、第二批进行精神朝圣的游客之后，游客不再通过雾里看花进行构建式想象，城市旅游治理不足、旅游产业结构滞后等缺陷逐渐显露，旅游业也逐渐式微。 -->
+    <!-- </p> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </section> -->
+    <section class="container pt-60 pb-60">
+        <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/重庆美食_1.jpg); background-repeat: no-repeat;background-position: center;"></div> -->
+        <div class="col-lg-12 col-lg-6 text-left">
+            <h2 style="color: #000;font-size: 3rem;">重庆：旅游长虹，短视频时代乘风而上</h2>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    重庆作为网红城市的崛起与国内短视频平台的火爆息息相关。在 2018
+                    年抖音等联合发布的《短视频与城市形象研究白皮书》中，重庆力压北上广深，居城市形象短视频播放量排行榜第一名，一定程度上反映了网红城市的火爆程度。
+                    网易数读统计抖音网红城市相关话题内容显示，重庆以“8D 魔幻城市”位居中国第一网红城市。2018 年，清华大学国家形象传播研究中心发布《短视频与城市形象研究白皮书》显示，重庆以 113.6
+                    亿的视频播放总量位居全国第一。
+                </p>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container " style="width: 680px;">
+            <!-- /.team-about__top -->
+            <div class="row ">
+                <div class="col-lg-6 testimonials-one__single">
+                    <!-- /.testimonials-one__image -->
+                    <div style="padding-bottom: 25px;">
+                        <span style="font-size: 88px;">113.6</span>
+                        <span style="font-size: 30px;">亿</span>
+                    </div>
+                    <div>
+                        <p style="color: black;">重庆力压北上广深，居城市形象短视频播放量排行榜
+                            <span style="color: #fff;">第一名</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 testimonials-one__single">
+                    <!-- /.testimonials-one__image -->
+                    <div style="padding-bottom: 25px;"> <span style="font-size: 88px;">2000</span> <span
+                            style="font-size: 30px;">万</span>
+                    </div>
+                    <div>
+                        <p style="color: black;">2019年重庆“五一”游客数量突破2000万的门槛，
+                            <!-- <span style="color: #fff;">47.4%。</span> -->
+                            与2018年相比增加了<span style="color: #fff;">47.4%。</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    重庆的走红与短视频社交媒体平台的普及息息相关，抖音网友发布的李子坝“穿楼”轻轨和洪崖洞夜景的短视频最先吸引了人们注意，电影《从你的全世界路过》的火爆也一度将“鹅岭二厂”与“必去打卡地”划上等号。
+                    2019
+                    年，重庆市政府即打出了“带上剧本来重庆，其他事情交我办”的口号，推广独特的山城地形景观、特色建筑，且基于影片扶持金，吸引剧组来重庆进行实景拍摄，《江湖儿女》、《少年的你》等诸多爆火的电影中呈现的“山城景观”又反哺重庆旅游业，吸引大批观众打卡影视拍摄地。
+                    除了影视拍摄地打卡之外，重庆格外重视游客的需求，通过设置观景台、交通管制、延长亮灯时间等一切有有利于游客打卡的举措，对游客的打卡需求有求必应。
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="container pb-30" style="width: 680px">
+        <div class=" ">
+            <div style="margin-left: 20px; display: flex; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/电影海报_1.jpg" style="margin-right: 40px; width: 268px; height: 484px;">
+                </div>
+                <div>
+                    <img src="assets/images/电影海报_2.jpg" style="margin-right: 40px; width: 268px; height: 484px;">
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: space-between; height: 484px;">
+                    <img src="assets/images/电影海报_3.jpeg" style="margin-bottom: 40px; width: 368px; height: 222px;">
+                    <img src="assets/images/电影海报_4.png" style="width: 368px; height: 222px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center; color: #999999; font-size: 12px;">左右滑动查看更多图片</div>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word">
+                <p>另一方面，究其重庆火起来的原因，与美食息息相关。据抖音统计，在播放量 TOP100 的城市形象视频内容分布中，地方饮食占到了
+                    36%，在众多内容类别中排名第一。火锅、重庆小面、红油抄手、红糖糍粑、凉虾凉糕等品种多样的重庆美食，为游客们提供更多饮食选择性。且由于火锅在全国普及度高，也降低了游客接受重庆美食的壁垒。红色的牛油锅底、九宫格的火锅更为打卡的食客们提供了拍照素材。
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/重庆美食合集.jpg" style=" width: 680px; height: 510px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    用旅游业带动经济发展，正是重庆的目的。作为曾经重工业城市，重庆在社交媒体兴起时，抢占先机，重视在在社交媒体输出城市旅游内容，并提升城市旅游服务，打造旅游城市的标签，将美景与美食深入人心，契合年轻人工作与消费对第三产业的倾向，也促进了人才引进。
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="container pt-60 pb-60">
+        <!-- <div class="page-header__bg" style="background-color: #ffebcd;; background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(assets/images/八大局便民市场人流回落.png); background-repeat: no-repeat;background-position: center;"></div> -->
+        <div class="col-lg-12 col-lg-6 text-left">
+            <h2 style="color:#000; font-size: 3rem;">曹县：顺势而为，流量提振特色产业</h2>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    2021 年 5 月，网红大硕一句魔性十足的“山东曹县牛逼 666
+                    我的宝贝儿”，在抖音快手等短视频平台引发全民模仿热潮，并被网友二创为“北上广曹”等诸多热梗，将处于鲁豫交界的小城迅速带红。不同于以往因为自然景观、历史文化等具有丰富旅游资源的城市，曹县的走红更像是具有娱乐形式的网络米姆传播带来的热度。
+                </p>
+                <p>
+                    而随着各大媒体对“热梗”背后的曹县进行分析，发出《鲁西南小城曹县“走红”背后：调侃、夸张的演绎引发模仿跟评》、《曹县有梗！只是发展内功的“点火器”》数篇报道后，网友也逐渐意识到，这所名不见经传的城市早早地烙上了互联网基因。
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container" style="display: flex;justify-content: center;align-items: center;">
+        <div class=" ">
+            <div
+                style="margin-left: 20px; display: flex; flex: 1 1 0%; flex-direction: row; overflow-x: auto; margin-top: 10px;">
+                <div>
+                    <img src="assets/images/曹县搜索指数.jpg" style=" width: 680px; height: 680px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-20">
+                <p>
+                    #山东曹县棺材占日本 90%市场##曹县演出服企业数量全国第一##曹县汉服一年卖出 19 亿元#迅速发酵成微博热议话题。其实早在 2020
+                    年，曹县就在阿里研究院发布《淘宝村百强县名单》名列第二。曹县有淘宝村 151 个、淘宝镇 17 个。
+                    2020 年，国内 70%的演出服，三分之一的汉服，70%茶酒等木材包材出自曹县，曹县还拥有亚马逊 40%的木制品圣诞挂件市场，生产的木材小家具销往了欧美和俄罗斯等多个西方国家。
+                </p>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="col-lg-12 col-lg-6 word pt-60">
+                <p>
+                    机会是留给有准备的人的。早已凭借汉服、木制品、电商产业被评为“中国柳编之乡”、“中国芦笋之乡”、“中国杨木加工之乡”、“中国泡桐加工之乡”、“中国百万担优质棉生产基地”的曹县并没有简单复制传统的网红城市+文旅产业的路线，对于域内旅游资源的盘点，及产业结构的正确认知，也促使曹县利用网络关注度展开“互联网+传统产业”应对。
+                </p>
+                <p>
+                    这所抓住农村电子商务发展机遇的小城，又一次敏锐地嗅到了商机，紧紧抓住网络热度，为经济发展的提振升级注入催化剂。面对或恶俗、或正面的曹县相关热梗，曹县县长作出积极回应，态度诚恳地欢迎网友来了解曹县，看一看真实的曹县。在热度涌来后，网友有机会了解曹县时，曹县也凭借成熟的产业储备，为网友提供高质量的产品服务，将传统产业与互联网成功结合，提振经济。
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section style="background-color: #242323;">
+        <div class="container" style="margin-top: 50px;">
+            <div class="col-lg-12 col-lg-6 word pt-60 pb-60">
+                <p style="color:#fff">
+                    当然，一座城市长期发展的质量与应对网络热度的关联非常有限，但运用好互联网热度与涌来的关注度，对城市发展确实是难得的机会。然而，城市的网络关注度与城市旅游人数、人均旅游消费并非简单的因果关系，而与城市的旅游依赖程度、公共服务能力、公共建设水平等息息相关。
+                <p style="color:#fff">
+                    网络关注下流量的迅速集聚，极大提升了城市的公共服务成本，怎样去勾连社会保障体系、旅游服务系统为涌入的游客带来好的体验，进一步促进口碑传播？怎样去利用好陡增的热度与关注度去增益城市发展、人才引进，切实提升城市的经济发展质量，将网红变成“长红”？这都是城市需要思考的命题。
+                </p>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container pt-120">
+            <div class="row justify-content-start">
+                <div class="col-xl-12 col-lg-12 text-left">
+                    <a href="./part-4.html" :hover="color:#fff">
+                        <image src="./assets/images/three.png" alt>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    <!-- 加载i一些js文件 -->
+    <script src="assets/js/bootstrap.bundle.min.js "></script>
+    <script src="assets/js/swiper.min.js "></script>
+    <script src="assets/js/jquery.ajaxchimp.min.js "></script>
+    <script src="assets/js/jquery.magnific-popup.min.js "></script>
+    <script src="assets/js/jquery.validate.min.js "></script>
+    <script src="assets/js/bootstrap-select.min.js "></script>
+    <script src="assets/js/wow.js "></script>
+    <script src="assets/js/odometer.min.js "></script>
+    <script src="assets/js/jquery.appear.min.js "></script>
+    <!-- 加载气泡文件 -->
+    <script src="assets/js/conversation.js"></script>
+    <!-- template js -->
+    <script src="assets/js/theme.js "></script>
+    <!-- 下拉菜单 -->
+    <script>
+        $(function () {
+            $(".htmleaf-container div").click(function () {
+                $(this).children("ul").slideToggle();
+                event.stopPropagation();
+            });
+            $(document).click(function () {
+                $(".htmleaf-container ul").slideUp();
+            });
+        })
+    </script>
+</body>
+
+</html>
